@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    {% extends 'base.html' %}
+  </head>
+  {% block content %}
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+
+
+    <div class="container-fluid very-dark-text">
+      <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+          <div class="card  border-light bg-light mb-3">
+            <div class="card-header light-pink-background"><h4><a href="https://www.rcsb.org/structure/{{ queryname.lower() }}" target="_blank">{{ queryname }}</a></h4>
+              <h5><a href="{{ url_for('uniqueQuery', queryname=pdbGene, settings='GENE') }}" target="_blank">{{ pdbGene }} </a>({{ pdbProtein }})</h5>
+              {% if pdbPseudo=='Pseudo' %}
+              <h5>Pseudokinase</h5>
+              {% endif %}</div>
+                <div class="card-body">
+                  <h5 class="card-title">Group: <a href="{{ url_for('uniqueQuery', queryname=pdbGroup, settings='GROUP') }}" target="_blank">{{ pdbGroup }}</a></h5>
+                  <h5 class="card-title">Uniprot: <a href="https://www.uniprot.org/uniprot/{{ pdbUniprot }}" target="_blank">{{ pdbUniprot }}</a></h5>
+                  <h5 class="card-title">Organism: {{ pdb_organism }}</h5>
+                  <h5 class="card-title">Domain boundary: {{ domain_begin }} - {{ domain_end }}</h5>
+                  <h5 class="card-title">Resolution: {{ pdbReso }}</h5><br>
+
+                  <div class="table-responsive">
+                  <table class="table dark-text">
+                    <thead class="">
+                      <tr>
+                        <th scope="col" style='text-align:left;'>Chain id</th>
+                        <th scope="col" style='text-align:left;'>Spatial</th>
+                        <th scope="col" style='text-align:left;'>Dihedral</th>
+                        <th scope="col" style='text-align:left;'>C-helix</th>
+                        <th scope="col" style='text-align:left;'>Ligand</th>
+                        <th scope="col" style='text-align:left;'>Type</th>
+                        <th scope="col" style='text-align:left;'>Residues in structure</th>
+                        <th scope="col" style='text-align:left;'>Unresolved residues in A-loop</th>
+                      </tr>
+                    </thead>
+                      {% for item in pdb_list %}
+                      <tr style="line-height:20px;">
+                        <td style='text-align:left;color:{{ clusterColor[item.dihedral] }};font-weight:bold;'>{{ item.pdb[4] }}</td>
+                        <td style='text-align:left;'><a href="{{ url_for('uniqueQuery', queryname=item.spatial, settings='SPATIAL') }}" target="_blank">{{ item.spatial }}</td>
+                        {% if item.dihedral=='None' %}
+                        <td style='text-align:left;'><a href="{{ url_for('uniqueQuery', queryname=(item.spatial+item.dihedral), settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
+                        {% else %}
+                        <td style='text-align:left;'><a href="{{ url_for('uniqueQuery', queryname=item.dihedral, settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
+                        {% endif %}
+                        <td style='text-align:left;'>{{ item.chelix }}</td>
+                        {% if ',' in item.ligand %}
+                        <td style='text-align:left;'>
+                          {% set subitems=item.ligand.split(',') %}
+                          {% for ligname in subitems %}
+                          {% set sub_subitems=ligname.split(':') %}
+                          <a href="{{ url_for('uniqueQuery', queryname=sub_subitems[0], settings='LIGAND') }}" target="_blank">{{ sub_subitems[0] }}
+                          {% endfor %}
+                        </td>
+                        {% else %}
+                        {% set ligname=item.ligand.split(':') %}
+                        <td style='text-align:left;'><a href="{{ url_for('uniqueQuery', queryname=ligname[0], settings='LIGAND') }}" target="_blank">{{ ligname[0] }}</td>
+                        {% endif %}
+
+                        {% if ',' in item.ligand_type %}
+                        <td style='text-align:left;'>
+                        {% set subitems=item.ligand_type.split(',') %}
+                        {% for ligtypes in subitems %}
+                        <a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=ligtypes) }}" target="_blank">{{ ligtypes }}
+                        {% endfor %}
+                      </td>
+                      {% else %}
+                        <td style='text-align:left;'><a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=item.ligand_type) }}" target="_blank">{{ item.ligand_type }}</td>
+                      {% endif %}
+                      <td style='text-align:left;'>{{ item.first_obs_res }} - {{ item.last_obs_res }}</td>
+                      {% if item.loopBreak>0 %}
+                      <td style='text-align:left;'>{{ item.loopBreak }}</td>
+                      {% else %}
+                      <td style='text-align:left;'>0</td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                    </table>
+                  </div>
+          </div>
+        </div>
+
+        <div class="btn-group" style="margin:5px;">
+          <button type="button" class="btn button-primary dropdown-toggle light-text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Download in Pymol
+          </button>
+          <div class="dropdown-menu">
+            <h6 class="dropdown-header very-dark-text">All chains</h6>
+            <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSession) }}">Pymol session(ver 2.3)</a>
+            <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript) }}">Pymol script</a>
+          </div>
+        </div>
+
+
+        <div class="btn-group" style="margin:5px;margin-left:40px;">
+          <button type="button" class="btn button-primary dropdown-toggle light-text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Download coordinates
+          </button>
+          <div class="dropdown-menu">
+            <h6 class="dropdown-header very-dark-text">All chains - renumbered by</h6>
+            <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles) }}_uniNum.zip">Uniprot</a>
+            <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles) }}_pdbNum.zip">PDB</a>
+            <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles) }}_alignNum.zip">Alignment</a>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
+        <div id="viewport" style="width:100%; height:600px"></div>
+      </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 offset-lg-6">
+          <div class="container light-pink-background">
+            <div class="container-fluid" style="font-weight:bold;fontFamily:'Courier New';width:95%;margin: auto;margin-top: 10%;">
+            {{ formattedSeq }}
+            </div>
+
+
+          </div>
+          <h6>Lower-case residues are disordered in structure.</h6>
+          <h5 style="color:#d9534f;">Mutations: {{ pdbMutation }}</h5>
+          <h5 style="color:#5cb85c;">Phosphorylation: {{ pdbPhos }}</h5>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+
+  <script type="text/javascript">
+
+
+  var stage = new NGL.Stage( "viewport" );
+  window.addEventListener( "resize", function( event ){
+    stage.handleResize();
+    }, false );
+    stage.setParameters( { backgroundColor: "white", cameraType: "orthographic" } );
+
+    Promise.all([
+      {% for item in nglList %}
+      {% for entries in nglList[item] %}
+
+
+      stage.loadFile("{{ url_for('static',filename='kinasechainsNGL/') }}{{item}}.pdb", {
+    sele: ":{{ item[4] }}"
+  }).then(function (o) {
+    o.addRepresentation("cartoon",{sele:":{{ item[4] }}",color:"rgb{{ entries.color }}",radiusScale:"0.4",opacity:"0.3"});
+    o.addRepresentation("cartoon",{sele:":{{ item[4] }} and {{ entries.dfgnum }}-{{ entries.apeNum }}",color:"rgb{{ entries.color }}",radiusScale:"0.4"});
+    o.addRepresentation( "licorice",{sele: ":{{ item[4] }} and {{ entries.dfgnum }} and not hydrogen and sidechainAttached",color:"rgb{{ entries.color }}"} );
+    o.addRepresentation( "licorice",{sele: ":{{ item[4] }} and {{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and not hydrogen",color:"rgb{{ entries.color }}"} );
+    o.addRepresentation( "ball+stick",{sele: "{{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and _N",color:"blue"} );
+    o.addRepresentation( "ball+stick",{sele: "{{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and _O",color:"red"} );
+    o.addRepresentation("licorice",{sele:"TPO or SEP or PTR"})
+    var ligandSele = "( not polymer or not ( protein or nucleic ) ) and not ( water or ACE or NH2 or hydrogen or CL  or TPO or SO4 or PTR or OCY or 7PE or GOL or MSE or EDO or BOG or CME or GG5 or FMT or ACE or CSD or SEP or PO4 or DVT or EPE or SGM or 5TH or 5TK or Z4K or 5TM or GLC or 5LS or PDX or GLC or 5LS or DMS or DTD or SVQ or ACT or MYR or PEG or EPE or DVT or TLA or TAR or SRT or MES or P4G or PG4 or KCX or PGE or 2PE or CSO or IPA or EOH or BEN or DTT or FLC or DTV or SCS or NA or NI or CA or MXE  or PG0 or ZN or SBT or ARS or CAF or MPD or CAS or TMA or ALY or CSS or P6G or NO3 or MLI or GBL or UNX or CXM or IMD or DTT or S26 or BR or SEP or BWB or CAS or CME or CSO or CSS or CSX or MK8 or MLY or NEP or CO or BME or MRD or TCE or IOD or HC4 or PGO or TRS or CIT or ALA or MLA or HG or CS or DOD  or NH4 or BU1 or K )"
+    o.addRepresentation("licorice",{sele:ligandSele})
+    {% if entries.ligand!='No_ligand' %}
+    {% if ',' in entries.ligand %}
+    {% set subitems=entries.ligand.split(',') %}
+    {% for ligname in subitems %}
+    {% set sub_subitems=ligname.split(':') %}
+    o.addRepresentation("licorice",{sele:"{{ sub_subitems[0] }}"})
+    {% endfor %}
+    {% else %}
+    {% set ligname=entries.ligand.split(':') %}
+    o.addRepresentation("licorice",{sele:"{{ ligname[0] }}"})
+    {% endif %}
+    {% endif %}
+    return o
+  }),
+
+  {% endfor %}
+  {% endfor %}
+
+
+
+  ]).then(function (ol) {
+
+   var pa = ol[ 0 ].structure.getPrincipalAxes();
+    stage.animationControls.rotate(pa.getRotationQuaternion(), 1500);
+    var duration = 1500;  // optional duration for animation, defaults to zero
+    ol[0].autoView();  // focus on the whole structure
+    //ol[0].autoView('{{pheNum-2}}-{{pheNum+1}}',duration)
+  {% for item in nglList %}
+
+      ol[{{ loop.index }}].superpose(ol[ 0 ], true)
+
+  {% endfor %}
+
+  });
+
+  // create tooltip element and add to document body
+  var tooltip = document.createElement("div")
+  Object.assign(tooltip.style, {
+  display: "none",
+  position: "fixed",
+  zIndex: 10,
+  pointerEvents: "none",
+  backgroundColor: "rgba( 0, 0, 0, 0.6 )",
+  color: "lightgrey",
+  padding: "8px",
+  fontFamily: "sans-serif"
+  })
+  document.body.appendChild(tooltip)
+
+  // remove default hoverPick mouse action
+  stage.mouseControls.remove("hoverPick")
+
+  // listen to `hovered` signal to move tooltip around and change its text
+  stage.signals.hovered.add(function (pickingProxy) {
+  if (pickingProxy && (pickingProxy.atom || pickingProxy.bond)) {
+    var atom = pickingProxy.atom || pickingProxy.closestBondAtom
+    var mp = pickingProxy.mouse.position
+    tooltip.innerText = atom.chainname + ": " + atom.resname +atom.resno
+    tooltip.style.bottom = window.innerHeight - mp.y + 3 + "px"
+    tooltip.style.left = mp.x + 3 + "px"
+    tooltip.style.display = "block"
+
+  } else {
+    tooltip.style.display = "none"
+  }
+  });
+
+    </script>
+  </body>
+  {% endblock %}
+</html>

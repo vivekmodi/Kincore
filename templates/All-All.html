@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>All-All</title>
+  </head>
+  <body>
+    {% extends 'base.html' %}
+    {% block content %}
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" role="tab" id="Human-tab" href="#Human" aria-controls="Human" aria-selected="true">Human</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" id="All-tab" href="#All" role="tab" aria-controls="All" aria-selected="false">All</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" id="Nonhuman-tab" href="#Nonhuman" role="tab" aria-controls="Nonhuman" aria-selected="false">Non-Human</a>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane active" id="Human" role="tabpanel"  aria-labelledby="Human-tab">
+
+              <div class="card  border-light bg-light mb-3 very-dark-text">
+                <div class="card-header light-pink-background"><h4>Human protein kinases in complex with {{ ligand_type }} ligands</h4></div>
+                  <div class="card-body">
+                    <h6 class="card-text">Total number of genes: {{ geneCount_human }}</h6>
+                    <h6 class="card-text">Total number of chains: {{ total_count['Human'] }}</h6>
+
+                    <div class="table-responsive">
+                    <table class="table very-dark-text sortable">
+                    <thead class="">
+                      <tr>
+                        <th scope="col" style='text-align:center;'>Spatial Label</th>
+                        <th scope="col" style='text-align:center;'>Dihedral Label</th>
+                        <th scope="col" style='text-align:right;'>AGC</th>
+                        <th scope="col" style='text-align:right;'>CAMK</th>
+                        <th scope="col" style='text-align:right;'>CK1</th>
+                        <th scope="col" style='text-align:right;'>CMGC</th>
+                        <th scope="col" style='text-align:right;'>NEK</th>
+                        <th scope="col" style='text-align:right;'>RGC</th>
+                        <th scope="col" style='text-align:right;'>STE</th>
+                        <th scope="col" style='text-align:right;'>TKL</th>
+                        <th scope="col" style='text-align:right;'>TYR</th>
+                        <th scope="col" style='text-align:right;'>OTHER</th>
+                        <th scope="col" style='text-align:right;'>Total</th>
+                      </tr>
+                    </thead>
+                    <tr style="line-height:10px;">
+
+                    {% for dihedral in ('BLAminus','BLAplus','ABAminus','BLBminus','BLBplus','BLBtrans','None') %}
+                    <td style='text-align:center;line-height:10px;'>DFGin</td>
+                      <td style='text-align:center;line-height:10px;'>{{ dihedral }}</td>
+                      {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                      <td style='text-align:right;line-height:10px;'>{{ strCount_human[group,'DFGin',dihedral] }}</td>
+                      {% endfor %}
+                      <td style='text-align:right;line-height:10px;'>{{ totalDihedral_human['DFGin',dihedral] }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr style="line-height:10px;">
+
+                    {% for dihedral in ('BABtrans','None') %}
+                    <td style='text-align:center;line-height:10px;'>DFGinter</td>
+                      <td style='text-align:center;line-height:10px;'>{{ dihedral }}</td>
+                      {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                      <td style='text-align:right;line-height:10px;'>{{ strCount_human[group,'DFGinter',dihedral] }}</td>
+                      {% endfor %}
+                      <td style='text-align:right;line-height:10px;'>{{ totalDihedral_human['DFGinter',dihedral] }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr style="line-height:10px;">
+
+                    {% for dihedral in ('BBAminus','None') %}
+                    <td style='text-align:center;line-height:10px;'>DFGout</td>
+                      <td style='text-align:center;line-height:10px;'>{{ dihedral }}</td>
+                      {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                      <td style='text-align:right;line-height:10px;'>{{ strCount_human[group,'DFGout',dihedral] }}</td>
+                      {% endfor %}
+                      <td style='text-align:right;line-height:10px;'>{{ totalDihedral_human['DFGout',dihedral] }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr style="line-height:10px;">
+                      <td style='text-align:center;line-height:10px;'>None</td>
+                      <td style='text-align:center;line-height:10px;'>None</td>
+                      {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                        <td style='text-align:right;line-height:10px;'>{{ strCount_human[group,'None','None'] }}</td>
+                      {% endfor %}
+                      <td style='text-align:right;line-height:10px;'>{{ totalDihedral_human['None','None'] }}</td>
+                    </tr>
+                    <tr style="line-height:10px;">
+                      <td style='text-align:center;line-height:10px;'>Total</td>
+                      <td style='text-align:center;line-height:10px;'>-</td>
+                      {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                      <td style='text-align:right;line-height:10px;'>{{ totalGroup_human[group] }}</td>
+                      {% endfor %}
+
+                      <td style='text-align:right;line-height:10px;'>{{ total_count['Human'] }}</td>
+                    </tr>
+                  </table>
+                </div>
+                </div>
+              </div>
+
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0;">
+                <hr class="my-4" style="padding:0;">
+                <a role="button" class="btn button-primary light-text" style="margin:5px;" href="{{ url_for('static', filename=csvFile['Human']) }}">Download as csv</a>
+                <br><br>
+
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover sortable very-dark-text" style="word-wrap: break-word;">
+                      <thead class=thead-light>
+                        <tr>
+
+                          <th scope="col">Group</th>
+                          <th scope="col">Gene</th>
+                          <th scope="col">UniprotID</th>
+                          <th scope="col">Protein</th>
+                          <th scope="col">PDB</th>
+                          <th scope="col">Spatial Label</th>
+                          <th scope="col">Dihedral Label</th>
+                          <th scope="col">C-helix</th>
+                          <th scope="col">Ligand</th>
+                          <th scope="col">Type</th>
+                        </tr>
+                      </thead>
+                      {% for item in group_list['Human'] %}
+
+                      <tr>
+
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.group, settings='GROUP') }}" target="_blank">{{ item.group }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.gene, settings='GENE') }}" target="_blank">{{ item.gene }}</td>
+                        <td>{{ item.uniprotid }}</td>
+                        <td>{{ item.protein_name }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.pdb, settings='PDB') }}" target="_blank">{{ item.pdb }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.spatial, settings='SPATIAL') }}" target="_blank">{{ item.spatial }}</td>
+                          {% if item.dihedral=='None' %}
+                        <td><a href="{{ url_for('uniqueQuery', queryname=(item.spatial+item.dihedral), settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
+                          {% else %}
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.dihedral, settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
+                          {% endif %}
+                        <td>{{ item.chelix }}</td>
+                        {% if ',' in item.ligand %}
+                        <td>
+                          {% set subitems=item.ligand.split(',') %}
+                          {% for ligname in subitems %}
+                          {% set sub_subitems=ligname.split(':') %}
+                          <a href="{{ url_for('uniqueQuery', queryname=sub_subitems[0], settings='LIGAND') }}" target="_blank">{{ sub_subitems[0] }}
+                          {% endfor %}
+                        </td>
+                        {% else %}
+                        {% set ligname=item.ligand.split(':') %}
+                        <td><a href="{{ url_for('uniqueQuery', queryname=ligname[0], settings='LIGAND') }}" target="_blank">{{ ligname[0] }}</td>
+                        {% endif %}
+
+                        {% if ',' in item.ligand_type %}
+                        <td>
+                        {% set subitems=item.ligand_type.split(',') %}
+                        {% for ligtypes in subitems %}
+                        <a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=ligtypes) }}" target="_blank">{{ ligtypes }}
+                        {% endfor %}
+                      </td>
+                      {% else %}
+                        <td><a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=item.ligand_type) }}" target="_blank">{{ item.ligand_type }}</td>
+
+                      {% endif %}
+                      </tr>
+
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="tab-pane" id="All" role="tabpanel"  aria-labelledby="All-tab">
+
+                <div class="card  border-light bg-light mb-3 very-dark-text">
+                  <div class="card-header light-pink-background"><h4>Human and Non-human protein kinases in complex with {{ ligand_type }} ligands</h4></div>
+                    <div class="card-body">
+                      <h6 class="card-text">Total number of genes: {{ geneCount_all }}</h6>
+                      <h6 class="card-text">Total number of chains: {{ total_count['All'] }}</h6>
+                      <div class="table-responsive">
+                      <table class="table very-dark-text sortable">
+                      <thead class="">
+                        <tr>
+                          <th scope="col" style='text-align:center;'>Spatial Label</th>
+                          <th scope="col" style='text-align:center;'>Dihedral Label</th>
+                          <th scope="col" style='text-align:right;'>AGC</th>
+                          <th scope="col" style='text-align:right;'>CAMK</th>
+                          <th scope="col" style='text-align:right;'>CK1</th>
+                          <th scope="col" style='text-align:right;'>CMGC</th>
+                          <th scope="col" style='text-align:right;'>NEK</th>
+                          <th scope="col" style='text-align:right;'>RGC</th>
+                          <th scope="col" style='text-align:right;'>STE</th>
+                          <th scope="col" style='text-align:right;'>TKL</th>
+                          <th scope="col" style='text-align:right;'>TYR</th>
+                          <th scope="col" style='text-align:right;'>OTHER</th>
+                          <th scope="col" style='text-align:right;'>Total</th>
+                        </tr>
+                      </thead>
+                      <tr style="line-height:10px;">
+
+                      {% for dihedral in ('BLAminus','BLAplus','ABAminus','BLBminus','BLBplus','BLBtrans','None') %}
+                      <td style='text-align:center;line-height:10px;'>DFGin</td>
+                        <td style='text-align:center;line-height:10px;'>{{ dihedral }}</td>
+                        {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                        <td style='text-align:right;line-height:10px;'>{{ strCount_all[group,'DFGin',dihedral] }}</td>
+                        {% endfor %}
+                        <td style='text-align:right;line-height:10px;'>{{ totalDihedral_all['DFGin',dihedral] }}</td>
+                      </tr>
+                      {% endfor %}
+                      <tr style="line-height:10px;">
+
+                      {% for dihedral in ('BABtrans','None') %}
+                      <td style='text-align:center;line-height:10px;'>DFGinter</td>
+                        <td style='text-align:center;line-height:10px;'>{{ dihedral }}</td>
+                        {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                        <td style='text-align:right;line-height:10px;'>{{ strCount_all[group,'DFGinter',dihedral] }}</td>
+                        {% endfor %}
+                        <td style='text-align:right;line-height:10px;'>{{ totalDihedral_all['DFGinter',dihedral] }}</td>
+                      </tr>
+                      {% endfor %}
+                      <tr style="line-height:10px;">
+
+                      {% for dihedral in ('BBAminus','None') %}
+                      <td style='text-align:center;line-height:10px;'>DFGout</td>
+                        <td style='text-align:center;line-height:10px;'>{{ dihedral }}</td>
+                        {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                        <td style='text-align:right;line-height:10px;'>{{ strCount_all[group,'DFGout',dihedral] }}</td>
+                        {% endfor %}
+                        <td style='text-align:right;line-height:10px;'>{{ totalDihedral_all['DFGout',dihedral] }}</td>
+                      </tr>
+                      {% endfor %}
+                      <tr style="line-height:10px;">
+                        <td style='text-align:center;line-height:10px;'>None</td>
+                        <td style='text-align:center;line-height:10px;'>None</td>
+                        {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                          <td style='text-align:right;line-height:10px;'>{{ strCount_all[group,'None','None'] }}</td>
+                        {% endfor %}
+                        <td style='text-align:right;line-height:10px;'>{{ totalDihedral_all['None','None'] }}</td>
+                      </tr>
+                      <tr style="line-height:10px;">
+                        <td style='text-align:center;line-height:10px;'>Total</td>
+                        <td style='text-align:center;line-height:10px;'>-</td>
+                        {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                        <td style='text-align:right;line-height:10px;'>{{ totalGroup_all[group] }}</td>
+                        {% endfor %}
+
+                        <td style='text-align:right;line-height:10px;'>{{ total_count['All'] }}</td>
+                      </tr>
+                    </table>
+                  </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0;">
+                    <hr class="my-4" style="padding:0;">
+                    <a role="button" class="btn button-primary light-text" style="margin:5px;" href="{{ url_for('static', filename=csvFile['All']) }}">Download as csv</a>
+                    <br><br>
+
+                    <div class="table-responsive">
+                      <table class="table table-striped table-hover sortable very-dark-text" style="word-wrap: break-word;">
+                        <thead class=thead-light>
+                          <tr>
+                            <th scope="col">Organism</th>
+                            <th scope="col">Group</th>
+                            <th scope="col">Gene</th>
+                            <th scope="col">UniprotID</th>
+                            <th scope="col">Protein</th>
+                            <th scope="col">PDB</th>
+                            <th scope="col">Spatial Label</th>
+                            <th scope="col">Dihedral Label</th>
+                            <th scope="col">C-helix</th>
+                            <th scope="col">Ligand</th>
+                            <th scope="col">Type</th>
+                          </tr>
+                        </thead>
+                        {% for item in group_list['All'] %}
+                        <tr>
+                          <td>{{ item.specie }}</td>
+                          <td><a href="{{ url_for('uniqueQuery', queryname=item.group, settings='GROUP') }}" target="_blank">{{ item.group }}</td>
+                          <td><a href="{{ url_for('uniqueQuery', queryname=item.gene, settings='GENE') }}" target="_blank">{{ item.gene }}</td>
+                          <td>{{ item.uniprotid }}</td>
+                          <td>{{ item.protein_name }}</td>
+                          <td><a href="{{ url_for('uniqueQuery', queryname=item.pdb, settings='PDB') }}" target="_blank">{{ item.pdb }}</td>
+                          <td><a href="{{ url_for('uniqueQuery', queryname=item.spatial, settings='SPATIAL') }}" target="_blank">{{ item.spatial }}</td>
+                            {% if item.dihedral=='None' %}
+                          <td><a href="{{ url_for('uniqueQuery', queryname=(item.spatial+item.dihedral), settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
+                            {% else %}
+                          <td><a href="{{ url_for('uniqueQuery', queryname=item.dihedral, settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
+                            {% endif %}
+
+                          <td>{{ item.chelix }}</td>
+                          {% if ',' in item.ligand %}
+                          <td>
+                            {% set subitems=item.ligand.split(',') %}
+                            {% for ligname in subitems %}
+                            {% set sub_subitems=ligname.split(':') %}
+                            <a href="{{ url_for('uniqueQuery', queryname=sub_subitems[0], settings='LIGAND') }}" target="_blank">{{ sub_subitems[0] }}
+                            {% endfor %}
+                          </td>
+                          {% else %}
+                          {% set ligname=item.ligand.split(':') %}
+                          <td><a href="{{ url_for('uniqueQuery', queryname=ligname[0], settings='LIGAND') }}" target="_blank">{{ ligname[0] }}</td>
+                          {% endif %}
+
+                          {% if ',' in item.ligand_type %}
+                          <td>
+                          {% set subitems=item.ligand_type.split(',') %}
+                          {% for ligtypes in subitems %}
+                          <a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=ligtypes) }}" target="_blank">{{ ligtypes }}
+                          {% endfor %}
+                        </td>
+                        {% else %}
+                          <td><a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=item.ligand_type) }}" target="_blank">{{ item.ligand_type }}</td>
+                        {% endif %}
+                        </tr>
+                        {% endfor %}
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="Nonhuman" role="tabpanel"  aria-labelledby="Nonhuman-tab">
+
+                  <div class="card  border-light bg-light mb-3 very-dark-text">
+                    <div class="card-header light-pink-background"><h4>Non-Human protein kinases in complex with {{ ligand_type }} ligands</h4></div>
+                      <div class="card-body">
+                        <h6 class="card-text">Total number of genes: {{ geneCount_nonhuman }}</h6>
+                        <h6 class="card-text">Total number of chains: {{ total_count['Nonhuman'] }}</h6>
+                        <div class="table-responsive">
+                        <table class="table very-dark-text sortable">
+                        <thead class="">
+                          <tr>
+                            <th scope="col" style='text-align:center;'>Spatial Label</th>
+                            <th scope="col" style='text-align:center;'>Dihedral Label</th>
+                            <th scope="col" style='text-align:right;'>AGC</th>
+                            <th scope="col" style='text-align:right;'>CAMK</th>
+                            <th scope="col" style='text-align:right;'>CK1</th>
+                            <th scope="col" style='text-align:right;'>CMGC</th>
+                            <th scope="col" style='text-align:right;'>NEK</th>
+                            <th scope="col" style='text-align:right;'>RGC</th>
+                            <th scope="col" style='text-align:right;'>STE</th>
+                            <th scope="col" style='text-align:right;'>TKL</th>
+                            <th scope="col" style='text-align:right;'>TYR</th>
+                            <th scope="col" style='text-align:right;'>OTHER</th>
+                            <th scope="col" style='text-align:right;'>Total</th>
+                          </tr>
+                        </thead>
+                        <tr style="line-height:10px;">
+
+                        {% for dihedral in ('BLAminus','BLAplus','ABAminus','BLBminus','BLBplus','BLBtrans','None') %}
+                        <td style='text-align:center;line-height:10px;'>DFGin</td>
+                          <td style='text-align:center;line-height:10px;'>{{ dihedral }}</td>
+                          {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                          <td style='text-align:right;line-height:10px;'>{{ strCount_nonhuman[group,'DFGin',dihedral] }}</td>
+                          {% endfor %}
+                          <td style='text-align:right;line-height:10px;'>{{ totalDihedral_nonhuman['DFGin',dihedral] }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr style="line-height:10px;">
+
+                        {% for dihedral in ('BABtrans','None') %}
+                        <td style='text-align:center;line-height:10px;'>DFGinter</td>
+                          <td style='text-align:center;line-height:10px;'>{{ dihedral }}</td>
+                          {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                          <td style='text-align:right;line-height:10px;'>{{ strCount_nonhuman[group,'DFGinter',dihedral] }}</td>
+                          {% endfor %}
+                          <td style='text-align:right;line-height:10px;'>{{ totalDihedral_nonhuman['DFGinter',dihedral] }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr style="line-height:10px;">
+
+                        {% for dihedral in ('BBAminus','None') %}
+                        <td style='text-align:center;line-height:10px;'>DFGout</td>
+                          <td style='text-align:center;line-height:10px;'>{{ dihedral }}</td>
+                          {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                          <td style='text-align:right;line-height:10px;'>{{ strCount_nonhuman[group,'DFGout',dihedral] }}</td>
+                          {% endfor %}
+                          <td style='text-align:right;line-height:10px;'>{{ totalDihedral_nonhuman['DFGout',dihedral] }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr style="line-height:10px;">
+                          <td style='text-align:center;line-height:10px;'>None</td>
+                          <td style='text-align:center;line-height:10px;'>None</td>
+                          {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                            <td style='text-align:right;line-height:10px;'>{{ strCount_nonhuman[group,'None','None'] }}</td>
+                          {% endfor %}
+                          <td style='text-align:right;line-height:10px;'>{{ totalDihedral_nonhuman['None','None'] }}</td>
+                        </tr>
+                        <tr style="line-height:10px;">
+                          <td style='text-align:center;line-height:10px;'>Total</td>
+                          <td style='text-align:center;line-height:10px;'>-</td>
+                          {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+                          <td style='text-align:right;line-height:10px;'>{{ totalGroup_nonhuman[group] }}</td>
+                          {% endfor %}
+
+                          <td style='text-align:right;line-height:10px;'>{{ total_count['Nonhuman'] }}</td>
+                        </tr>
+                      </table>
+                    </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0;">
+                      <hr class="my-4" style="padding:0;">
+                      <a role="button" class="btn button-primary light-text" style="margin:5px;" href="{{ url_for('static', filename=csvFile['Nonhuman']) }}">Download as csv</a>
+                      <br><br>
+
+                      <div class="table-responsive">
+                        <table class="table table-striped table-hover sortable very-dark-text" style="word-wrap: break-word;">
+                          <thead class=thead-light>
+                            <tr>
+                              <th scope="col"  style="">Organism</th>
+                              <th scope="col"  style="">Group</th>
+                              <th scope="col"  style="">Gene</th>
+                              <th scope="col"  style="">UniprotID</th>
+                              <th scope="col"  style="">Protein</th>
+                              <th scope="col"  style="">PDB</th>
+                              <th scope="col"  style="">Spatial Label</th>
+                              <th scope="col"  style="">Dihedral Label</th>
+                              <th scope="col">C-helix</th>
+                              <th scope="col"  style="">Ligand</th>
+                              <th scope="col"  style="">Type</th>
+                            </tr>
+                          </thead>
+                          {% for item in group_list['Nonhuman'] %}
+
+                          <tr>
+                            <td>{{ item.specie }}</td>
+                            <td><a href="{{ url_for('uniqueQuery', queryname=item.group, settings='GROUP') }}" target="_blank">{{ item.group }}</td>
+                            <td><a href="{{ url_for('uniqueQuery', queryname=item.gene, settings='GENE') }}" target="_blank">{{ item.gene }}</td>
+                            <td>{{ item.uniprotid }}</td>
+                            <td>{{ item.protein_name }}</td>
+                            <td><a href="{{ url_for('uniqueQuery', queryname=item.pdb, settings='PDB') }}" target="_blank">{{ item.pdb }}</td>
+                            <td><a href="{{ url_for('uniqueQuery', queryname=item.spatial, settings='SPATIAL') }}" target="_blank">{{ item.spatial }}</td>
+                              {% if item.dihedral=='None' %}
+                            <td><a href="{{ url_for('uniqueQuery', queryname=(item.spatial+item.dihedral), settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
+                              {% else %}
+                            <td><a href="{{ url_for('uniqueQuery', queryname=item.dihedral, settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
+                              {% endif %}
+                            <td>{{ item.chelix }}</td>
+
+                            {% if ',' in item.ligand %}
+                            <td>
+                              {% set subitems=item.ligand.split(',') %}
+                              {% for ligname in subitems %}
+                              {% set sub_subitems=ligname.split(':') %}
+                              <a href="{{ url_for('uniqueQuery', queryname=sub_subitems[0], settings='LIGAND') }}" target="_blank">{{ sub_subitems[0] }}
+                              {% endfor %}
+                            </td>
+                            {% else %}
+                            {% set ligname=item.ligand.split(':') %}
+                            <td><a href="{{ url_for('uniqueQuery', queryname=ligname[0], settings='LIGAND') }}" target="_blank">{{ ligname[0] }}</td>
+                            {% endif %}
+                            {% if ',' in item.ligand_type %}
+                            <td>
+                            {% set subitems=item.ligand_type.split(',') %}
+                            {% for ligtypes in subitems %}
+                            <a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=ligtypes) }}" target="_blank">{{ ligtypes }}
+                            {% endfor %}
+                          </td>
+                          {% else %}
+                            <td><a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=item.ligand_type) }}" target="_blank">{{ item.ligand_type }}</td>
+                          {% endif %}
+                          </tr>
+                          {% endfor %}
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  {% extends "base.html" %}
+  <head>
+    <meta charset="utf-8">
+    <title>Multiple Sequence Alignment</title>
+  </head>
+  {% block content %}
+  <body>
+    <div class="container-fluid very-dark-text">
+      <div class="row">
+        <div class="col-lg-5 col-md-11 col-sm-11 col-xs-11">
+          <div class="card">
+            <div class="card-header light-pink-background">
+              <h5>Multiple Sequence Alignment of Protein Kinase Domains</h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text" style="text-align:justify;">We provide a structure-based multiple sequence alignment of 497 human protein kinase domains.
+                The alignment is parsimonious and arranged in 17 blocks of conserved elements like C-helix, HRD and DFG motifs etc in upper case letters.
+                These are separated by left-justified unaligned sequence containing insertions of different lengths in lower case letters.The list of conserved
+              blocks and corresponding structural elements is displayed in the table and the figure.</p>
+              <p class="card-text" style="text-align:justify;">The alignment could be accessed in the following ways:</p>
+
+              <div class="btn-group" style="margin:5px;">
+                <a role="button" class="btn button-primary" target="_blank" href="{{ url_for('biojs') }}">Open in browser</a>
+              </div>
+              <div class="btn-group" style="margin:5px;">
+                <a role="button" class="btn  button-primary" target="_blank" href="{{ url_for('static',filename='downloads/alignment-files/Human-PK-alignment.jvp') }}">Download in Jalview</a>
+              </div>
+              <div class="btn-group" style="margin:5px;">
+                <button type="button" class="btn button-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Download text file
+                </button>
+                <div class="dropdown-menu">
+                  <h6 class="dropdown-header very-dark-text">File format</h6>
+                  <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename='downloads/alignment-files/Human-PK-alignment.aln') }}">Clustal</a>
+                  <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename='downloads/alignment-files/Human-PK-alignment.fasta') }}">Fasta</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer text-muted">
+              <p>Structurally-Validated Multiple Sequence Alignment of 497 Human Protein Kinase Domains. Vivek Modi and Roland L. Dunbrack, <em>Sci Rep</em> 2019, <strong>9, 19790</strong>.<br>
+              <a href="https://www.nature.com/articles/s41598-019-56499-4" target="_blank">Link to article</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-5 col-sm-5 col-xs-5">
+          <table class="table table-striped table-hover very-dark-text">
+            <thead class=thead-light>
+              <tr>
+                <th scope="col">Aligned region</th>
+                <th scope="col">Aurora A residue</th>
+                <th scope="col">Column number</th>
+              </tr>
+            </thead>
+            <tr style="line-height:10px;">
+              <td>B1N</td>
+              <td>133-136</td>
+              <td>1-4</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>B1C</td>
+              <td>137-143</td>
+              <td>21-27</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>B2</td>
+              <td>144-152</td>
+              <td>44-52</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>B3</td>
+              <td>155-165</td>
+              <td>93-103</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>HC</td>
+              <td>175-188</td>
+              <td>140-153</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>B4</td>
+              <td>189-204</td>
+              <td>180-195</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>B5</td>
+              <td>205-215</td>
+              <td>420-430</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>HD</td>
+              <td>216-224</td>
+              <td>445-453</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>HE</td>
+              <td>227-250</td>
+              <td>939-962</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>CL</td>
+              <td>251-266</td>
+              <td>1008-1028</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>ALN</td>
+              <td>267-286</td>
+              <td>1331-1351</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>ALC</td>
+              <td>287-303</td>
+              <td>1904-1920</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>HF</td>
+              <td>304-325</td>
+              <td>1953-1975</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>FL</td>
+              <td>326-331</td>
+              <td>1993-1998</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>HG</td>
+              <td>332-344</td>
+              <td>2049-2061</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>HH</td>
+              <td>354-373</td>
+              <td>2175-2194</td>
+            </tr>
+            <tr style="line-height:10px;">
+              <td>HI</td>
+              <td>374-383</td>
+              <td>2209-2218</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-lg-3 col-md-5 col-sm-5 col-xs-5">
+          <img src="static/img/Aurka_structure.jpg" class="img-thumbnail img-fluid">
+          <p>Aurora A kinase (3E5A)</p>
+        </div>
+
+        </div>
+
+      </div>
+
+  </body>
+  {% endblock %}
+</html>

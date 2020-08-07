@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Webserver</title>
+  </head>
+
+  <body>
+      {% extends "base.html" %}
+      {% block content %}
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+        <div class="container">
+
+
+        <div class="card very-dark-text">
+          <div class="card-header light-pink-background">
+              <h5>Identify kinase conformation</h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">Please upload the structure file to identify the conformation of your protein kinase
+          <form action='' enctype=multipart/form-data method="POST">
+            <div class="form-group">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="exampleFormControlFile1" name="userpdb.pdb">
+                <label for="text" class="custom-file-label">.cif or .pdb</label>
+              </div>
+              <br><br>
+              <button type="submit" name="Submit" class='btn button-primary'>Upload file</button>
+            </div>
+          </form>
+        </p>
+
+        </div>
+
+      </div>
+</div>
+    </div>
+  </div>
+{% endblock %}
+  </body>
+
+</html>

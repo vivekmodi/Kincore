@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Search</title>
+  </head>
+  <body>
+    {% extends "base.html" %}
+    {% block content %}
+    <br>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+          <h3 class="very-dark-text">Search database by a unique id</h3>
+          <form action="/formSearch" method="POST">
+          <div class="form-group very-dark-text">
+            <label for="inputString">Enter PDB, HGNC gene, Uniprot or ligand id</label><a href="{{ url_for('geneListHelp') }}" target="_blank" style="color:#157ce8;">
+            <i class="material-icons">help</i></a>
+            <input type="text" class="form-control" name="inputString" placeholder="E.g. 1GAG, PRKAA1, INSR_HUMAN or STU">
+          </div>
+          <button type="submit" class="btn button-primary" style="color:white;">Search</button>
+          </form>
+          <br>
+          <hr class="my-4 brand-background">
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+          <h3 class="very-dark-text">Search by kinase group, conformation and ligand type</h3>
+          <form action="/formSearchMultiple" method="POST">
+            <div class="form-group very-dark-text">
+              <label for="groupSelect">Select Kinase Group</label>
+              <select class="form-control" name="groupSelect">
+                <option value="All">All</option>
+                <optgroup label="──────────">
+                  <option value="AGC">AGC</option>
+                  <option value="CAMK">CAMK</option>
+                  <option value="CK1">CK1</option>
+                  <option value="CMGC">CMGC</option>
+                  <option value="NEK">NEK</option>
+                  <option value="RGC">RGC</option>
+                  <option value="STE">STE</option>
+                  <option value="TKL">TKL</option>
+                  <option value="TYR">TYR</option>
+                  <option value="OTHER">OTHER</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="form-group very-dark-text">
+              <label for="labelSelect">Select Conformational Label</label>
+              <select class="form-control" name="labelSelect">
+                <option value="All">All</option>
+                <option disabled>──────────</option>
+                <optgroup label="DFGin">
+                  <option value="DFGin">All</option>
+                  <option value="BLAminus">BLAminus</option>
+                  <option value="BLAplus">BLAplus</option>
+                  <option value="ABAminus">ABAminus</option>
+                  <option value="BLBminus">BLBminus</option>
+                  <option value="BLBplus">BLBplus</option>
+                  <option value="BLBtrans">BLBtrans</option>
+                </optgroup>
+                <option disabled>──────────</option>
+
+                <optgroup label="DFGinter">
+                  <option value="DFGinter">All</option>
+                  <option value="BABtrans">BABtrans</option>
+                </optgroup>
+                <option disabled>──────────</option>
+
+                <optgroup label="DFGout">
+                  <option value="DFGout">All</option>
+                  <option value="BBAminus">BBAminus</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="form-group very-dark-text">
+              <label for="ligTypeSelect">Select Ligand Type</label>
+              <select class="form-control" name="ligTypeSelect">
+                <option value="All">All</option>
+                <optgroup label="──────────">
+                  <option value="Type1">Type1</option>
+                  <option value="Type1.5">Type1.5</option>
+                  <option value="Type2">Type2</option>
+                  <option value="Type3">Type3</option>
+                  <option value="Allosteric">Allosteric</option>
+                  <option value="NO_LIGAND">No ligand</option>
+                  </optgroup>
+              </select>
+            </div>
+
+            <button type="submit" class="btn button-primary light-text">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+  </body>
+</html>

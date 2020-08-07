@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>About</title>
+  </head>
+  {% extends "base.html" %}
+  {% block content %}
+  <body>
+    <div class="container-fluid very-dark-text">
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="very-dark-text">
+            <p class="lead">Developed by Vivek Modi and Roland Dunbrack</p>
+            <hr class="my-3 brand-background">
+            <p>The resource is created using different technologies including:</p>
+            <ul>
+              <li><a href="https://www.python.org/" target="_blank">Python
+                <img src="{{ url_for('static',filename="img/python-logo.png") }}" width=110px height=36px></a></li>
+            </ul>
+            <ul>
+              <li><a href="https://palletsprojects.com/p/flask/" target="_blank">Flask
+                <img src="{{ url_for('static',filename="img/Flask_logo.svg.png") }}" width=72px height=36px></a></li>
+            </ul>
+            <ul>
+              <li><a href="https://flask.palletsprojects.com/en/1.1.x/patterns/sqlite3/" target="_blank">SQLite
+                <img src="{{ url_for('static',filename="img/SQLite370.svg.png") }}" width=72px height=36px></a></li>
+            </ul>
+            <ul>
+              <li><a href="https://getbootstrap.com/" target="_blank">Bootstrap
+                <img src="{{ url_for('static',filename="img/Bootstrap_logo.svg.png") }}" width=36px height=36px></a></li>
+            </ul>
+            <ul>
+              <li><a href="https://biopython.org/" target="_blank">Biopython
+                <img src="{{ url_for('static',filename="img/biopython_logo_white.png") }}" width=64px height=56px></a></li>
+            </ul>
+            <ul>
+              <li><a href="https://pymol.org/2/" target="_blank">Pymol
+                <img src="{{ url_for('static',filename="img/PyMOL_logo.svg.png") }}" width=36px height=36px></a></li>
+            </ul>
+            <ul>
+              <li><a href="http://nglviewer.org/ngl/api/" target="_blank">NGL Viewer</a></li>
+            </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+  </body>
+
+</html>

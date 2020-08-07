@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Download</title>
+  </head>
+  <body>
+    {% extends "base.html" %}
+    {% block content %}
+    <div class="container-fluid very-dark-text">
+      <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+          <h5>Download structure files renumbered by:</h5>
+          <ul class="nav nav-tabs light-pink-background" id="myTab">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" role="tab" id="Uniprot-tab" href="#Uniprot" aria-controls="Uniprot" aria-selected="true">Uniprot</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" id="PDB-tab" href="#PDB" role="tab" aria-controls="PDB" aria-selected="false">PDB</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" id="Alignment-tab" href="#Alignment" role="tab" aria-controls="Alignment" aria-selected="false">Alignment</a>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="Uniprot" role="tabpanel"  aria-labelledby="Uniprot">
+              <div class="container-fluid" style="padding-top:25px;">
+                <h5><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_Allspatials_Alldihedrals_All_uniNum.zip') }}">All.zip</a></h5><br>
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
+                    <h5>Grouped by: Conformation label</h5>
+                    <table class="table table-striped table-hover table-bordered very-dark-text">
+                      <th>Spatial Label</th>
+                      <th>Dihedral Label</th>
+                      <tr>
+                        <td rowspan="7"><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_Alldihedrals_All_uniNum.zip') }}">DFGin_All</a></td>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLAminus_All_uniNum.zip') }}">BLAminus</a></td>
+                      </tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLAplus_All_uniNum.zip') }}">BLAplus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_ABAminus_All_uniNum.zip') }}">ABAminus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLBminus_All_uniNum.zip') }}">BLBminus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLBplus_All_uniNum.zip') }}">BLBplus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLBtrans_All_uniNum.zip') }}">BLBtrans</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_None_All_uniNum.zip') }}">DFGin-Noise</a></td></tr>
+                      <tr>
+                        <td rowspan="2"><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGinter_Alldihedrals_All_uniNum.zip') }}">DFGinter_All</a></td>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGinter_BABtrans_All_uniNum.zip') }}">BABtrans</a></td>
+                      </tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGinter_None_All_uniNum.zip') }}">DFGinter-Noise</a></td></tr>
+                      <tr>
+                        <td rowspan="2"><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGout_Alldihedrals_All_uniNum.zip') }}">DFGout_All</a></td>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGout_BBAminus_All_uniNum.zip') }}">BBAminus</a></td>
+                      </tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGout_None_All_uniNum.zip') }}">DFGout-Noise</a></td></tr>
+                    </table>
+                  </div>
+                  <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+                    <h5>Kinase group and gene</h5>
+                    <table class="table table-striped table-hover table-bordered very-dark-text">
+                      <th>Group</th>
+                      <th>Gene</th>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_AGC_Allspatials_Alldihedrals_All_uniNum.zip') }}">AGC_All</a></td>
+                        <td style="text-align: justify;">{% for items in agcDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_AGC_{{ items }}_uniNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_CAMK_Allspatials_Alldihedrals_All_uniNum.zip') }}">CAMK_All</a></td>
+                        <td style="text-align: justify;">{% for items in camkDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_CAMK_{{ items }}_uniNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_CK1_Allspatials_Alldihedrals_All_uniNum.zip') }}">CK1_All</a></td>
+                        <td style="text-align: justify;">{% for items in ck1Domains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_CK1_{{ items }}_uniNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_CMGC_Allspatials_Alldihedrals_All_uniNum.zip') }}">CMGC_All</a></td>
+                        <td style="text-align: justify;">{% for items in cmgcDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_CMGC_{{ items }}_uniNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_NEK_Allspatials_Alldihedrals_All_uniNum.zip') }}">NEK_All</a></td>
+                        <td style="text-align: justify;">{% for items in nekDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_NEK_{{ items }}_uniNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_STE_Allspatials_Alldihedrals_All_uniNum.zip') }}">STE_All</a></td>
+                        <td style="text-align: justify;">{% for items in steDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_STE_{{ items }}_uniNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_TKL_Allspatials_Alldihedrals_All_uniNum.zip') }}">TKL_All</a></td>
+                        <td style="text-align: justify;">{% for items in tklDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_TKL_{{ items }}_uniNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_TYR_Allspatials_Alldihedrals_All_uniNum.zip') }}">TYR_All</a></td>
+                        <td style="text-align: justify;">{% for items in tyrDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_TYR_{{ items }}_uniNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_OTHER_Allspatials_Alldihedrals_All_uniNum.zip') }}">OTHER_All</a></td>
+                        <td style="text-align: justify;">{% for items in otherDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_OTHER_{{ items }}_uniNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="PDB">
+              <div class="container-fluid" style="padding-top:25px;">
+                <h5><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_Allspatials_Alldihedrals_All_pdbNum.zip') }}">All.zip</a></h5><br>
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
+                    <h5>Grouped by: Conformation label</h5>
+                    <table class="table table-striped table-hover table-bordered very-dark-text">
+                      <th>Spatial Label</th>
+                      <th>Dihedral Label</th>
+                      <tr>
+                        <td rowspan="7"><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_Alldihedrals_All_pdbNum.zip') }}">DFGin_All</a></td>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLAminus_All_pdbNum.zip') }}">BLAminus</a></td>
+                      </tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLAplus_All_pdbNum.zip') }}">BLAplus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_ABAminus_All_pdbNum.zip') }}">ABAminus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLBminus_All_pdbNum.zip') }}">BLBminus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLBplus_All_pdbNum.zip') }}">BLBplus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLBtrans_All_pdbNum.zip') }}">BLBtrans</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_None_All_pdbNum.zip') }}">DFGin-Noise</a></td></tr>
+                      <tr>
+                        <td rowspan="2"><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGinter_Alldihedrals_All_pdbNum.zip') }}">DFGinter_All</a></td>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGinter_BABtrans_All_pdbNum.zip') }}">BABtrans</a></td>
+                      </tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGinter_None_All_pdbNum.zip') }}">DFGinter-Noise</a></td></tr>
+                      <tr>
+                        <td rowspan="2"><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGout_Alldihedrals_All_pdbNum.zip') }}">DFGout_All</a></td>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGout_BBAminus_All_pdbNum.zip') }}">BBAminus</a></td>
+                      </tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGout_None_All_pdbNum.zip') }}">DFGout-Noise</a></td></tr>
+                    </table>
+                  </div>
+                  <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+                    <h5>Kinase group and gene</h5>
+                    <table class="table table-striped table-hover table-bordered very-dark-text">
+                      <th>Group</th>
+                      <th>Gene</th>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_AGC_Allspatials_Alldihedrals_All_pdbNum.zip') }}">AGC_All</a></td>
+                        <td style="text-align: justify;">{% for items in agcDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_AGC_{{ items }}_pdbNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_CAMK_Allspatials_Alldihedrals_All_pdbNum.zip') }}">CAMK_All</a></td>
+                        <td style="text-align: justify;">{% for items in camkDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_CAMK_{{ items }}_pdbNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_CK1_Allspatials_Alldihedrals_All_pdbNum.zip') }}">CK1_All</a></td>
+                        <td style="text-align: justify;">{% for items in ck1Domains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_CK1_{{ items }}_pdbNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_CMGC_Allspatials_Alldihedrals_All_pdbNum.zip') }}">CMGC_All</a></td>
+                        <td style="text-align: justify;">{% for items in cmgcDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_CMGC_{{ items }}_pdbNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_NEK_Allspatials_Alldihedrals_All_pdbNum.zip') }}">NEK_All</a></td>
+                        <td style="text-align: justify;">{% for items in nekDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_NEK_{{ items }}_pdbNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_STE_Allspatials_Alldihedrals_All_pdbNum.zip') }}">STE_All</a></td>
+                        <td style="text-align: justify;">{% for items in steDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_STE_{{ items }}_pdbNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_TKL_Allspatials_Alldihedrals_All_pdbNum.zip') }}">TKL_All</a></td>
+                        <td style="text-align: justify;">{% for items in tklDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_TKL_{{ items }}_pdbNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_TYR_Allspatials_Alldihedrals_All_pdbNum.zip') }}">TYR_All</a></td>
+                        <td style="text-align: justify;">{% for items in tyrDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_TYR_{{ items }}_pdbNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_OTHER_Allspatials_Alldihedrals_All_pdbNum.zip') }}">OTHER_All</a></td>
+                        <td style="text-align: justify;">{% for items in otherDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_OTHER_{{ items }}_pdbNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="Alignment">
+              <div class="container-fluid" style="padding-top:25px;">
+                <h5><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_Allspatials_Alldihedrals_All_alignNum.zip') }}">All.zip</a></h5><br>
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
+                    <h5>Grouped by: Conformation label</h5>
+                    <table class="table table-striped table-hover table-bordered very-dark-text">
+                      <th>Spatial Label</th>
+                      <th>Dihedral Label</th>
+                      <tr>
+                        <td rowspan="7"><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_Alldihedrals_All_alignNum.zip') }}">DFGin_All</a></td>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLAminus_All_alignNum.zip') }}">BLAminus</a></td>
+                      </tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLAplus_All_alignNum.zip') }}">BLAplus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_ABAminus_All_alignNum.zip') }}">ABAminus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLBminus_All_alignNum.zip') }}">BLBminus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLBplus_All_alignNum.zip') }}">BLBplus</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLBtrans_All_alignNum.zip') }}">BLBtrans</a></td></tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGin_BLBtrans_All_alignNum.zip') }}">DFGin-Noise</a></td></tr>
+                      <tr>
+                        <td rowspan="2"><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGinter_None_All_alignNum.zip') }}">DFGinter_All</a></td>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGinter_BABtrans_All_alignNum.zip') }}">BABtrans</a></td>
+                      </tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGinter_None_All_alignNum.zip') }}">DFGinter-Noise</a></td></tr>
+                      <tr>
+                        <td rowspan="2"><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGout_Alldihedrals_All_alignNum.zip') }}">DFGout_All</a></td>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGout_BBAminus_All_alignNum.zip') }}">BBAminus</a></td>
+                      </tr>
+                      <tr><td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_Allgroups_DFGout_None_All_alignNum.zip') }}">DFGout-Noise</a></td></tr>
+                    </table>
+                  </div>
+                  <div class="col-lg-9 col-md-8 col-sm-8 col-xs-8">
+                    <h5>Kinase group and gene</h5>
+                    <table class="table table-striped table-hover table-bordered very-dark-text">
+                      <th>Group</th>
+                      <th>Gene</th>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_AGC_Allspatials_Alldihedrals_All_alignNum.zip') }}">AGC_All</a></td>
+                        <td style="text-align: justify;">{% for items in agcDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_AGC_{{ items }}_alignNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_CAMK_Allspatials_Alldihedrals_All_alignNum.zip') }}">CAMK_All</a></td>
+                        <td style="text-align: justify;">{% for items in camkDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_CAMK_{{ items }}_alignNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_CK1_Allspatials_Alldihedrals_All_alignNum.zip') }}">CK1_All</a></td>
+                        <td style="text-align: justify;">{% for items in ck1Domains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_CK1_{{ items }}_alignNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_CMGC_Allspatials_Alldihedrals_All_alignNum.zip') }}">CMGC_All</a></td>
+                        <td style="text-align: justify;">{% for items in cmgcDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_CMGC_{{ items }}_alignNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_NEK_Allspatials_Alldihedrals_All_alignNum.zip') }}">NEK_All</a></td>
+                        <td style="text-align: justify;">{% for items in nekDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_NEK_{{ items }}_alignNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_STE_Allspatials_Alldihedrals_All_alignNum.zip') }}">STE_All</a></td>
+                        <td style="text-align: justify;">{% for items in steDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_STE_{{ items }}_alignNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_TKL_Allspatials_Alldihedrals_All_alignNum.zip') }}">TKL_All</a></td>
+                        <td style="text-align: justify;">{% for items in tklDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_TKL_{{ items }}_alignNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_TYR_Allspatials_Alldihedrals_All_alignNum.zip') }}">TYR_All</a></td>
+                        <td style="text-align: justify;">{% for items in tyrDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_TYR_{{ items }}_alignNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="{{ url_for('static',filename='downloads/coordinateFiles/Human_OTHER_Allspatials_Alldihedrals_All_alignNum.zip') }}">OTHER_All</a></td>
+                        <td style="text-align: justify;">{% for items in otherDomains %}
+                          <a href="{{ url_for('static',filename='downloads/coordinateFiles/') }}Human_OTHER_{{ items }}_alignNum.zip">{{ items }}</a>&nbsp;{% endfor %}
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+          <hr class="my-4">
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid very-dark-text">
+      <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+          <h5>Download Pymol session for each:</h5>
+          <ul class="nav nav-tabs light-pink-background" id="PymolTab">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" role="tab" id="Gene-tab" href="#Gene" aria-controls="Gene" aria-selected="true">Group and Gene</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" id="Ligand-tab" href="#Ligand" role="tab" aria-controls="Ligand" aria-selected="false">Ligand</a>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="PymolTabContent">
+            <div class="tab-pane fade show active" id="Gene" role="tabpanel"  aria-labelledby="Gene">
+              <div class="container-fluid" style="padding-top:25px;">
+                <table class="table table-striped table-hover table-bordered very-dark-text">
+                  <th>Group</th>
+                  <th>Gene</th>
+                  <tr>
+                    <td><a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_AGC_Allspatials_Alldihedrals_All.pse.zip">AGC</a></td>
+                    <td style="text-align: justify;">{% for items in agcDomains %}
+                      <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_AGC_{{ items }}.pse.zip">{{ items }}</a>&nbsp;{% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_CAMK_Allspatials_Alldihedrals_All.pse.zip">CAMK</a></td>
+                    <td style="text-align: justify;">{% for items in camkDomains %}
+                      <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_CAMK_{{ items }}.pse.zip">{{ items }}</a>&nbsp;{% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_CK1_Allspatials_Alldihedrals_All.pse.zip">CK1</a></td>
+                    <td style="text-align: justify;">{% for items in ck1Domains %}
+                      <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_CK1_{{ items }}.pse.zip">{{ items }}</a>&nbsp;{% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_CMGC_Allspatials_Alldihedrals_All.pse.zip">CMGC</a></td>
+                    <td style="text-align: justify;">{% for items in cmgcDomains %}
+                      <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_CMGC_{{ items }}.pse.zip">{{ items }}</a>&nbsp;{% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_NEK_Allspatials_Alldihedrals_All.pse.zip">NEK</a></td>
+                    <td style="text-align: justify;">{% for items in nekDomains %}
+                      <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_NEK_{{ items }}.pse.zip">{{ items }}</a>&nbsp;{% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_STE_Allspatials_Alldihedrals_All.pse.zip">STE</a></td>
+                    <td style="text-align: justify;">{% for items in steDomains %}
+                      <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_STE_{{ items }}pse.zip">{{ items }}</a>&nbsp;{% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_TKL_Allspatials_Alldihedrals_All.pse.zip">TKL</a></td>
+                    <td style="text-align: justify;">{% for items in tklDomains %}
+                      <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_TKL_{{ items }}.pse.zip">{{ items }}</a>&nbsp;{% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_TYR_Allspatials_Alldihedrals_All.pse.zip">TYR</a></td>
+                    <td style="text-align: justify;">{% for items in tyrDomains %}
+                      <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_TYR_{{ items }}.pse.zip">{{ items }}</a>&nbsp;{% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_OTHER_Allspatials_Alldihedrals_All.pse.zip">OTHER</a></td>
+                    <td style="text-align: justify;">{% for items in otherDomains %}
+                      <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_OTHER_{{ items }}.pse.zip">{{ items }}</a>&nbsp;{% endfor %}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="Ligand" role="tabpanel"  aria-labelledby="Ligand">
+              <div class="container-fluid" style="padding-top:25px;">
+                <table class="table table-striped table-hover table-bordered very-dark-text" style="text-align:left;">
+                  <th></th>
+                  <th>Identifier</th>
+                  {% for i in ('0','1','2','3','4','5','6','7','8','9') %}
+                  <tr>
+                    <td>{{i}}</td>
+                    <td style="text-align:justify;">
+                      {% for items in ligandList %}
+                      {% if items[0]==i %}
+                       <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_{{ items }}.pse.zip">{{ items }}</a>&nbsp;
+                      {% endif %}
+                      {% endfor %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+                  {% for i in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z') %}
+                  <tr>
+                    <td>{{i}}</td>
+                    <td style="text-align:justify;">
+                      {% for items in ligandList %}
+                      {% if items[0]==i %}
+                      <a href="{{ url_for('static',filename='downloads/pymolSessions/') }}Human_{{ items }}.pse.zip">{{ items }}</a>&nbsp;
+                      {% endif %}
+                      {% endfor %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endblock %}
+
+  </body>
+</html>

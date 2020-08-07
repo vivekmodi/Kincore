@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>All-dihedral</title>
+  </head>
+  <body>
+    {% extends 'base.html' %}
+    {% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" role="tab" id="Human-tab" href="#Human" aria-controls="Human" aria-selected="true">Human</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" id="All-tab" href="#All" role="tab" aria-controls="All" aria-selected="false">All</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" id="Nonhuman-tab" href="#Nonhuman" role="tab" aria-controls="Nonhuman" aria-selected="false">Non-Human</a>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane active" id="Human" role="tabpanel"  aria-labelledby="Human-tab">
+              <div class="row">
+                <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+                  <div class="card  border-light bg-light mb-3 very-dark-text">
+                    <div class="card-header light-pink-background"><h4>Protein kinases with {{ label }}</a> conformation in complex with {{ ligand_type }} ligands</h4></div>
+                      <div class="card-body">
+                        <h6 class="card-text">Total number of genes: {{ geneCount_human }}</h6>
+                        <h6 class="card-text">Total number of chains: {{ total_count['Human'] }}</h6>
+                        <div class="table-responsive">
+                        <table class="table dark-text">
+                          <thead>
+                            <tr>
+                              <th scope="col" style='text-align:left;'></th>
+                              <th scope="col" style='text-align:right;'>AGC</th>
+                              <th scope="col" style='text-align:right;'>CAMK</th>
+                              <th scope="col" style='text-align:right;'>CK1</th>
+                              <th scope="col" style='text-align:right;'>CMGC</th>
+                              <th scope="col" style='text-align:right;'>NEK</th>
+                              <th scope="col" style='text-align:right;'>RGC</th>
+                              <th scope="col" style='text-align:right;'>STE</th>
+                              <th scope="col" style='text-align:right;'>TKL</th>
+                              <th scope="col" style='text-align:right;'>TYR</th>
+                              <th scope="col" style='text-align:right;'>OTHER</th>
+                              <th scope="col" style='text-align:right;'>Representative</th>
+                            </tr>
+                          </thead>
+                          <tr style="line-height:10px;">
+                          <td style='text-align:center;'>{{ label }}</td>
+                          {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+
+                          <td style='text-align:right;'>{{ strCount_human[group,spatial,label] }}</td>
+                          {% endfor %}
+                          <td style='text-align:center;color:{{ clusterColor[label] }};font-weight:bold;'>{{ reprStr['Human','All',label] }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                      </div>
+                    </div>
+
+                    <div class="btn-group" style="margin:5px;">
+                      <button type="button" class="btn button-primary dropdown-toggle light-text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Download in Pymol
+                      </button>
+                      <div class="dropdown-menu">
+                        <h6 class="dropdown-header very-dark-text">Representatives from each kinase</h6>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSessionRe['Human']) }}">Pymol session(ver 2.3)</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScriptRe['Human']) }}">Pymol script</a>
+                        <h6 class="dropdown-header very-dark-text">All chains</h6>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSession['Human']) }}">Pymol session(ver 2.3)</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['Human']) }}">Pymol script</a>
+                      </div>
+                    </div>
+
+
+                    <div class="btn-group" style="margin:5px;margin-left:40px;">
+                      <button type="button" class="btn button-primary dropdown-toggle light-text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Download coordinates
+                      </button>
+                      <div class="dropdown-menu">
+                        <h6 class="dropdown-header very-dark-text">All chains - renumbered by</h6>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles['Human']) }}_uniNum.zip">Uniprot</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles['Human']) }}_pdbNum.zip">PDB</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles['Human']) }}_alignNum.zip">Alignment</a>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                    <div id="viewport_human" style="width:100%; height:400px"></div>
+                  </div>
+
+                </div>
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 my-4" style="padding:0;margin:0;">
+
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+
+                  <a role="button" class="btn button-primary light-text" style="margin:5px;" href="{{ url_for('static', filename=csvFile['Human']) }}">Database table as csv</a>
+                  <br><br>
+
+
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover sortable very-dark-text" style="word-wrap: break-word;">
+                      <thead class=thead-light>
+                        <tr>
+                          <th scope="col">Group</th>
+                          <th scope="col">Gene</th>
+                          <th scope="col">UniprotID</th>
+                          <th scope="col">Protein name</th>
+                          <th scope="col">PDB</th>
+                          <th scope="col">Resolution</th>
+                          <th scope="col">C-helix</th>
+                          <th scope="col">Ligand</th>
+                          <th scope="col">Type</th>
+                        </tr>
+                      </thead>
+                      {% for item in group_list['Human'] %}
+
+                      <tr>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.group, settings='GROUP') }}" target="_blank">{{ item.group }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.gene, settings='GENE') }}" target="_blank">{{ item.gene }}</td>
+                        <td>{{ item.uniprotid }}</td>
+                        <td>{{ item.protein_name }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.pdb, settings='PDB') }}" target="_blank">{{ item.pdb }}</td>
+                        <td>{{ item.resolution }}</td>
+                        <td>{{ item.chelix }}</td>
+                        {% if ',' in item.ligand %}
+                        <td>
+                          {% set subitems=item.ligand.split(',') %}
+                          {% for ligname in subitems %}
+                          {% set sub_subitems=ligname.split(':') %}
+                          <a href="{{ url_for('uniqueQuery', queryname=sub_subitems[0], settings='LIGAND') }}" target="_blank">{{ sub_subitems[0] }}
+                          {% endfor %}
+                        </td>
+                        {% else %}
+                        {% set ligname=item.ligand.split(':') %}
+                        <td><a href="{{ url_for('uniqueQuery', queryname=ligname[0], settings='LIGAND') }}" target="_blank">{{ ligname[0] }}</td>
+                        {% endif %}
+                        {% if ',' in item.ligand_type %}
+                        <td>
+                        {% set subitems=item.ligand_type.split(',') %}
+                        {% for ligtypes in subitems %}
+                        <a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=ligtypes) }}" target="_blank">{{ ligtypes }}
+                        {% endfor %}
+                      </td>
+                      {% else %}
+                        <td><a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=item.ligand_type) }}" target="_blank">{{ item.ligand_type }}</td>
+                      {% endif %}
+
+                      </tr>
+
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane active" id="All" role="tabpanel"  aria-labelledby="All-tab">
+              <div class="row">
+                <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+                  <div class="card  border-light bg-light mb-3 very-dark-text">
+                    <div class="card-header light-pink-background"><h4>Protein kinases with {{ label }}</a> conformation in complex with {{ ligand_type }} ligands</h4></div>
+                      <div class="card-body">
+                        <h6 class="card-text">Total number of genes: {{ geneCount_all }}</h6>
+                        <h6 class="card-text">Total number of chains: {{ total_count['All'] }}</h6>
+                        <div class="table-responsive">
+                        <table class="table dark-text">
+                          <thead>
+                            <tr>
+                              <th scope="col" style='text-align:left;'></th>
+                              <th scope="col" style='text-align:right;'>AGC</th>
+                              <th scope="col" style='text-align:right;'>CAMK</th>
+                              <th scope="col" style='text-align:right;'>CK1</th>
+                              <th scope="col" style='text-align:right;'>CMGC</th>
+                              <th scope="col" style='text-align:right;'>NEK</th>
+                              <th scope="col" style='text-align:right;'>RGC</th>
+                              <th scope="col" style='text-align:right;'>STE</th>
+                              <th scope="col" style='text-align:right;'>TKL</th>
+                              <th scope="col" style='text-align:right;'>TYR</th>
+                              <th scope="col" style='text-align:right;'>OTHER</th>
+                              <th scope="col" style='text-align:right;'>Representative</th>
+                            </tr>
+                          </thead>
+                          <tr style="line-height:10px;">
+                          <td style='text-align:center;'>{{ label }}</td>
+                          {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+
+                          <td style='text-align:right;'>{{ strCount_all[group,spatial,label] }}</td>
+                          {% endfor %}
+                          <td style='text-align:center;color:{{ clusterColor[label] }};font-weight:bold;'>{{ reprStr['All','All',label] }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                      </div>
+                    </div>
+
+                    <div class="btn-group" style="margin:5px;">
+                      <button type="button" class="btn button-primary dropdown-toggle light-text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Download in Pymol
+                      </button>
+                      <div class="dropdown-menu">
+                        <h6 class="dropdown-header very-dark-text">Representatives from each kinase</h6>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSessionRe['All']) }}">Pymol session(ver 2.3)</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScriptRe['All']) }}">Pymol script</a>
+                        <h6 class="dropdown-header very-dark-text">All chains</h6>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSession['All']) }}">Pymol session(ver 2.3)</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['All']) }}">Pymol script</a>
+                      </div>
+                    </div>
+
+
+                    <div class="btn-group" style="margin:5px;margin-left:40px;">
+                      <button type="button" class="btn button-primary dropdown-toggle light-text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Download coordinates
+                      </button>
+                      <div class="dropdown-menu">
+                        <h6 class="dropdown-header very-dark-text">All chains - renumbered by</h6>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles['All']) }}_uniNum.zip">Uniprot</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles['All']) }}_pdbNum.zip">PDB</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles['All']) }}_alignNum.zip">Alignment</a>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                    <div id="viewport_all" style="width:100%; height:400px"></div>
+                  </div>
+
+                </div>
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 my-4" style="padding:0;margin:0;">
+
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+
+                  <a role="button" class="btn button-primary light-text" style="margin:5px;" href="{{ url_for('static', filename=csvFile['All']) }}">Database table as csv</a>
+                  <br><br>
+
+
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover sortable very-dark-text" style="word-wrap: break-word;">
+                      <thead class=thead-light>
+                        <tr>
+                          <th scope="col">Organism</th>
+                          <th scope="col">Group</th>
+                          <th scope="col">Gene</th>
+                          <th scope="col">UniprotID</th>
+                          <th scope="col">Protein name</th>
+                          <th scope="col">PDB</th>
+                          <th scope="col">Resolution</th>
+                          <th scope="col">C-helix</th>
+                          <th scope="col">Ligand</th>
+                          <th scope="col">Type</th>
+                        </tr>
+                      </thead>
+                      {% for item in group_list['All'] %}
+                      <tr>
+                        <td>{{ item.specie }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.group, settings='GROUP') }}" target="_blank">{{ item.group }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.gene, settings='GENE') }}" target="_blank">{{ item.gene }}</td>
+                        <td>{{ item.uniprotid }}</td>
+                        <td>{{ item.protein_name }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.pdb, settings='PDB') }}" target="_blank">{{ item.pdb }}</td>
+                        <td>{{ item.resolution }}</td>
+                        <td>{{ item.chelix }}</td>
+                        {% if ',' in item.ligand %}
+                        <td>
+                          {% set subitems=item.ligand.split(',') %}
+                          {% for ligname in subitems %}
+                          {% set sub_subitems=ligname.split(':') %}
+                          <a href="{{ url_for('uniqueQuery', queryname=sub_subitems[0], settings='LIGAND') }}" target="_blank">{{ sub_subitems[0] }}
+                          {% endfor %}
+                        </td>
+                        {% else %}
+                        {% set ligname=item.ligand.split(':') %}
+                        <td><a href="{{ url_for('uniqueQuery', queryname=ligname[0], settings='LIGAND') }}" target="_blank">{{ ligname[0] }}</td>
+                        {% endif %}
+                        {% if ',' in item.ligand_type %}
+                        <td>
+                        {% set subitems=item.ligand_type.split(',') %}
+                        {% for ligtypes in subitems %}
+                        <a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=ligtypes) }}" target="_blank">{{ ligtypes }}
+                        {% endfor %}
+                      </td>
+                      {% else %}
+                        <td><a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=item.ligand_type) }}" target="_blank">{{ item.ligand_type }}</td>
+                      {% endif %}
+
+                      </tr>
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane active" id="Nonhuman" role="tabpanel"  aria-labelledby="Nonhuman-tab">
+              <div class="row">
+                <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+                  <div class="card  border-light bg-light mb-3 very-dark-text">
+                    <div class="card-header light-pink-background"><h4>Protein kinases with {{ label }}</a> conformation in complex with {{ ligand_type }} ligands</h4></div>
+                      <div class="card-body">
+                        <h6 class="card-text">Total number of genes: {{ geneCount_nonhuman }}</h6>
+                        <h6 class="card-text">Total number of chains: {{ total_count['Nonhuman'] }}</h6>
+                        <div class="table-responsive">
+                        <table class="table dark-text">
+                          <thead>
+                            <tr>
+                              <th scope="col" style='text-align:left;'></th>
+                              <th scope="col" style='text-align:right;'>AGC</th>
+                              <th scope="col" style='text-align:right;'>CAMK</th>
+                              <th scope="col" style='text-align:right;'>CK1</th>
+                              <th scope="col" style='text-align:right;'>CMGC</th>
+                              <th scope="col" style='text-align:right;'>NEK</th>
+                              <th scope="col" style='text-align:right;'>RGC</th>
+                              <th scope="col" style='text-align:right;'>STE</th>
+                              <th scope="col" style='text-align:right;'>TKL</th>
+                              <th scope="col" style='text-align:right;'>TYR</th>
+                              <th scope="col" style='text-align:right;'>OTHER</th>
+                              <th scope="col" style='text-align:right;'>Representative</th>
+                            </tr>
+                          </thead>
+                          <tr style="line-height:10px;">
+                          <td style='text-align:center;'>{{ label }}</td>
+                          {% for group in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','OTHER') %}
+
+                          <td style='text-align:right;'>{{ strCount_nonhuman[group,spatial,label] }}</td>
+                          {% endfor %}
+                          <td style='text-align:center;color:{{ clusterColor[label] }};font-weight:bold;'>{{ reprStr['Nonhuman','All',label] }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                      </div>
+                    </div>
+
+                    <div class="btn-group" style="margin:5px;">
+                      <button type="button" class="btn button-primary dropdown-toggle light-text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Download in Pymol
+                      </button>
+                      <div class="dropdown-menu">
+                        <h6 class="dropdown-header very-dark-text">Representatives from each kinase</h6>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSessionRe['Nonhuman']) }}">Pymol session(ver 2.3)</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScriptRe['Nonhuman']) }}">Pymol script</a>
+                        <h6 class="dropdown-header very-dark-text">All chains</h6>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSession['Nonhuman']) }}">Pymol session(ver 2.3)</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['Nonhuman']) }}">Pymol script</a>
+                      </div>
+                    </div>
+
+
+                    <div class="btn-group" style="margin:5px;margin-left:40px;">
+                      <button type="button" class="btn button-primary dropdown-toggle light-text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Download coordinates
+                      </button>
+                      <div class="dropdown-menu">
+                        <h6 class="dropdown-header very-dark-text">All chains - renumbered by</h6>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles['Nonhuman']) }}_uniNum.zip">Uniprot</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles['Nonhuman']) }}_pdbNum.zip">PDB</a>
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static', filename=coordinateFiles['Nonhuman']) }}_alignNum.zip">Alignment</a>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                    <div id="viewport_nonhuman" style="width:100%; height:400px"></div>
+                  </div>
+
+                </div>
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 my-4" style="padding:0;margin:0;">
+
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+
+                  <a role="button" class="btn button-primary light-text" style="margin:5px;" href="{{ url_for('static', filename=csvFile['Nonhuman']) }}">Database table as csv</a>
+                  <br><br>
+
+
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover sortable very-dark-text" style="word-wrap: break-word;">
+                      <thead class=thead-light>
+                        <tr>
+                          <th scope="col">Organism</th>
+                          <th scope="col">Group</th>
+                          <th scope="col">Gene</th>
+                          <th scope="col">UniprotID</th>
+                          <th scope="col">Protein name</th>
+                          <th scope="col">PDB</th>
+                          <th scope="col">Resolution</th>
+                          <th scope="col">C-helix</th>
+                          <th scope="col">Ligand</th>
+                          <th scope="col">Type</th>
+                        </tr>
+                      </thead>
+                      {% for item in group_list['Nonhuman'] %}
+                      <tr>
+                        <td>{{ item.specie }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.group, settings='GROUP') }}" target="_blank">{{ item.group }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.gene, settings='GENE') }}" target="_blank">{{ item.gene }}</td>
+                        <td>{{ item.uniprotid }}</td>
+                        <td>{{ item.protein_name }}</td>
+                        <td><a href="{{ url_for('uniqueQuery', queryname=item.pdb, settings='PDB') }}" target="_blank">{{ item.pdb }}</td>
+                        <td>{{ item.resolution }}</td>
+                        <td>{{ item.chelix }}</td>
+                        {% if ',' in item.ligand %}
+                        <td>
+                          {% set subitems=item.ligand.split(',') %}
+                          {% for ligname in subitems %}
+                          {% set sub_subitems=ligname.split(':') %}
+                          <a href="{{ url_for('uniqueQuery', queryname=sub_subitems[0], settings='LIGAND') }}" target="_blank">{{ sub_subitems[0] }}
+                          {% endfor %}
+                        </td>
+                        {% else %}
+                        {% set ligname=item.ligand.split(':') %}
+                        <td><a href="{{ url_for('uniqueQuery', queryname=ligname[0], settings='LIGAND') }}" target="_blank">{{ ligname[0] }}</td>
+                        {% endif %}
+                        {% if ',' in item.ligand_type %}
+                        <td>
+                        {% set subitems=item.ligand_type.split(',') %}
+                        {% for ligtypes in subitems %}
+                        <a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=ligtypes) }}" target="_blank">{{ ligtypes }}
+                        {% endfor %}
+                      </td>
+                      {% else %}
+                        <td><a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=item.ligand_type) }}" target="_blank">{{ item.ligand_type }}</td>
+                      {% endif %}
+                      </tr>
+
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(function () {
+
+        $('#myTab a[href="#All"]').tab('show')
+        $('#myTab a[href="#Nonhuman"]').tab('show')
+        $('#myTab a[href="#Human"]').tab('show')
+      })
+    </script>
+
+
+
+    <script type="text/javascript">
+
+    var stage = new NGL.Stage( "viewport_human" );
+    window.addEventListener( "resize", function( event ){
+      stage.handleResize();
+      }, false );
+      stage.setParameters( { backgroundColor: "white", cameraType: "orthographic" } );
+
+      Promise.all([
+
+        {% for item in nglList %}
+
+        {% if 'Human'==item[0] %}
+
+        {% for entries in nglList[item] %}
+
+        {% set pdb=item[1] %}
+
+        stage.loadFile("{{ url_for('static',filename='kinasechainsNGL/') }}{{pdb}}.pdb", {sele: ":{{ pdb[4] }}" }).then(function (o) {
+      o.addRepresentation("backbone",{sele:":{{ pdb[4] }} and {{ entries.domain_begin }}-{{ entries.domain_end }}",color:"grey",radiusScale:"0.4",opacity:"0.3"});
+      o.addRepresentation("backbone",{sele:":{{ pdb[4] }} and {{ entries.dfgnum }}-{{ entries.apenum }}",color:"rgb{{ entries.color }}",radiusScale:"0.4"});
+      o.addRepresentation( "licorice",{sele: ":{{ pdb[4] }} and {{ entries.dfgnum }} and not hydrogen and sidechainAttached",color:"rgb{{ entries.color }}"} );
+      // o.addRepresentation( "licorice",{sele: ":{{ item[4] }} and {{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and not hydrogen and sidechainAttached",color:"rgb{{ entries.color }}"} );
+      // o.addRepresentation( "ball+stick",{sele: "{{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and _N",color:"blue"} );
+      // o.addRepresentation( "ball+stick",{sele: "{{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and _O",color:"red"} );
+      o.addRepresentation("licorice",{sele:"TPO or SEP or PTR"})
+      return o
+    }),
+
+    {% endfor %}
+
+    {% endif %}
+    {% endfor %}
+
+    ]).then(function (ol) {
+
+     var pa = ol[ 0 ].structure.getPrincipalAxes();
+      stage.animationControls.rotate(pa.getRotationQuaternion(), 1500);
+      var duration = 1500;  // optional duration for animation, defaults to zero
+      ol[0].autoView();  // focus on the whole structure
+      ol[0].autoView('{{dfgNumReprStr['Human'][0]}}',duration)
+    {% for item in nglList %}
+    {% if 'Human'==item[0] %}
+
+
+
+        ol[{{ loop.index }}].superpose(ol[ 0 ], true)
+
+
+
+        {% endif %}
+        {% endfor %}
+    });
+    // create tooltip element and add to document body
+    var tooltip = document.createElement("div")
+    Object.assign(tooltip.style, {
+    display: "none",
+    position: "fixed",
+    zIndex: 10,
+    pointerEvents: "none",
+    backgroundColor: "rgba( 0, 0, 0, 0.6 )",
+    color: "lightgrey",
+    padding: "8px",
+    fontFamily: "sans-serif"
+    })
+    document.body.appendChild(tooltip)
+
+    // remove default hoverPick mouse action
+    stage.mouseControls.remove("hoverPick")
+
+    // listen to `hovered` signal to move tooltip around and change its text
+    stage.signals.hovered.add(function (pickingProxy) {
+    if (pickingProxy && (pickingProxy.atom || pickingProxy.bond)) {
+      var atom = pickingProxy.atom || pickingProxy.closestBondAtom
+      var mp = pickingProxy.mouse.position
+      tooltip.innerText = atom.chainname + ": " + atom.resname +atom.resno
+      tooltip.style.bottom = window.innerHeight - mp.y + 3 + "px"
+      tooltip.style.left = mp.x + 3 + "px"
+      tooltip.style.display = "block"
+    } else {
+      tooltip.style.display = "none"
+    }
+    });
+    </script>
+
+    <script type="text/javascript">
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var stage = new NGL.Stage( "viewport_all" );
+      window.addEventListener( "resize", function( event ){
+        stage.handleResize();
+        }, false );
+        stage.setParameters( { backgroundColor: "white", cameraType: "orthographic" } );
+
+        Promise.all([
+
+          {% for item in nglList %}
+
+          {% if 'All'==item[0] %}
+
+          {% for entries in nglList[item] %}
+
+          {% set pdb=item[1] %}
+
+          stage.loadFile("{{ url_for('static',filename='kinasechainsNGL/') }}{{pdb}}.pdb", {sele: ":{{ pdb[4] }}" }).then(function (o) {
+        o.addRepresentation("backbone",{sele:":{{ pdb[4] }} and {{ entries.domain_begin }}-{{ entries.domain_end }}",color:"grey",radiusScale:"0.4",opacity:"0.3"});
+        o.addRepresentation("backbone",{sele:":{{ pdb[4] }} and {{ entries.dfgnum }}-{{ entries.apenum }}",color:"rgb{{ entries.color }}",radiusScale:"0.4"});
+        o.addRepresentation( "licorice",{sele: ":{{ pdb[4] }} and {{ entries.dfgnum }} and not hydrogen and sidechainAttached",color:"rgb{{ entries.color }}"} );
+        // o.addRepresentation( "licorice",{sele: ":{{ item[4] }} and {{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and not hydrogen and sidechainAttached",color:"rgb{{ entries.color }}"} );
+        // o.addRepresentation( "ball+stick",{sele: "{{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and _N",color:"blue"} );
+        // o.addRepresentation( "ball+stick",{sele: "{{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and _O",color:"red"} );
+        o.addRepresentation("licorice",{sele:"TPO or SEP or PTR"})
+        return o
+      }),
+
+      {% endfor %}
+
+      {% endif %}
+      {% endfor %}
+
+      ]).then(function (ol) {
+
+       var pa = ol[ 0 ].structure.getPrincipalAxes();
+        stage.animationControls.rotate(pa.getRotationQuaternion(), 1500);
+        var duration = 1500;  // optional duration for animation, defaults to zero
+        ol[0].autoView();  // focus on the whole structure
+        ol[0].autoView('{{dfgNumReprStr['All'][0]}}',duration)
+          {% set count=namespace(value=1) %}
+      {% for item in nglList %}
+      {% if 'All'==item[0] %}
+
+        ol[{{ count.value }}].superpose(ol[ 0 ], true)
+        {% set count.value=count.value+1 %}
+          {% endif %}
+          {% endfor %}
+      });
+      // create tooltip element and add to document body
+      var tooltip = document.createElement("div")
+      Object.assign(tooltip.style, {
+      display: "none",
+      position: "fixed",
+      zIndex: 10,
+      pointerEvents: "none",
+      backgroundColor: "rgba( 0, 0, 0, 0.6 )",
+      color: "lightgrey",
+      padding: "8px",
+      fontFamily: "sans-serif"
+      })
+      document.body.appendChild(tooltip)
+
+      // remove default hoverPick mouse action
+      stage.mouseControls.remove("hoverPick")
+
+      // listen to `hovered` signal to move tooltip around and change its text
+      stage.signals.hovered.add(function (pickingProxy) {
+      if (pickingProxy && (pickingProxy.atom || pickingProxy.bond)) {
+        var atom = pickingProxy.atom || pickingProxy.closestBondAtom
+        var mp = pickingProxy.mouse.position
+        tooltip.innerText = atom.chainname + ": " + atom.resname +atom.resno
+        tooltip.style.bottom = window.innerHeight - mp.y + 3 + "px"
+        tooltip.style.left = mp.x + 3 + "px"
+        tooltip.style.display = "block"
+      } else {
+        tooltip.style.display = "none"
+      }
+      });
+    });
+
+    </script>
+
+    <script type="text/javascript">
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var stage = new NGL.Stage( "viewport_nonhuman" );
+      window.addEventListener( "resize", function( event ){
+        stage.handleResize();
+        }, false );
+        stage.setParameters( { backgroundColor: "white", cameraType: "orthographic" } );
+
+        Promise.all([
+
+          {% for item in nglList %}
+
+          {% if item[0]=='Nonhuman' %}
+
+          {% for entries in nglList[item] %}
+
+          {% set pdb=item[1] %}
+
+          stage.loadFile("{{ url_for('static',filename='kinasechainsNGL/') }}{{pdb}}.pdb", {sele: ":{{ pdb[4] }}" }).then(function (o) {
+        o.addRepresentation("backbone",{sele:":{{ pdb[4] }} and {{ entries.domain_begin }}-{{ entries.domain_end }}",color:"grey",radiusScale:"0.4",opacity:"0.3"});
+        o.addRepresentation("backbone",{sele:":{{ pdb[4] }} and {{ entries.dfgnum }}-{{ entries.apenum }}",color:"rgb{{ entries.color }}",radiusScale:"0.4"});
+        o.addRepresentation( "licorice",{sele: ":{{ pdb[4] }} and {{ entries.dfgnum }} and not hydrogen and sidechainAttached",color:"rgb{{ entries.color }}"} );
+        // o.addRepresentation( "licorice",{sele: ":{{ item[4] }} and {{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and not hydrogen and sidechainAttached",color:"rgb{{ entries.color }}"} );
+        // o.addRepresentation( "ball+stick",{sele: "{{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and _N",color:"blue"} );
+        // o.addRepresentation( "ball+stick",{sele: "{{ entries.dfgnum-2 }}-{{ entries.dfgnum+1 }} and _O",color:"red"} );
+        o.addRepresentation("licorice",{sele:"TPO or SEP or PTR"})
+        return o
+      }),
+
+      {% endfor %}
+
+      {% endif %}
+      {% endfor %}
+
+    ]).then(function (ol) {
+
+       var pa = ol[ 0 ].structure.getPrincipalAxes();
+        stage.animationControls.rotate(pa.getRotationQuaternion(), 1500);
+        var duration = 1500;  // optional duration for animation, defaults to zero
+        ol[0].autoView();  // focus on the whole structure
+        ol[0].autoView('{{dfgNumReprStr['Nonhuman'][0]}}',duration)
+
+      {% set count=namespace(value=1) %}
+      {% for item in nglList %}
+
+      {% if item[0]=='Nonhuman' %}
+
+          ol[{{ count.value }}].superpose(ol[ 0 ], true)
+          {% set count.value=count.value+1 %}
+
+          {% endif %}
+          {% endfor %}
+      });
+      // create tooltip element and add to document body
+      var tooltip = document.createElement("div")
+      Object.assign(tooltip.style, {
+      display: "none",
+      position: "fixed",
+      zIndex: 10,
+      pointerEvents: "none",
+      backgroundColor: "rgba( 0, 0, 0, 0.6 )",
+      color: "lightgrey",
+      padding: "8px",
+      fontFamily: "sans-serif"
+      })
+      document.body.appendChild(tooltip)
+
+      // remove default hoverPick mouse action
+      stage.mouseControls.remove("hoverPick")
+
+      // listen to `hovered` signal to move tooltip around and change its text
+      stage.signals.hovered.add(function (pickingProxy) {
+      if (pickingProxy && (pickingProxy.atom || pickingProxy.bond)) {
+        var atom = pickingProxy.atom || pickingProxy.closestBondAtom
+        var mp = pickingProxy.mouse.position
+        tooltip.innerText = atom.chainname + ": " + atom.resname +atom.resno
+        tooltip.style.bottom = window.innerHeight - mp.y + 3 + "px"
+        tooltip.style.left = mp.x + 3 + "px"
+        tooltip.style.display = "block"
+      } else {
+        tooltip.style.display = "none"
+      }
+      });
+    });
+
+    </script>
+
+
+    {% endblock %}
+  </body>
+</html>
