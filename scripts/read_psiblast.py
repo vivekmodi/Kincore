@@ -6,22 +6,21 @@ Created on Thu Jan  9 16:55:45 2020
 @author: vivekmodi
 """
 from Bio import SearchIO
-#from collections import defaultdict
+from datetime import datetime
 
-def read_psiblast(psiblast_result, excluded_output,df):
+def read_psiblast(df,psiblast_result, excluded_output):
     print("Reading psiblast output...")
     fhandle_psiblast=SearchIO.read(psiblast_result,"blast-xml")
-    #fhandle_human=open(human_output,"w")
-    #fhandle_nonhuman=open(nonhuman_output,"w")
     fhandle_excluded=open(excluded_output,"w")
-   # fhandle_noresidue=open(psiblast_error,"w")
+  
     index=0  
     hit_accession_list=list()
-    #pdb_dict=defaultdict(list)
-    for hits in fhandle_psiblast:        #hits object does not have any evalue, only hsp have evalues
-        #if index==500:
-        #    break
-
+    specie_list=['HUMAN','MOUSE','RATTUS','SCROFA','BOVIN','XENLA','DROME','MACACA','SHEEP','DANIO']
+   
+    for hits in fhandle_psiblast:        #hits object does not have any evalue, only hsps have evalues
+        #if index>100:
+        #    continue
+      
         for hsp in hits.hsps:       
             if hsp.evalue<5.0 and hsp.aln_span>125:
                 
@@ -29,14 +28,7 @@ def read_psiblast(psiblast_result, excluded_output,df):
                     continue
                 hit_accession_list.append(hits.accession)
                
-                #if '3DJ7A'  not in hsp.hit_id:
-                #   continue
-                #if 'HUMAN' not in hsp.hit_description:
-                #    continue
-                if 'HUMAN' in hsp.hit_description.upper() or 'MOUSE' in hsp.hit_description.upper() or 'RATTUS' in hsp.hit_description.upper() or \
-                    'SCROFA' in hsp.hit_description.upper() or 'BOVIN' in hsp.hit_description.upper() or 'XENLA' in hsp.hit_description.upper() or\
-                    'DROME' in hsp.hit_description.upper() or 'MACACA' in hsp.hit_description.upper() or 'SHEEP' in hsp.hit_description.upper() or\
-                    'DANIO' in hsp.hit_description.upper():
+                if any(specie in hsp.hit_description.upper() for specie in specie_list):     #any in an inbuilt function
                     
                     if hsp.hit_description.find('|')!=-1:       #Skip fusion proteins; returns position of substring, -1 means not found
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))     #modified to remove the random string in the beginning
@@ -44,34 +36,25 @@ def read_psiblast(psiblast_result, excluded_output,df):
                         continue
                     uniprot_name=str(hsp.hit_description.split("<")[1].split(">")[0].split("(")[0])
                     
-                    if uniprot_name in ('NA','D3DSX2_HUMAN','RIOK1_HUMAN','RIOK2_HUMAN','RIOK3_HUMAN','PAN3_DROME','SG196_MOUSE','SG196_DANRE'):
+                    if uniprot_name in ('NA','D3DSX2_HUMAN','RIOK1_HUMAN','RIOK2_HUMAN','RIOK3_HUMAN','PAN3_DROME','SG196_MOUSE','SG196_DANRE','E0W1I1_PEDHC','D3ZKP6_RAT'):
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
                         fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
                         continue                           #Remove the case which do not have uniprot assigned, D3DSX2 in not the correct uniprot but comes up in some PDB annotation
                         
-         #           if uniprot_name.find('HUMAN')==-1:              #-1 means string not found
-         #               description=(" ".join(hsp.hit_description.split(' ')[1:]))     #modified to remove the random string in the beginning
-         #               fhandle_nonhuman.write(hsp.hit_id+","+description+","+uniprot_name+","+str(hsp.evalue)+","+str(hsp.bitscore)+"\n")
-         #               continue
-                    
-                    if hsp.hit_id[0:4]=='6T28' or hsp.hit_id[0:4]=='6T29':      #Chain id in these structures is AAA
+                          
+                    if hsp.hit_id[0:4] in ('6T28','6T29','3LZBE','3LZBF','3LZBG','3LZBH','5CNOX','6PYHA','6PYHD','6TLJS','6Z1T','6Z1Q','6Z83','6Z84','6YUL','6YUM'):     # Description of these structures is in the kinasepml notes file
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
                         fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
                         continue
-                    
-                    if hsp.hit_id=='3LZBE' or hsp.hit_id=='3LZBF' or hsp.hit_id=='3LZBG' or hsp.hit_id=='3LZBH' or hsp.hit_id=='5CNOX' or hsp.hit_id=='6PYHA' or hsp.hit_id=='6PYHD':      #Entire domain in not resolved but sequence is present in SEQRES
+                   
+                    if hsp.hit_description.split()[6]=='yes':    #Skip CA-only chains
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
                         fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
                         continue
-                    if hsp.hit_id=='5KHUQ' or hsp.hit_id=='6PXVA' or hsp.hit_id=='6PXVC' or hsp.hit_id=='6PXWA' or hsp.hit_id=='6PXWB' or hsp.hit_id[0:4]=='6EQI':                     #CA chain only - 5KHUQ; 6PXV/W are cryo EM full length insulin recpetor
+                    if hsp.hit_description.split()[2]=='EM':     #Skip EM structures
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
                         fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
                         continue
-                    if hsp.hit_id=='6TLJS':          #domain is not properly folded - BUB1B_HUMAN
-                        description=(" ".join(hsp.hit_description.split(' ')[1:]))
-                        fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
-                        continue
-                    
                     
                     chain_length=hsp.hit_description.split()[1]
                     method=hsp.hit_description.split()[2]
@@ -80,7 +63,7 @@ def read_psiblast(psiblast_result, excluded_output,df):
                     free_rvalue=hsp.hit_description.split()[5]
                     protein=' '.join(hsp.hit_description.split('<')[0].split()[7:])
                     uniprot_name=str(hsp.hit_description.split('<')[1].split('>')[0].split('(')[0])
-                    sequence=''.join(str(hsp.hit.seq).split('-'))       #this prints incomplete sequence, only corressponding to the alignment
+                    #sequence=''.join(str(hsp.hit.seq).split('-'))       #this prints incomplete sequence, only corressponding to the alignment
                     specie=str(hsp.hit_description.split('[')[1].split(']')[0])
                     
                     if rvalue=='NA':
@@ -95,9 +78,10 @@ def read_psiblast(psiblast_result, excluded_output,df):
                         res1=int(residue_range.split("-")[0])       #These residue numbers in pdbaa come from sifts database
                         res2=int(residue_range.split("-")[1])
                     except IndexError:
-                        res1=0;res2=0
-                        continue      #skip the structures which do not have residue information in pdbaa
-          #              fhandle_noresidue.write('No residue number '+hsp.hit_id[0:5]+hsp.hit_description+"\n")
+                        description=(" ".join(hsp.hit_description.split(' ')[1:]))
+                        fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
+                        continue      #skip the structures which do not have residue information in pdbaa, e.g. 6NSLA
+        
                         
                     if uniprot_name=='PAK7_HUMAN':          #These conditions are created to replace old uniprot names in pdbaa
                         uniprot_name='PAK5_HUMAN'
@@ -136,22 +120,14 @@ def read_psiblast(psiblast_result, excluded_output,df):
                     
                     df.at[index,'Rvalue']=round(float(rvalue),2)
                     df.at[index,'FreeRvalue']=round(float(free_rvalue),2)
-                    #df.at[index,'Construct']=sequence    #this prints incomplete sequence, only corressponding to the alignment;
-                    index=index+1
-                    #description=(" ".join(hsp.hit_description.split(' ')[1:]))     #modified to remove the random string in the beginning
-                    #fhandle_human.write(hsp.hit_id+","+description+","+uniprot_name+","+str(hsp.evalue)+","+str(hsp.bitscore)+"\n")
-                    #count=count+1
                    
-
-    #print("Writing hits in psiblast-human.csv...")
-    #print("Total number of human chains in psiblast_human: "+str(count))
-    #fhandle_human.close()
-    #fhandle_nonhuman.close()
+                    index=index+1
+                
+                   
     fhandle_excluded.close()
-    #fhandle_noresidue.close()   
-    #print(len(pdb_uniprot_dict))
-    return df
     
-# if __name__ == '__main__':
-#     psiblast_result=sys.argv[1];human_output=sys.argv[2];nonhuman_output=sys.argv[3];fusion_output=sys.argv[4]
-#     (pdb_uniprot_dict,seqres_start,seqres_end)=read_psiblast(psiblast_result, human_output, nonhuman_output, fusion_output)
+    today=str(datetime.now())[0:10].strip()
+    df.to_excel(f'pdbaa_psiblast_dir/df_psiblast_{today}.xlsx',index=False)   #Write excel and csv
+    df.to_csv(f'pdbaa_psiblast_dir/df_psiblast_{today}.csv',sep='\t',index=False)
+    
+    return df

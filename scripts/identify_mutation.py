@@ -20,6 +20,7 @@ def identify_mutation(pwd,df):
         'KCX':'K','MHO':'M','T8L':'T','CY0':'C','UNK':'X'}
     print('Identifying mutations in X-D-F residues...')
     kinasesifts=f'{pwd}/kinasesifts'
+    log=open(f'{pwd}/kinasepml.log','a')
     
     fhandle_modified_aa=open(f'{pwd}/List_modified_aminoacid.txt','r')
         
@@ -43,7 +44,9 @@ def identify_mutation(pwd,df):
         try:
             handle=gzip.open((kinasesifts+'/'+pdbs[0:4].lower()+'.csv.gz'),'rt')        
         except:
-            handle=open((kinasesifts+'/'+pdbs[0:4].lower()+'.csv'),'r')
+            log.write(f'identify_mutation: File not found {pdbs[0:4]}.csv.gz\n')
+            continue
+        
         chain=str(pdbs[4]) 
         dfg_phe=int(df.at[i,'DFGnum'])
         dfg_asp=dfg_phe-1;xdfg=dfg_phe-2;dfg_gly=dfg_phe+1
@@ -124,5 +127,6 @@ def identify_mutation(pwd,df):
 
         handle.close()
     fhandle_modified_aa.close()
-        
+    
+    log.close()    
     return (df)

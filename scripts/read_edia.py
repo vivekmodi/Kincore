@@ -11,7 +11,6 @@ def read_edia(pwd,df):
     print('Reading EDIA...')
     for i in df.index:
         pdb=df.at[i,'PDBid'][0:4]
-        #print(pdb)
         pdb_lower=pdb.lower()
         chain=df.at[i,'PDBid'][4]
         uniprotacc=df.at[i,'UniAcc']

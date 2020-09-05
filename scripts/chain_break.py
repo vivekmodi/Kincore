@@ -14,8 +14,8 @@ def chain_break(pwd,df):
     fhandle_read=open((pwd+'/Chain_break.tab'),'r')
     fhandle_append=open((pwd+'/Chain_break.tab'),'a')
     ignoremodified=open(f'{pwd}/List_modified_aminoacid.txt','r')
+    log=open(f'{pwd}/kinasepml.log','a')
     
-    #domain_break_dict=dict();loop_break_dict=dict()
     for i in df.index:
         pdbs=df.at[i,'PDBid']
         df.at[i,'DomainBreak']=int(999)
@@ -32,7 +32,12 @@ def chain_break(pwd,df):
                 break
         
         if pdb_present==0:
-            handle=gzip.open((kinasechains_renumber_uniprot+'/'+pdbs+'.cif.gz'),'rt')
+            try:
+                handle=gzip.open((kinasechains_renumber_uniprot+'/'+pdbs+'.cif.gz'),'rt')
+            except:
+                log.write(f'chain_break: File not found {pdbs}.cif.gz\n')
+                continue
+            
             parser=PDB.MMCIFParser(QUIET=True)
             structure=parser.get_structure("PDB",handle)
             #domain_name=df.at[i,'Domain']
@@ -92,5 +97,6 @@ def chain_break(pwd,df):
             df.at[i,'DomainBreak']=max_diff_domain;df.at[i,'LoopBreak']=max_diff_loop
             fhandle_append.write(f'{pdbs} {df.at[i,"DomainBreak"]} {df.at[i,"LoopBreak"]}\n')
     fhandle_append.close()
-    fhandle_read.close()    
+    fhandle_read.close() 
+    log.close()
     return (df)

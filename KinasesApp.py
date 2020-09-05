@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, subprocess, sys, glob, random, numpy as np
-from datetime import datetime
-from flask import Flask, render_template, url_for, redirect, session, request
+import os, sys
+from flask import Flask, render_template, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
-from werkzeug.utils import secure_filename
 from sqlalchemy import func
-from collections import defaultdict
 from flask import Markup
-from sqlalchemy import desc,asc
-
-
-#from IPython.display import display, Math
+#from flask_wtf import FlaskForm
+#from flask import session
+#from wtforms import StringField, SubmitField
+#from wtforms.validators import DataRequired
+#from werkzeug.utils import secure_filename
+#from collections import defaultdict
+from sqlalchemy import asc
 
 
 pwd=os.getcwd()
@@ -25,7 +22,7 @@ sys.path.append(pwd+'/scripts')        #To import webserver_script from this dir
 from webserver_script import identify_state
 
 UPLOAD_FOLDER = (pwd+'/server/uploads')
-ALLOWED_EXTENSIONS = {'txt', 'pdb','cif'}
+ALLOWED_EXTENSIONS = {'gz', 'pdb','cif'}
 
 app=Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
@@ -34,8 +31,6 @@ app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 ############SQL Databse and Models############################
-#basedir = os.path.abspath(os.path.dirname(__file__))
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data_new.sqlite')    #this is the name of database file
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data_new.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -114,7 +109,6 @@ class Cluster(db.Model):
     chelix=db.Column(db.Text)
     spatial=db.Column(db.Text)
     dihedral=db.Column(db.Text)
-    dihedral_nochi1=db.Column(db.Text)
     color=db.Column(db.Text)
     ligand_type=db.Column(db.Text)
 
@@ -124,7 +118,7 @@ class Cluster(db.Model):
     gtknum,gtkres,hinge1,status,x_o_edia,asp_o_edia,phe_o_edia,gly_o_edia,x_phi,x_psi,asp_phi,asp_psi,\
     asp_chi1,asp_chi2,phe_phi,phe_psi,phe_chi1,phe_chi2,gly_phi,gly_psi,domainBreak,loopBreak,synonym,x_mut,asp_mut,phe_mut,gly_mut,chain_mut,\
     chain_phos,modified_aa,first_obs_res,last_obs_res,ligand,xdfg_resolved,strseq,seqres,lys_glu,phe_glu4,phe_lys,chelix,spatial,dihedral,\
-    dihedral_nochi1,color,ligand_type):
+    color,ligand_type):
         self.pdb=pdb;self.protein_name=protein_name;self.uniprotid=uniprotid;self.chain_length=chain_length;self.str_begin=str_begin;\
         self.str_end=str_end;self.specie=specie;self.resolution=resolution;self.method=method;self.rvalue=rvalue;self.freervalue=freervalue;\
         self.uniseq=uniseq;self.gene=gene;self.domain=domain;self.group=group;self.uniprotacc=uniprotacc;self.domain_begin=domain_begin;\
@@ -137,7 +131,7 @@ class Cluster(db.Model):
         self.loopBreak=loopBreak;self.synonym=synonym;self.x_mut=x_mut;self.asp_mut=asp_mut;self.phe_mut=phe_mut;self.gly_mut=gly_mut;\
         self.chain_mut=chain_mut;self.chain_phos=chain_phos;self.modified_aa=modified_aa;self.first_obs_res=first_obs_res;self.last_obs_res=last_obs_res;\
         self.ligand=ligand;self.xdfg_resolved=xdfg_resolved;self.strseq=strseq;self.seqres=seqres;self.lys_glu=lys_glu;\
-        self.phe_glu4=phe_glu4;self.phe_lys=phe_lys;self.chelix=chelix;self.spatial=spatial;self.dihedral=dihedral;self.dihedral_nochi1=dihedral_nochi1;\
+        self.phe_glu4=phe_glu4;self.phe_lys=phe_lys;self.chelix=chelix;self.spatial=spatial;self.dihedral=dihedral;\
         self.color=color;self.ligand_type=ligand_type;
 
 
@@ -150,12 +144,12 @@ class Cluster(db.Model):
         {self.asp_chi1} {self.asp_chi2} {self.phe_phi} {self.phe_psi} {self.phe_chi1} {self.phe_chi2} {self.gly_phi} {self.gly_psi} {self.domainBreak}\
         {self.loopBreak} {self.synonym} {self.x_mut} {self.asp_mut} {self.phe_mut} {self.gly_mut} {self.chain_mut} {self.chain_phos} {self.modified_aa}\
         {self.first_obs_res} {self.last_obs_res} {self.ligand} {self.xdfg_resolved} {self.strseq} {self.seqres} {self.lys_glu}\
-        {self.phe_glu4} {self.phe_lys} {self.chelix} {self.spatial} {self.dihedral} {self.dihedral_nochi1} {self.color} {self.ligand_type}'
+        {self.phe_glu4} {self.phe_lys} {self.chelix} {self.spatial} {self.dihedral} {self.color} {self.ligand_type}'
 
 
 ###################FUNCTIONS###############################
 def create_lists():
-    pdbListDb=list();chainListDb=list();domainListDb=list();uniprotIdListDb=list();uniprotAccListDb=list();geneListDb=list();ligandListDb=list();specieListDb=list()
+    pdbListDb=list();chainListDb=list();uniprotIdListDb=list();uniprotAccListDb=list();geneListDb=list();ligandListDb=list();specieListDb=list()
     for pdbs in Cluster.query.with_entities(Cluster.pdb):
         pdbListDb.append(str(pdbs[0])[0:4])
     for pdbs in Cluster.query.with_entities(Cluster.pdb):
@@ -214,22 +208,6 @@ def count_structures_all(groupList):       #given a list this function counts th
     geneCount=len(set(geneList))
     return (strCount,geneCount)
 
-# # def min_atom_missing(group_list):
-# #     pdb_reso_dict=dict();loop_break_dict=dict()
-# #     for item in group_list:
-# #         pdb_reso_dict[item.pdb]=item.resolution
-# #         loop_break_dict[item.pdb]=item.loopBreak
-# #
-# #     #pdb_reso_sorted=sorted(pdb_reso_dict.items(),key=lambda x: x[1], reverse=True)      #Trick to sort dictionary in descending order
-# #     #loop_break_sorted=sorted(loop_reso_dict.items(),key=lambda x: x[1], reverse=True)
-# #     min_missing_residues=999;min_missing_pdb='None';min_reso=999
-# #     for pdbs,reso in pdb_reso_sorted:
-# #         if int(loop_break_dict[pdbs])<=int(min_missing_residues):
-# #             min_missing_residues=loop_break_dict[pdbs]
-# #             min_missing_pdb=pdbs
-# #             min_reso=reso
-# #     return (min_missing_pdb)
-#
 def min_atom_missing(group_list):
     subListRepr=dict()
     for item in group_list:
@@ -295,7 +273,7 @@ def formSearch():
             return redirect(url_for('uniqueQuery',queryname=inputString,settings='PDB'))
         if inputString in uniprotIdListDb:
             return redirect(url_for('uniqueQuery',queryname=inputString,settings='UNIPROTID'))
-        if inputString in geneListDb:                 #It is possible that some gene names are same as ligand ids, make sure they do not conflict                return redirect(url_for('pdbs',queryname=queryname,settings='GENE'))
+        if inputString in geneListDb:                 
             return redirect(url_for('uniqueQuery',queryname=inputString,settings='GENE'))
         for items in ligandListDb:          #Loop is required because some entries have two ligands
             if inputString in items:
@@ -1188,13 +1166,11 @@ def uniqueQuery(settings,queryname):
 def webserver():
     if request.method=='POST':
         if request.files:
-            userpdb=request.files['userpdb.pdb']            #userpdb.pdb is the name in html file which is linked here, but if multiple users are accessing the server at the same time then the sme filename can create a problem
+            userpdb=request.files['userpdb.pdb']            #userpdb.pdb is the name in html file which is linked here, but if multiple users are accessing the server at the same time then the same filename can create a problem
             print(userpdb)
             if userpdb.filename=='':
-                #print('File should have a valid name')
                 return 'File should have a valid name'
             if not allowed_filename(userpdb.filename):
-                #print('File extension is not valid')
                 return 'File extension is not valid'
             # if '.cif' in userpdb.filename.lower():
             #     newFilename=userpdb.filename+'.cif'
@@ -1207,20 +1183,11 @@ def webserver():
 
             (group,chain_list,xdfg,dfg_asp,dfg_phe,xdfg_res,dfg_asp_res,dfg_phe_res,xdfg_phi,xdfg_psi,dfg_asp_phi,dfg_asp_psi,dfg_phe_phi,dfg_phe_psi,dfg_phe_chi1,chelix_conf,dfg_label,dfg_bkbone)=identify_state(pwd,userpdb.filename)
             print(userpdb.filename,group,dfg_label,dfg_bkbone)
-            #return redirect(request.url)
-            #return redirect(url_for('pdbs',queryname=form.clus_label.data,settings='LABEL'))
             return render_template('conformation.html',userfilename=userpdb.filename,group=group,chain_list=chain_list,xdfg=xdfg,dfg_asp=dfg_asp,dfg_phe=dfg_phe,xdfg_res=xdfg_res,dfg_asp_res=dfg_asp_res,\
             dfg_phe_res=dfg_phe_res,xdfg_phi=xdfg_phi,xdfg_psi=xdfg_psi,dfg_asp_phi=dfg_asp_phi,dfg_asp_psi=dfg_asp_psi,\
             dfg_phe_phi=dfg_phe_phi,dfg_phe_psi=dfg_phe_psi,dfg_phe_chi1=dfg_phe_chi1,chelix_conf=chelix_conf,dfg_label=dfg_label,dfg_bkbone=dfg_bkbone)
 
     return render_template('webserver.html')
-
-# # @app.route('/conformation.html/<userfilename>/<xdfg>/<dfg_asp>/<dfg_phe>/<xdfg_res>/<dfg_asp_res>/<dfg_phe_res>/<xdfg_phi>/<xdfg_psi>/<dfg_asp_phi>/<dfg_asp_psi>/<dfg_phe_phi>/<dfg_phe_psi>/<dfg_phe_chi1>/<chelix_conf>/<dfg_label>/<dfg_bkbone>')
-# # #@app.route('/conformation.html/<userfilename>/<xdfg>')
-# # #def conformation(userfilename=userfilename,xdfg=xdfg,dfg_asp=dfg_asp,dfg_phe=dfg_phe,xdfg_res=xdfg_res,dfg_asp_res=dfg_asp_res,\
-# #                 #dfg_phe_res=dfg_phe_res,xdfg_phi=xdfg_phi,xdfg_psi=xdfg_psi,dfg_asp_phi=dfg_asp_phi,dfg_asp_psi=dfg_asp_psi,\
-# #                 #dfg_phe_phi=dfg_phe_phi,dfg_phe_psi=dfg_phe_psi,dfg_phe_chi1=dfg_phe_chi1,chelix_conf=chelix_conf,dfg_label=dfg_label,dfg_bkbone=dfg_bkbone):
-# # def conformation(userfilename,xdfg,dfg_asp,dfg_phe,xdfg_res,dfg_asp_res,dfg_phe_res,xdfg_phi,xdfg_psi,dfg_asp_phi,dfg_asp_psi,dfg_phe_phi,dfg_phe_psi,dfg_phe_chi1,chelix_conf,dfg_label,dfg_bkbone):
 
 
 @app.route('/FDA')
@@ -1235,12 +1202,10 @@ def dunbrackLab():
 def update_date():      #To update data in the footer; this route could be accessed by any html page
     fhandle_update_date=open(f'{pwd}/update-date.txt','r')
     read_date=fhandle_update_date.readline()
-    #today=str(datetime.now())[0:10].strip()
     return dict(updateDate=read_date)
 
 
 
 ###################################################
 if __name__ == '__main__':
-    #Generate lists from the database which will be used later in the code
     app.run(debug=True)

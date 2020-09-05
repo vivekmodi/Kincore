@@ -6,12 +6,13 @@ Created on Wed Jun 10 08:02:41 2020
 @author: vivekmodi
 """
 from Bio import PDB
-import gzip,os
+import gzip
 
-ignoremodified=open(f'List_modified_aminoacid.txt','r')
-fhandle_output=open(f'Ligand_classification.tab','w')
+
 
 def classify_ligands(pwd,df):
+    ignoremodified=open(f'List_modified_aminoacid.txt','r')
+    fhandle_output=open(f'Ligand_classification.tab','w')
     print('Classifying different kinds of ligands...')
     for i in df.index:
         pdbs=df.at[i,'PDBid']

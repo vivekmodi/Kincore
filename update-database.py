@@ -93,8 +93,8 @@ for i in df.index:
     phe_lys=df.at[i,'Phe_Lys'],\
     chelix=df.at[i,'C-helix'],\
     spatial=df.at[i,'Spatial'],\
-    dihedral=df.at[i,'Dihedral'],\
-    dihedral_nochi1=df.at[i,'Dihedral_NoChi1'],\
+    dihedral=df.at[i,'Dihedral'],\                  #Only one label in final scheme - without chi1
+    #dihedral_nochi1=df.at[i,'Dihedral_NoChi1'],\
     color=df.at[i,'Color'],\
     ligand_type=df.at[i,'Ligand_label'])
     

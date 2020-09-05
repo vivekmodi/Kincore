@@ -151,19 +151,24 @@ def compute_chi4(structure_,model_,chain_,curr_residue_):
 
 def compute_dihedrals(pwd,df):
     ignoremodified=open(f'{pwd}/List_modified_aminoacid.txt','r')
-    #xdfg_phi=xdfg_psi=dfg_asp_phi=dfg_asp_psi=dfg_phe_phi=dfg_phe_psi=dfg_phe_chi1=999
+    log=open(f'{pwd}/kinasepml.log','a')
+    
     for i in df.index:
         pdbs=df.at[i,'PDBid']
         pdbfilename=pdbs
         if os.path.isfile(f'{pwd}/kinasechains_dihedrals/{pdbfilename}.dih'):
             continue
+        try:
+            handle=gzip.open(f'{pwd}/kinasechains_renumber_uniprot/{pdbfilename}.cif.gz','rt')
+        except:
+            log.write(f'dihedrals: File does not exist {pdbfilename}.cif.gz\n')
+            continue
+        
         fhandle_output=open((pwd+'/kinasechains_dihedrals/'+pdbfilename+'.dih'),'w')
-        #if '.cif' in pdbfilename.lower():
+
         parser=PDB.MMCIFParser()
-        #if '.pdb' in pdbfilename.lower():
-        #    parser=PDB.PDBParser()
-        #structure=parser.get_structure("PDB",(pwd+'/server/uploads/'+pdbfilename))
-        handle=gzip.open(f'{pwd}/kinasechains_renumber_uniprot/{pdbfilename}.cif.gz','rt')
+       
+        
         structure=parser.get_structure('PDB',handle)
         for model in structure:
             for chain in model:
@@ -224,11 +229,7 @@ def compute_dihedrals(pwd,df):
                     chi4=compute_chi4(structure,model,chain,curr_residue)       #right now works only for ARG, LYS
     
                     fhandle_output.write(f'{pdbfilename[0:-4]} {model.id} {chain.id} {curr_residue.id[1]} {curr_residue.resname} {phi} 999.00 {omega} {chi1} {chi2} {chi3} {chi4}\n')
-    #return (xdfg_phi,xdfg_psi,dfg_asp_phi,dfg_asp_psi,dfg_phe_phi,dfg_phe_psi,dfg_phe_chi1)
+    
+    log.close()
     return
 
-#if __name__ == '__main__':
-    #xdfg_phi=xdfg_psi=dfg_asp_phi=dfg_asp_psi=dfg_phe_phi=dfg_phe_psi=dfg_phe_chi1=999
-#    pdbfilename=sys.argv[1]; xdfg=sys.argv[2]; dfg_asp=sys.argv[3]; dfg_phe=sys.argv[4]
-#    (xdfg_phi,xdfg_psi,dfg_asp_phi,dfg_asp_psi,dfg_phe_phi,dfg_phe_psi,dfg_phe_chi1)=compute_dihedrals(pdbfilename,xdfg,dfg_asp,dfg_phe)
-#    print((xdfg_phi,xdfg_psi,dfg_asp_phi,dfg_asp_psi,dfg_phe_phi,dfg_phe_psi,dfg_phe_chi1))

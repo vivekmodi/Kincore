@@ -15,17 +15,17 @@ def format_seq_text(pwd,df):
         'MSE':'M','OCY':'C','PTR':'Y','SEP':'S','CAF':'C','LGY':'K','CAS':'C','CSO':'C','CSX':'C',\
         'MK8':'E','NEP':'H','NMM':'R','CSD':'C','CYO':'Y','OCS':'C','OCY':'C','SCS':'C','ALY':'A',\
         'KCX':'K','MHO':'M','T8L':'T','CY0':'C','UNK':'X'}
+
     
+
     print('Fomatting sequences for html...')
     for i in df.index:
         uni_pdb_dict=dict()
         pdbs=df.at[i,'PDBid']
         siftsFile=(pwd+'/kinasesifts/'+pdbs[0:4].lower()+'.csv.gz')
         
-        #if '.gz' in siftsFile:
-        fhandle_sifts=gzip.open(siftsFile,'rt')
-        #else:
-        #    fhandle_sifts=open(siftsFile,'r')
+        
+     
         outputfile=(pwd+'/formattedSeq/'+pdbs[0:4]+'.seq')
         if os.path.isfile(outputfile):
             continue
@@ -98,6 +98,7 @@ def format_seq_html(pwd,df):
         'MK8':'E','NEP':'H','NMM':'R','CSD':'C','CYO':'Y','OCS':'C','OCY':'C','SCS':'C','ALY':'A',\
         'KCX':'K','MHO':'M','T8L':'T','CY0':'C','UNK':'X'}
     
+    log=open(f'{pwd}/kinasepml.log','a')
     print('Fomatting sequences for html...')
     for i in df.index:
         pdbs=df.at[i,'PDBid']
@@ -107,8 +108,12 @@ def format_seq_html(pwd,df):
         uni_pdb_dict=dict();
         siftsFile=(pwd+'/kinasesifts/'+pdbs[0:4].lower()+'.csv.gz')
         
-       
-        fhandle_sifts=gzip.open(siftsFile,'rt')
+        try:
+            fhandle_sifts=gzip.open(siftsFile,'rt')
+        except:
+            log.write(f'seqFormatHtml: File not found {siftsFile}\n')
+            continue
+        
       
         outputfile=(pwd+'/formattedSeq/'+pdbs[0:4]+'.html')
         if os.path.isfile(outputfile):
@@ -245,3 +250,4 @@ def format_seq_html(pwd,df):
         fhandle_output.write(f'</pre>')
         fhandle_output.close()
         fhandle_sifts.close()
+        log.close()

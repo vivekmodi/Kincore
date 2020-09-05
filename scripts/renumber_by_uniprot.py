@@ -16,68 +16,45 @@ def renumber_by_uniprot(pwd,df):
     kinasesifts=f'{pwd}/kinasesifts'
     kinasechains_renumber_uniprot=f'{pwd}/kinasechains_renumber_uniprot'
     ignoremodified=open(f'{pwd}/List_modified_aminoacid.txt','r')
+    log=open(f'{pwd}/kinasepml.log','a')
+    
     print('Renumbering MMCIF files by Uniprot numbering scheme...')
     for i in df.index:
         pdbs=df.at[i,'PDBid']
-      
-        #print("Renumbering PDB:"+pdbs)
-        #for name in pdb_chainlist:
-        #    if str(name[0:4]).lower()=="5ezv" or str(name[0:4]).lower()=="4wb7" or str(name[0:4]).lower()=="6byr" or str(name[0:4]).lower()=="3bea" or \
-        #    str(name[0:4]).lower()=="3krl" or str(name[0:4]).lower()=="3krj" or str(name[0:4]).lower()=="3dpk":
-        #        continue
-    
-          #  print(uniprot[name[0:5]],name[0:5])
-          #  if uniprot[name[0:5]]=='TITIN_HUMAN':
-          #      if not os.path.isdir("./uniprot/"+uniprot[name[0:5]]):
-          #          cmd=("mkdir uniprot/"+uniprot[name[0:5]])
-          #          subprocess.call(cmd,shell=True)
-          #          pdbfilename=("./kinasepdbs_PDB_numbering/"+name[0:5]+".pdb")
-          #          cmd=("cp "+pdbfilename+" ./uniprot/"+uniprot[name[0:5]])
-          #          subprocess.call(cmd,shell=True)
-          #          continue
-          #      else:
-          #          pdbfilename=("./kinasepdbs_PDB_numbering/"+name[0:5]+".pdb")
-          #          cmd=("cp "+pdbfilename+" ./uniprot/"+uniprot[name[0:5]])
-          #          subprocess.call(cmd,shell=True)
-          #          continue
-    
-        '''if uniprot[name[0:5]]=='GWL_HUMAN':      #For 5LOH sifts is wrong and numbering in PDB file is correct, use as it is.
-                if not os.path.isdir("./uniprot/"+uniprot[name[0:5]]):
-                    cmd=("mkdir uniprot/"+uniprot[name[0:5]])
-                    subprocess.call(cmd,shell=True)
-                    pdbfilename=("./kinasepdbs_PDB_numbering/"+name[0:5]+".pdb")
-                    cmd=("cp "+pdbfilename+" ./uniprot/"+uniprot[name[0:5]])
-                    subprocess.call(cmd,shell=True)
-                    continue
-                else:
-                    pdbfilename=("./kinasepdbs_PDB_numbering/"+name[0:5]+".pdb")
-                    cmd=("cp "+pdbfilename+" ./uniprot/"+uniprot[name[0:5]])
-                    subprocess.call(cmd,shell=True)
-                    continue
-             '''
-             #if name[0:4]=='5LOH':     #Modified sifts file for GWL-5LOH
-        #    siftshandle=open(("./"+name[0:4].lower()+"-modified.csv"),"r")
-        #else:
-        #    siftshandle=open(("./kinasesifts/"+name[0:4].lower()+".csv"),"r")
         
         filename=(kinasechains+'/'+pdbs[0:4].upper()+pdbs[4]+".cif.gz")
-        if not os.path.isfile(filename):
-            print("Error: Function renumber_pdbs: file does not exist:"+filename+"\n")
-            return
-            
-        if not os.path.isfile((kinasesifts+'/'+pdbs[0:4].lower()+".csv.gz")):
-            print("Error: Function renumber_pdbs: file does not exist: "+pdbs[0:4].lower()+".csv.gz"+"\n")
-            return
-        
         if os.path.isfile(kinasechains_renumber_uniprot+"/"+pdbs[0:5]+".pdb.gz"):
             if os.path.isfile(kinasechains_renumber_uniprot+"/"+pdbs[0:5]+".cif.gz"):
-                continue        
-    
-        siftshandle=gzip.open((kinasesifts+'/'+pdbs[0:4].lower()+".csv.gz"),"rt")
-        parser=PDB.MMCIFParser(QUIET=True)
-        handle=gzip.open(filename,"rt")
-        structure=parser.get_structure("pdbs[0:4]",handle)
+                continue 
+        
+        try:
+            handle=gzip.open(filename,"rt")
+        except:
+            log.write(f"renumber_by_uniprot: file does not exist: {filename}\n")
+            continue
+        try:
+            siftshandle=gzip.open((kinasesifts+'/'+pdbs[0:4].lower()+".csv.gz"),"rt")
+        except:
+            log.write(f"renumber_by_uniprot: file does not exist: {pdbs[0:4]}.lower().csv.gz\n")
+            continue
+        
+        #if not os.path.isfile(filename):
+        #    print("Error: Function renumber_pdbs: file does not exist:"+filename+"\n")
+        #    return
             
+        #if not os.path.isfile((kinasesifts+'/'+pdbs[0:4].lower()+".csv.gz")):
+        #    print("Error: Function renumber_pdbs: file does not exist: "+pdbs[0:4].lower()+".csv.gz"+"\n")
+        #    return
+        
+               
+    
+        
+        parser=PDB.MMCIFParser(QUIET=True)
+        
+        structure=parser.get_structure("pdbs[0:4]",handle)
+        
+        df.at[i,'Date']=structure.header['deposition_date']
+        
         for model in structure:
             for chain in model:
                 for residue in chain:
@@ -132,29 +109,14 @@ def renumber_by_uniprot(pwd,df):
         io=PDB.MMCIFIO()
         io.set_structure(structure)
         io.save(kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4]+".cif")
-        #cmd=(f'cp {kinasechains_renumber_uniprot}/{pdbs[0:4]}{pdbs[4]}.cif {pwd}/static/downloads/uniprot-numbered')
-        #subprocess.call(cmd,shell=True)
-        #cmd=(f'cp {kinasechains_renumber_uniprot}/{pdbs[0:4]}{pdbs[4]}.cif {pwd}/static/downloads/groupZip')
-        #subprocess.call(cmd,shell=True)
         cmd=('gzip -f '+kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4]+'.cif')
         subprocess.call(cmd, shell=True)
         
         io=PDB.PDBIO()
         io.set_structure(structure)
         io.save(kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4]+".pdb")
-        #cmd=(f'cp {kinasechains_renumber_uniprot}/{pdbs[0:4]}{pdbs[4]}.pdb {pwd}/static/downloads/uniprot-numbered')
-        #subprocess.call(cmd,shell=True)
         cmd=('gzip -f '+kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4]+'.pdb')
         subprocess.call(cmd, shell=True)
         
-            #domain_name=uniprot[name[0:5]];domain_name=domain_name.replace("_HUMAN","")
-        #if not os.path.isdir(kinasechains_renumbered+pdbs[0:5]+'.cif.gz'):
-        #    cmd=("mkdir uniprot/"+uniprot[name[0:5]])
-        #    subprocess.call(cmd,shell=True)
-        #    io.save("./uniprot/"+uniprot[name[0:5]]+"/"+name[0:5]+".pdb")
-        #else:
-        #    io.save("./uniprot/"+uniprot[name[0:5]]+"/"+name[0:5]+".pdb")
-    
-#if __name__ == '__main__':
-#    kinasechains=sys.argv[1]; kinasesifts=sys.argv[2]; kinasechains_renumber_uniprot=sys.argv[3]; pdbs=sys.argv[4]
-#    renumber_by_uniprot(kinasechains,kinasesifts,kinasechains_renumber_uniprot,pdbs)
+    log.close()
+    return df

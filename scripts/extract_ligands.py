@@ -9,31 +9,30 @@ import gzip,re
 from Bio import PDB
 
 def extract_ligands(pwd,df):
-    #kinasechains=f'{pwd}/kinasechains'
     fhandle_read_ligands=open((pwd+'/Ligands.tab'),'r')
     fhandle_append_ligands=open((pwd+'/Ligands.tab'),'a')
     omitligands=open(f'{pwd}/ListOrganicMoleculesNotLigands.txt','r')
     modified_aa=open(f'{pwd}/List_modified_aminoacid.txt','r')
+    log=open(f'{pwd}/kinasepml.log','a')
     
     print('Extracting ligands...')
-    #pdb_ligand_dict=dict()
     for i in df.index:
         pdbs=df.at[i,'PDBid']
         domain_begin=df.at[i,'DomainBegin']    
         domain_end=df.at[i,'DomainEnd']
         fhandle_read_ligands.seek(0)
         pdb_present=0
-        #for lines in fhandle_read_ligands:
-        #    lines=lines.strip();lines=lines.split()
-        #    if pdbs in lines[0]:
-        #        df.at[i,'Ligand']=lines[1]
-        #        pdb_present=1
-        #        break
+       
         
         if pdb_present==0:
             ligandname='';ligandpresent=0;ligandlist=list();
             parser=PDB.MMCIFParser(QUIET=True)
-            handle=gzip.open(f'{pwd}/kinasechains_renumber_uniprot/{pdbs}.cif.gz','rt')
+            try:
+                handle=gzip.open(f'{pwd}/kinasechains_renumber_uniprot/{pdbs}.cif.gz','rt')
+            except:
+                log.write('extract_ligands: File not found {pdbs}.cif.gz\n')
+                continue
+            
             structure=parser.get_structure("PDB",handle)
             
             parser2=PDB.MMCIFParser(QUIET=True)
@@ -90,5 +89,6 @@ def extract_ligands(pwd,df):
             #print(pdbs,pdb_ligand_dict[pdbs])
     
     fhandle_append_ligands.close()
-    fhandle_read_ligands.close()    
+    fhandle_read_ligands.close()  
+    log.close()
     return df

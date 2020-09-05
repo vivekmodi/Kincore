@@ -6,8 +6,6 @@ Created on Tue Jan 14 13:03:58 2020
 @author: vivekmodi
 """
 
-#Usage from commandline python parse_sifts.py kinasesifts/ 1xyz
-#Usage from another script parse_sifts(kinasesifts,1xyz)
 
 import os, gzip, subprocess
 import xml.etree.ElementTree as ET
@@ -17,12 +15,9 @@ def parse_sifts(kinasesifts,df):
     for i in df.index:
         pdbs=df.at[i,'PDBid']
        
-        #cmd=("gunzip -f "+kinasesifts+"/"+pdbs+".xml.gz")
-        #subprocess.call(cmd,shell=True)
         filename=(kinasesifts+"/"+pdbs[0:4].lower()+".xml.gz")
         filecsv=(kinasesifts+"/"+pdbs[0:4].lower()+".csv.gz")
-        #filename=(kinasesifts+"/"+pdbs[0:4].lower()+".xml")
-        #print(filename)
+        
         prev_uninum_insertion=-9999
         prev_uninum_linker=-9999
         insertion_code='A'
@@ -33,7 +28,6 @@ def parse_sifts(kinasesifts,df):
         if os.path.isfile(filecsv):
             continue
         
-        #print("Parsing sifts files:"+pdbs)
         handle=gzip.open(filename,"rt")
         tree=ET.parse(handle)
         root=tree.getroot()
@@ -44,7 +38,7 @@ def parse_sifts(kinasesifts,df):
     
         for entity in root:
             if entity.tag==(str(base)+'entity'):
-                prev_uninum_insertion=-9999          #at the beginning of new chain set prev_uninum t default again
+                prev_uninum_insertion=-9999          #at the beginning of new chain set prev_uninum to default again
                 prev_uninum_linker=-9999
                 for segment in entity:
                     if segment.tag==(str(base)+'segment'):
@@ -90,8 +84,3 @@ def parse_sifts(kinasesifts,df):
         fhandle.close()
         cmd=("gzip -f "+kinasesifts+"/"+pdbs[0:4].lower()+".csv")
         subprocess.call(cmd, shell=True)
-        
-#if __name__ == '__main__':
-#    kinasesifts=sys.argv[1]
-#    pdbs=sys.argv[2]
-#    parse_sifts(kinasesifts,pdbs)

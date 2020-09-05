@@ -14,16 +14,24 @@ def renumber_by_alignment (pwd,df):
     print('Renumbering MMCIF files by alignment column numbers...')
     ignoremodified=open(f'{pwd}/List_modified_aminoacid.txt','r')
     fhandle_column=open((pwd+'/All-organisms-alignment-residue-corresspondence.tab'),'r')
+    log=open(f'{pwd}/kinasepml.log','a')
+    
     for i in df.index:
         pdbs=df.at[i,'PDBid']
-        
-        #if 'HUMAN' not in df.at[i,'UniprotID']:    #For now skip non-human
-        #    continue
         
         if os.path.isfile(kinasechains_renumber_alignment+"/"+pdbs[0:5]+".pdb.gz"):
             if os.path.isfile(kinasechains_renumber_alignment+"/"+pdbs[0:5]+".cif.gz"):
                 continue
-            
+        
+        pdbfilename=(kinasechains_renumber_uniprot+'/'+pdbs[0:5]+'.cif.gz')
+        
+        try:
+            handle=gzip.open(pdbfilename,"rt")
+        except:
+            log.write(f"renumber_by_alignment: file does not exist: {pdbfilename}\n")
+            continue
+        
+        
         fhandle_column.seek(0)
         res_aln=dict()
         for line in fhandle_column:
@@ -34,21 +42,13 @@ def renumber_by_alignment (pwd,df):
                 res_aln[int(line[6])]=int(line[7])          #res[uniprot]-->column_number -- this dictionary will be used below to assign new residue numbers)
 
 
-        #print("Renumbering PDBs by alignment column numbers:"+pdbs)
-    #for name in pdb_chainlist:
-    #    if str(name[0:4]).lower()=="5ezv" or str(name[0:4]).lower()=="4wb7" or str(name[0:4]).lower()=="6byr" or str(name[0:4]).lower()=="3bea" or \
-    #    str(name[0:4]).lower()=="3krl" or str(name[0:4]).lower()=="3krj" or str(name[0:4]).lower()=="3dpk":
-    #        continue
-
-     #   print(uniprot[name[0:5]],name[0:5])
-
-        pdbfilename=(kinasechains_renumber_uniprot+'/'+pdbs[0:5]+'.cif.gz')
-        if not os.path.isfile(pdbfilename):
-            print("Error: Function renumber_by_alignement: file does not exist:"+pdbfilename+"\n")
-            return
+        
+        #if not os.path.isfile(pdbfilename):
+        #    print("Error: Function renumber_by_alignement: file does not exist:"+pdbfilename+"\n")
+        #    return
             
         parser=PDB.MMCIFParser(QUIET=True)
-        handle=gzip.open(pdbfilename,'rt')
+        #handle=gzip.open(pdbfilename,'rt')
         structure=parser.get_structure("pdbs[0:4]",handle)
 
         for model in structure:
@@ -108,4 +108,5 @@ def renumber_by_alignment (pwd,df):
         subprocess.call(cmd, shell=True)
         #else:
         #    io.save("./uniprot/"+uniprot[name[0:5]]+"/"+name[0:5]+".column.pdb")
+    log.close()
     return

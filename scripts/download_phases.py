@@ -13,8 +13,9 @@ def download_phases(pwd,df):
     for i in df.index:
         pdb=df.at[i,'PDBid'][0:4].lower()
         if not os.path.isfile(f'{pwd}/mtz_files/{pdb}.mtz'):
-            cmd=(f'wget -P {pwd}/mtz_files http://edmaps.rcsb.org/coefficients/{pdb}.mtz')
-            subprocess.call(cmd,shell=True)
+            if not os.path.isfile(f'{pwd}/mtz_files/{pdb}.mtz.gz'):
+                cmd=(f'wget -P {pwd}/mtz_files http://edmaps.rcsb.org/coefficients/{pdb}.mtz')
+                subprocess.call(cmd,shell=True)
             
         if not os.path.isfile(f'{pwd}/mtz_files/{pdb}.cif'):    #copy cif files from kinasecifs folder to here
             if not os.path.isfile(f'{pwd}/mtz_files/{pdb}.cif.gz'):

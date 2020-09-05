@@ -43,8 +43,7 @@ def compute_distance(input_dir,filename,res1,atm1,res2,atm2):
 def compute_all_distances(pwd,df):
     #Compute distance between residues
     kinasechains_renumber_uniprot=f'{pwd}/kinasechains_renumber_uniprot'
-    #fhandle_read_distances=open((pwd+'/Distances.tab'),'r')
-    #fhandle_append_distances=open((pwd+'/Distances.tab'),'a')
+    
     print('Computing distance between residue pairs...')
 
     for i in df.index:
