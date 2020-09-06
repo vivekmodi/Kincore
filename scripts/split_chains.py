@@ -53,6 +53,7 @@ def split_chains(pwd, df):
             handle=gzip.open(filename,"rt")
             parser=PDB.MMCIFParser(QUIET=True)
             structure=parser.get_structure(pdbs[0:4],handle)
+            df.at[i,'Date']=structure.header['deposition_date']
             io=PDB.PDBIO()
             chain_id=pdbs[4]    #Take the chain id from pdbs
             for model in structure:

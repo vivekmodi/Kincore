@@ -41,14 +41,8 @@ def renumber_by_alignment (pwd,df):
             if line[4]==df.at[i,'Domain'] and line[1]==df.at[i,'UniprotID']:     #match domain
                 res_aln[int(line[6])]=int(line[7])          #res[uniprot]-->column_number -- this dictionary will be used below to assign new residue numbers)
 
-
-        
-        #if not os.path.isfile(pdbfilename):
-        #    print("Error: Function renumber_by_alignement: file does not exist:"+pdbfilename+"\n")
-        #    return
             
         parser=PDB.MMCIFParser(QUIET=True)
-        #handle=gzip.open(pdbfilename,'rt')
         structure=parser.get_structure("pdbs[0:4]",handle)
 
         for model in structure:
@@ -90,23 +84,17 @@ def renumber_by_alignment (pwd,df):
         #fhandle_column.close()
         io=PDB.PDBIO()
         io.set_structure(structure)
-        #if not os.path.isdir((kinasechains_renumber_alignment+'/'+pdbs[0:5]+'.pdb.gz')"./uniprot/"+uniprot[name[0:5]]):
-        #    cmd=("mkdir uniprot/"+uniprot[name[0:5]])
-        #    subprocess.call(cmd,shell=True)
         io.save(kinasechains_renumber_alignment+"/"+pdbs[0:5]+".pdb")
-        #cmd=(f'cp {kinasechains_renumber_alignment}/{pdbs[0:4]}.upper(){pdbs[4]}.pdb {pwd}/static/downloads/alignment-numbered')
-        #subprocess.call(cmd,shell=True)
+        
         cmd=('gzip -f '+kinasechains_renumber_alignment+'/'+pdbs[0:5]+'.pdb')
         subprocess.call(cmd, shell=True)
 
         io=PDB.MMCIFIO()
         io.set_structure(structure)
         io.save(kinasechains_renumber_alignment+"/"+pdbs[0:5]+".cif")
-        #cmd=(f'cp {kinasechains_renumber_alignment}/{pdbs[0:4]}.upper(){pdbs[4]}.cif {pwd}/static/downloads/alignment-numbered')
-        #subprocess.call(cmd,shell=True)
+       
         cmd=('gzip -f '+kinasechains_renumber_alignment+'/'+pdbs[0:5]+'.cif')
         subprocess.call(cmd, shell=True)
-        #else:
-        #    io.save("./uniprot/"+uniprot[name[0:5]]+"/"+name[0:5]+".column.pdb")
+       
     log.close()
     return

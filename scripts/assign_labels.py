@@ -14,7 +14,7 @@ def spatial_labels(pwd,df):
     
     for i in df.index:
       
-        df.at[i,'Spatial']='Unassigned'
+        df.at[i,'Spatial']='None'
         dis_phe_glu=float(df.at[i,'Phe_Glu4']);dis_phe_lys=float(df.at[i,'Phe_Lys'])
         if dis_phe_glu<=11 and dis_phe_lys>=11 and dis_phe_glu!=999 and dis_phe_lys!=999:
             df.at[i,'Spatial']='DFGin'
@@ -87,7 +87,7 @@ def dihedral_labels(df,cutoff):
         dfg_asp_psi=float(df.at[i,'Asp_Psi']);dfg_phe_phi=float(df.at[i,'Phe_Phi'])
         dfg_phe_psi=float(df.at[i,'Phe_Psi']);dfg_phe_chi1=float(df.at[i,'Phe_Chi1'])
         
-        df.at[i,'Dihedral']='Unassigned'    #Default label is Unassigned
+        df.at[i,'Dihedral']='None'    #Default label is None
         df.at[i,'Dihedral_dis_NoChi1']=999
         
 #        if df.at[i,'Spatial']=='Unassigned':
@@ -96,7 +96,7 @@ def dihedral_labels(df,cutoff):
         
         if x_dfg_phi==999 or x_dfg_psi==999 or dfg_asp_phi==999 or dfg_asp_psi==999 or dfg_phe_phi==999 or  \
         dfg_phe_psi==999 or dfg_phe_chi1==999:
-            df.at[i,'Dihedral']='Unassigned'
+            df.at[i,'Dihedral']='None'
             df.at[i,'Dihedral_dis_NoChi1']=999
             continue
         

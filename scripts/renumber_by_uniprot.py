@@ -53,7 +53,7 @@ def renumber_by_uniprot(pwd,df):
         
         structure=parser.get_structure("pdbs[0:4]",handle)
         
-        df.at[i,'Date']=structure.header['deposition_date']
+        
         
         for model in structure:
             for chain in model:
