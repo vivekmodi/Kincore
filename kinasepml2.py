@@ -41,6 +41,7 @@ from createPymolSession import subListPymolSession
 from geneListHelp import geneListHelp
 from copy_ngl_files import copy_ngl_files
 from create_datefile import create_datefile
+from get_release_date import get_release_date
  
 
 
@@ -62,6 +63,7 @@ def Main(pwd):
     df=identify_pseudokinases(df)  
     
     download_cifs(f'{pwd}/kinasecifs',df)
+    get_release_date(f'{pwd}/kinasecifs',df)
     download_sifts(f'{pwd}/kinasesifts',df)
     split_chains(pwd,df)
     parse_sifts(f'{pwd}/kinasesifts',df)
@@ -95,6 +97,10 @@ def Main(pwd):
     df_sorted=df.sort_values(['Specie','Group','Gene','Spatial','Dihedral','Ligand_label']).copy()
     df_sorted.to_excel(f'Kinases_df-{today}.xlsx',index=False)   #Write excel and csv
     df_sorted.to_csv(f'Kinases_df-{today}.csv',sep='\t',index=False)
+    
+    df_datesorted=df.sort_values(['Date'],ascending=False).copy()
+    df_datesorted[['Date','Specie','UniprotID','Gene','PDBid']].to_excel(f'Kinases_df_date_sorted.xlsx',index=False)
+    
     subListPymolSession(pwd,df)   #This function also copies coordinate files
 
 

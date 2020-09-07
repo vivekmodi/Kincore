@@ -12,6 +12,7 @@ import os, subprocess
 def download_sifts(downld_dir, df):
     print('Downloading files from Sifts...')
     for i in df.index:
+        
         pdbs=df.at[i,'PDBid']
         filename=pdbs[0:4]
  

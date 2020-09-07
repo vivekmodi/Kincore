@@ -23,4 +23,4 @@ def download_cifs(downld_dir,df):
         if os.path.isfile(downld_dir+"/"+str(filename).lower()+".cif"):     #gzip files
             cmd=("gzip -f "+downld_dir+"/"+str(filename).lower()+".cif")
             subprocess.call(cmd, shell=True)
-
+            

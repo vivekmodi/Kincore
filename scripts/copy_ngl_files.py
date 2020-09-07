@@ -12,6 +12,6 @@ def copy_ngl_files(pwd,df):
         cmd=f'cp {pwd}/kinasechains_renumber_alignment/*.pdb.gz {pwd}/static/kinasechainsNGL/'
         subprocess.call(cmd,shell=True)
         os.chdir(f'{pwd}/static/kinasechainsNGL')
-        cmd='gunzip *.pdb.gz'
+        cmd='gunzip -f *.pdb.gz'
         subprocess.call(cmd,shell=True)
         os.chdir(f'{pwd}')
