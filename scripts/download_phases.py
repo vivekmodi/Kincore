@@ -14,7 +14,7 @@ def download_phases(pwd,df):
         pdb=df.at[i,'PDBid'][0:4].lower()
         if not os.path.isfile(f'{pwd}/mtz_files/{pdb}.mtz'):
             if not os.path.isfile(f'{pwd}/mtz_files/{pdb}.mtz.gz'):
-                cmd=(f'wget -P {pwd}/mtz_files http://edmaps.rcsb.org/coefficients/{pdb}.mtz')
+                cmd=(f'wget -P {pwd}/mtz_files http://edmaps.rcsb.org/coefficients/{pdb}.mtz')    #Phenix requires unzipped mtz and .cif files
                 subprocess.call(cmd,shell=True)
             
         if not os.path.isfile(f'{pwd}/mtz_files/{pdb}.cif'):    #copy cif files from kinasecifs folder to here

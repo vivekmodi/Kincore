@@ -49,13 +49,13 @@ def Main(pwd):
     today=str(datetime.now())[0:10].strip()
     df=pd.DataFrame()
     #create_dirs(pwd)          #No need to run this because directories already exist
-    download_pdbaa(pwd+'/pdbaa_psiblast_dir')
-    create_blastdb('pdbaa',f'{pwd}/pdbaa_psiblast_dir')
-    run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
+    #download_pdbaa(pwd+'/pdbaa_psiblast_dir')
+    #create_blastdb('pdbaa',f'{pwd}/pdbaa_psiblast_dir')
+    #run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
     
     df=read_psiblast(df,f'{pwd}/pdbaa_psiblast_dir/AURKA.pdbaa.xml', f'{pwd}/pdbaa_psiblast_dir/psiblast_excluded.log')   #sequences from pdbaa also contain cloning tags
     
-    create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
+    #create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
     df=gene_dict(pwd,df)        # Also prints New_uniprots.txt
     df=uniprotseq(pwd,df)      
     
@@ -69,9 +69,9 @@ def Main(pwd):
     renumber_by_alignment(pwd,df)
     
     download_phases(pwd,df)
-    #run_phoenix(pwd,df)      #copy files from hard drive
-    #run_edia(pwd,df)         #copy files from hard drive
-    #df=read_edia(pwd,df)
+    run_phoenix(pwd,df)      
+    run_edia(pwd,df)         
+    df=read_edia(pwd,df)
     compute_dihedrals(pwd,df)
     df=read_dihedrals(pwd,df)
     df=chain_break(pwd,df)

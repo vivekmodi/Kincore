@@ -18,8 +18,8 @@ def read_psiblast(df,psiblast_result, excluded_output):
     specie_list=['HUMAN','MOUSE','RATTUS','SCROFA','BOVIN','XENLA','DROME','MACACA','SHEEP','DANIO']
    
     for hits in fhandle_psiblast:        #hits object does not have any evalue, only hsps have evalues
-        #if index>100:
-        #    continue
+        if index>100:
+            continue
       
         for hsp in hits.hsps:       
             if hsp.evalue<5.0 and hsp.aln_span>125:
