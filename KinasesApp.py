@@ -220,8 +220,8 @@ def min_atom_missing(group_list):
             return entry              #just return the first entry from sorted list
     return 'None'
 
-def write_text_file(sublist,csvFile):
-    fhandle_textFile=open(f'{pwd}/static/{csvFile}','w')
+def write_text_file(sublist,tsvFile):
+    fhandle_textFile=open(f'{pwd}/static/{tsvFile}','w')
     fhandle_textFile.write('Organism\tGroup\tGene\tUniprotID\tPDB\tMethod\tResolution\tRfac\tFreeRfac\tSpatialLabel\tDihedralLabel\tC-helix\tLigand\tLigandType\tDFG_Phe\tEdia_X_O\tEdia_Asp_O\tEdia_Phe_O\tEdia_Gly_O\tProteinName\n')
 
     for item in sublist:
@@ -390,7 +390,7 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
     group_list=dict();total_count=dict();strCount=dict();geneCount=dict();totalGroup=dict();totalDihedral=dict()
     gene_list=dict();total_count=dict();reprStr=dict();pymolSession=dict();pymolSessionRe=dict();pymolScript=dict();pymolScriptRe=dict();coordinateFiles=dict()
     nglList=dict();dfgNumReprStr=dict();subList=dict();subListPymol=dict();dfgNumReprStr['Human']=list();dfgNumReprStr['All']=list();dfgNumReprStr['Nonhuman']=list()
-    csvFile=dict()
+    tsvFile=dict()
     clusterColor=create_color_lists()
 
     ligand_type=ligTypeSelect
@@ -421,13 +421,13 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
                 total_count[tabs]=Cluster.query.filter(Cluster.specie!='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch)).count()
                 (strCount_nonhuman,geneCount_nonhuman,totalGroup_nonhuman,totalDihedral_nonhuman)=count_structures_groups(group_list[tabs])
 
-            csvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_Allspatials_Alldihedrals_{ligand_type}.tab'
-            write_text_file(group_list[tabs],csvFile[tabs])
+            tsvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_Allspatials_Alldihedrals_{ligand_type}.tab'
+            write_text_file(group_list[tabs],tsvFile[tabs])
 
         return render_template('All-All.html',group_list=group_list,total_count=total_count,strCount_all=strCount_all,strCount_human=strCount_human,strCount_nonhuman=strCount_nonhuman,\
         geneCount_all=geneCount_all,geneCount_human=geneCount_human,geneCount_nonhuman=geneCount_nonhuman,totalGroup_all=totalGroup_all,totalGroup_human=totalGroup_human,\
         totalGroup_nonhuman=totalGroup_nonhuman,totalDihedral_all=totalDihedral_all,totalDihedral_human=totalDihedral_human,totalDihedral_nonhuman=totalDihedral_nonhuman,\
-        csvFile=csvFile,ligand_type=ligand_type)
+        tsvFile=tsvFile,ligand_type=ligand_type)
 
     if  groupSelect=='' and labelSelect in ('DFGin','DFGinter','DFGout','None'):    #condition for All-spatial
 
@@ -495,13 +495,13 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
             pymolScriptRe[tabs]=f'downloads/pymolSessionScripts/Repr_{tabs}_Allgroups_{labelSelect}_Alldihedrals_{ligand_type}.zip'
             coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_Allgroups_{labelSelect}_Alldihedrals_{ligand_type}'
 
-            csvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_{labelSelect}_Alldihedrals_{ligand_type}.tab'
-            write_text_file(group_list[tabs],csvFile[tabs])
+            tsvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_{labelSelect}_Alldihedrals_{ligand_type}.tab'
+            write_text_file(group_list[tabs],tsvFile[tabs])
 
         return render_template('All-Spatial.html',group_list=group_list,total_count=total_count,strCount_human=strCount_human,geneCount_human=geneCount_human,\
         strCount_all=strCount_all,geneCount_all=geneCount_all,strCount_nonhuman=strCount_nonhuman,\
         geneCount_nonhuman=geneCount_nonhuman,reprStr=reprStr,label=labelSelect,pymolSession=pymolSession,pymolSessionRe=pymolSessionRe,pymolScript=pymolScript,\
-        pymolScriptRe=pymolScriptRe,clusterColor=clusterColor,coordinateFiles=coordinateFiles,csvFile=csvFile,\
+        pymolScriptRe=pymolScriptRe,clusterColor=clusterColor,coordinateFiles=coordinateFiles,tsvFile=tsvFile,\
         nglList=nglList,dfgNumReprStr=dfgNumReprStr,ligand_type=ligand_type)
 
     if  groupSelect=='' and labelSelect in ('BLAminus','BLAplus','ABAminus','BLBminus','BLBplus','BLBtrans','BABtrans','BBAminus'):   #condition for All-dihedral
@@ -535,8 +535,8 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
                 pymolScript[tabs]=f'downloads/pymolSessionScripts/{tabs}_Allgroups_DFGin_{labelSelect}_{ligand_type}.zip'
                 pymolSessionRe[tabs]=f'downloads/pymolSessions/Repr_{tabs}_Allgroups_DFGin_{labelSelect}_{ligand_type}.pse.zip'
                 pymolScriptRe[tabs]=f'downloads/pymolSessionScripts/Repr_{tabs}_Allgroups_DFGin_{labelSelect}_{ligand_type}.zip'
-                csvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_DFGin_{labelSelect}_{ligand_type}.tab'
-                write_text_file(group_list[tabs],csvFile[tabs])
+                tsvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_DFGin_{labelSelect}_{ligand_type}.tab'
+                write_text_file(group_list[tabs],tsvFile[tabs])
                 coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_Allgroups_DFGin_{labelSelect}_{ligand_type}'
             if labelSelect=='BABtrans':
                 spatial='DFGinter'
@@ -544,8 +544,8 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
                 pymolScript[tabs]=f'downloads/pymolSessionScripts/{tabs}_Allgroups_DFGinter_{labelSelect}_{ligand_type}.zip'
                 pymolSessionRe[tabs]=f'downloads/pymolSessions/Repr_{tabs}_Allgroups_DFGinter_{labelSelect}_{ligand_type}.pse.zip'
                 pymolScriptRe[tabs]=f'downloads/pymolSessionScripts/Repr_{tabs}_Allgroups_DFGinter_{labelSelect}_{ligand_type}.zip'
-                csvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_DFGinter_{labelSelect}_{ligand_type}.tab'
-                write_text_file(group_list[tabs],csvFile[tabs])
+                tsvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_DFGinter_{labelSelect}_{ligand_type}.tab'
+                write_text_file(group_list[tabs],tsvFile[tabs])
                 coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_Allgroups_DFGinter_{labelSelect}_{ligand_type}'
             if labelSelect=='BBAminus':
                 spatial='DFGout'
@@ -553,14 +553,14 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
                 pymolScript[tabs]=f'downloads/pymolSessionScripts/{tabs}_Allgroups_DFGout_{labelSelect}_{ligand_type}.zip'
                 pymolSessionRe[tabs]=f'downloads/pymolSessions/Repr_{tabs}_Allgroups_DFGout_{labelSelect}_{ligand_type}.pse.zip'
                 pymolScriptRe[tabs]=f'downloads/pymolSessionScripts/Repr_{tabs}_Allgroups_DFGout_{labelSelect}_{ligand_type}.zip'
-                csvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_DFGout_{labelSelect}_{ligand_type}.tab'
-                write_text_file(group_list[tabs],csvFile[tabs])
+                tsvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_DFGout_{labelSelect}_{ligand_type}.tab'
+                write_text_file(group_list[tabs],tsvFile[tabs])
                 coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_Allgroups_DFGout_{labelSelect}_{ligand_type}'
 
         return render_template('All-dihedral.html',group_list=group_list,total_count=total_count,spatial=spatial,strCount_human=strCount_human,strCount_all=strCount_all,\
         strCount_nonhuman=strCount_nonhuman,reprStr=reprStr,geneCount_human=geneCount_human,geneCount_all=geneCount_all,geneCount_nonhuman=geneCount_nonhuman,\
         label=labelSelect,pymolSession=pymolSession,pymolScript=pymolScript,pymolSessionRe=pymolSessionRe,pymolScriptRe=pymolScriptRe,clusterColor=clusterColor,\
-        coordinateFiles=coordinateFiles,csvFile=csvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr,ligand_type=ligand_type)
+        coordinateFiles=coordinateFiles,tsvFile=tsvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr,ligand_type=ligand_type)
 
     if groupSelect!='' and labelSelect=='All':   #condition for Group-All
 
@@ -617,14 +617,14 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
             pymolSessionRe[tabs]=f'downloads/pymolSessions/Repr_{tabs}_{groupSelect}_Allspatials_Alldihedrals_{ligand_type}.pse.zip'
             pymolScriptRe[tabs]=f'downloads/pymolSessionScripts/Repr_{tabs}_{groupSelect}_Allspatials_Alldihedrals_{ligand_type}.zip'
 
-            csvFile[tabs]=f'downloads/text-files/{tabs}_{groupSelect}_Allspatials_Alldihedrals_{ligand_type}.tab'
-            write_text_file(group_list[tabs],csvFile[tabs])
+            tsvFile[tabs]=f'downloads/text-files/{tabs}_{groupSelect}_Allspatials_Alldihedrals_{ligand_type}.tab'
+            write_text_file(group_list[tabs],tsvFile[tabs])
             coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_{groupSelect}_Allspatials_Alldihedrals_{ligand_type}'
 
         return render_template('Group-All.html',group_list=group_list,total_count=total_count,strCount_human=strCount_human,strCount_all=strCount_all,\
         strCount_nonhuman=strCount_nonhuman,reprStr=reprStr,geneCount_human=geneCount_human,geneCount_all=geneCount_all,geneCount_nonhuman=geneCount_nonhuman,\
         groupname=groupSelect,label=labelSelect,pymolSession=pymolSession,pymolScript=pymolScript,pymolSessionRe=pymolSessionRe,pymolScriptRe=pymolScriptRe,\
-        clusterColor=clusterColor,coordinateFiles=coordinateFiles,csvFile=csvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr,ligand_type=ligand_type)
+        clusterColor=clusterColor,coordinateFiles=coordinateFiles,tsvFile=tsvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr,ligand_type=ligand_type)
 
     if groupSelect!='' and labelSelect in ('DFGin','DFGinter','DFGout','None'):   #Group-Spatial
 
@@ -689,14 +689,14 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
             pymolSessionRe[tabs]=f'downloads/pymolSessions/Repr_{tabs}_{groupSelect}_{labelSelect}_Alldihedrals_{ligand_type}.pse.zip'
             pymolScriptRe[tabs]=f'downloads/pymolSessionScripts/Repr_{tabs}_{groupSelect}_{labelSelect}_Alldihedrals_{ligand_type}.zip'
 
-            csvFile[tabs]=f'downloads/text-files/{tabs}_{groupSelect}_{labelSelect}_Alldihedrals_{ligand_type}.tab'
-            write_text_file(group_list[tabs],csvFile[tabs])
+            tsvFile[tabs]=f'downloads/text-files/{tabs}_{groupSelect}_{labelSelect}_Alldihedrals_{ligand_type}.tab'
+            write_text_file(group_list[tabs],tsvFile[tabs])
             coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_{groupSelect}_{labelSelect}_Alldihedrals_{ligand_type}'
 
         return render_template('Group-Spatial.html',group_list=group_list,total_count=total_count,strCount_all=strCount_all,strCount_human=strCount_human,\
         strCount_nonhuman=strCount_nonhuman,reprStr=reprStr,geneCount_all=geneCount_all,geneCount_human=geneCount_human,geneCount_nonhuman=geneCount_nonhuman,\
         groupname=groupSelect,label=labelSelect,pymolSession=pymolSession,pymolScript=pymolScript,pymolSessionRe=pymolSessionRe,pymolScriptRe=pymolScriptRe,\
-        clusterColor=clusterColor,coordinateFiles=coordinateFiles,csvFile=csvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr,ligand_type=ligand_type)
+        clusterColor=clusterColor,coordinateFiles=coordinateFiles,tsvFile=tsvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr,ligand_type=ligand_type)
 
     if groupSelect!='' and labelSelect in ('BLAminus','BLAplus','ABAminus','BLBminus','BLBplus','BLBtrans','BABtrans','BBAminus'):   #condition for Group-dihedral
 
@@ -727,30 +727,30 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
                 pymolScript[tabs]=f'downloads/pymolSessionScripts/{tabs}_{groupSelect}_DFGin_{labelSelect}_{ligand_type}.zip'
                 pymolSessionRe[tabs]=f'downloads/pymolSessions/Repr_{tabs}_{groupSelect}_DFGin_{labelSelect}_{ligand_type}.pse.zip'
                 pymolScriptRe[tabs]=f'downloads/pymolSessionScripts/Repr_{tabs}_{groupSelect}_DFGin_{labelSelect}_{ligand_type}.zip'
-                csvFile[tabs]=f'downloads/text-files/{tabs}_{groupSelect}_DFGin_{labelSelect}_{ligand_type}.tab'
-                write_text_file(group_list[tabs],csvFile[tabs])
+                tsvFile[tabs]=f'downloads/text-files/{tabs}_{groupSelect}_DFGin_{labelSelect}_{ligand_type}.tab'
+                write_text_file(group_list[tabs],tsvFile[tabs])
                 coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_{groupSelect}_DFGin_{labelSelect}_{ligand_type}'
             if labelSelect=='BABtrans':
                 pymolSession[tabs]=f'downloads/pymolSessions/{tabs}_{groupSelect}_DFGinter_{labelSelect}_{ligand_type}.pse.zip'
                 pymolScript[tabs]=f'downloads/pymolSessionScripts/{tabs}_{groupSelect}_DFGinter_{labelSelect}_{ligand_type}.zip'
                 pymolSessionRe[tabs]=f'downloads/pymolSessions/Repr_{tabs}_{groupSelect}_DFGinter_{labelSelect}_{ligand_type}.pse.zip'
                 pymolScriptRe[tabs]=f'downloads/pymolSessionScripts/Repr_{tabs}_{groupSelect}_DFGinter_{labelSelect}_{ligand_type}.zip'
-                csvFile[tabs]=f'downloads/text-files/{tabs}_{groupSelect}_DFGinter_{labelSelect}_{ligand_type}.tab'
-                write_text_file(group_list[tabs],csvFile[tabs])
+                tsvFile[tabs]=f'downloads/text-files/{tabs}_{groupSelect}_DFGinter_{labelSelect}_{ligand_type}.tab'
+                write_text_file(group_list[tabs],tsvFile[tabs])
                 coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_{groupSelect}_DFGinter_{labelSelect}_{ligand_type}'
             if labelSelect=='BBAminus':
                 pymolSession[tabs]=f'downloads/pymolSessions/{tabs}_{groupSelect}_DFGout_{labelSelect}_{ligand_type}.pse.zip'
                 pymolScript[tabs]=f'downloads/pymolSessionScripts/{tabs}_{groupSelect}_DFGout_{labelSelect}_{ligand_type}.zip'
                 pymolSessionRe[tabs]=f'downloads/pymolSessions/Repr_{tabs}_{groupSelect}_DFGout_{labelSelect}_{ligand_type}.pse.zip'
                 pymolScriptRe[tabs]=f'downloads/pymolSessionScripts/Repr_{tabs}_{groupSelect}_DFGout_{labelSelect}_{ligand_type}.zip'
-                csvFile[tabs]=f'downloads/text-files/{tabs}_{groupSelect}_DFGout_{labelSelect}_{ligand_type}.tab'
-                write_text_file(group_list[tabs],csvFile[tabs])
+                tsvFile[tabs]=f'downloads/text-files/{tabs}_{groupSelect}_DFGout_{labelSelect}_{ligand_type}.tab'
+                write_text_file(group_list[tabs],tsvFile[tabs])
                 coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_{groupSelect}_DFGout_{labelSelect}_{ligand_type}'
 
         return render_template('Group-Dihedral.html',group_list=group_list,total_count=total_count,strCount_all=strCount_all,strCount_human=strCount_human,\
         strCount_nonhuman=strCount_nonhuman,reprStr=reprStr,geneCount_all=geneCount_all,geneCount_human=geneCount_human,geneCount_nonhuman=geneCount_nonhuman,\
         groupname=groupSelect,label=labelSelect,pymolSession=pymolSession,pymolScript=pymolScript,pymolSessionRe=pymolSessionRe,pymolScriptRe=pymolScriptRe,\
-        clusterColor=clusterColor,coordinateFiles=coordinateFiles,csvFile=csvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr,ligand_type=ligand_type)
+        clusterColor=clusterColor,coordinateFiles=coordinateFiles,tsvFile=tsvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr,ligand_type=ligand_type)
 
 
     if labelSelect in ('DFGinNone','DFGinterNone','DFGoutNone','NoneNone'):       #only for dihedral None
@@ -782,15 +782,15 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
             pymolSessionRe[tabs]=f'downloads/pymolSessions/Repr_{tabs}_Allgroups_'+labelSelect[0:-4]+f'_None_{ligand_type}.pse.zip'
             pymolScriptRe[tabs]=f'downloads/pymolSessionScripts/Repr_{tabs}_Allgroups_'+labelSelect[0:-4]+f'_None_{ligand_type}.pse.zip'
 
-            csvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_'+labelSelect[0:-4]+f'_None_{ligand_type}.tab'
-            write_text_file(group_list[tabs],csvFile[tabs])
+            tsvFile[tabs]=f'downloads/text-files/{tabs}_Allgroups_'+labelSelect[0:-4]+f'_None_{ligand_type}.tab'
+            write_text_file(group_list[tabs],tsvFile[tabs])
             coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_Allgroups_'+labelSelect[0:-4]+f'_None_{ligand_type}'
 
         label=labelSelect[0:-4]
 
         return render_template('Spatial-NA.html',group_list=group_list,total_count=total_count,strCount_all=strCount_all,strCount_human=strCount_human,strCount_nonhuman=strCount_nonhuman,\
         reprStr=reprStr,nglList=nglList,dfgNumReprStr=dfgNumReprStr,geneCount_all=geneCount_all,geneCount_human=geneCount_human,geneCount_nonhuman=geneCount_nonhuman,label=label,pymolSession=pymolSession,\
-        pymolScript=pymolScript,pymolSessionRe=pymolSessionRe,pymolScriptRe=pymolScriptRe,coordinateFiles=coordinateFiles,clusterColor=clusterColor,csvFile=csvFile)
+        pymolScript=pymolScript,pymolSessionRe=pymolSessionRe,pymolScriptRe=pymolScriptRe,coordinateFiles=coordinateFiles,clusterColor=clusterColor,tsvFile=tsvFile)
 
 
 
@@ -799,7 +799,7 @@ def uniqueQuery(settings,queryname):
     gene_list=dict();total_count=dict();first_entry=dict();reprStr=dict();
     group_name=dict();protein_name=dict();uniprotid=dict();pymolSession=dict();pymolScript=dict();pymolSessionRe=dict();pymolScriptRe=dict();coordinateFiles=dict()
     nglList=dict();dfgNumReprStr=dict();subList=dict();dfgNumReprStr['Human']=list();dfgNumReprStr['All']=list();dfgNumReprStr['Nonhuman']=list()
-    csvFile=dict();csvFile1=dict();csvFile2=dict()
+    tsvFile=dict();tsvFile1=dict();tsvFile2=dict()
     clusterColor=create_color_lists()
 
     if settings=='PDB':
@@ -910,14 +910,14 @@ def uniqueQuery(settings,queryname):
                 pymolSessionRe[tabs]=(f'downloads/pymolSessions/Repr_{tabs}_{group_name}_{queryname}.pse.zip')
                 pymolScriptRe[tabs]=(f'downloads/pymolSessionScripts/Repr_{tabs}_{group_name}_{queryname}.zip')
 
-                csvFile[tabs]=f'downloads/text-files/{tabs}_{group_name}_{queryname}.tab'
-                write_text_file(gene_list[tabs],csvFile[tabs])
+                tsvFile[tabs]=f'downloads/text-files/{tabs}_{group_name}_{queryname}.tab'
+                write_text_file(gene_list[tabs],tsvFile[tabs])
                 coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_{group_name}_{queryname}'
 
         return render_template('gene.html',first_entry=first_entry,gene_list=gene_list,geneName=geneName,protein_name=protein_name,group_name=group_name,\
         strCount_human=strCount_human,strCount_all=strCount_all,\
         strCount_nonhuman=strCount_nonhuman,reprStr=reprStr,pymolSession=pymolSession,pymolScript=pymolScript,pymolSessionRe=pymolSessionRe,pymolScriptRe=pymolScriptRe,coordinateFiles=coordinateFiles,clusterColor=clusterColor,\
-        nglList=nglList,dfgNumReprStr=dfgNumReprStr,total_count=total_count,csvFile=csvFile)
+        nglList=nglList,dfgNumReprStr=dfgNumReprStr,total_count=total_count,tsvFile=tsvFile)
 
 
     if settings=='UNIPROTID' and queryname.upper() not in ('JAK1_HUMAN','JAK2_HUMAN','JAK3_HUMAN','E2AK4_HUMAN','KS6A1_HUMAN','KS6A3_HUMAN',\
@@ -936,7 +936,7 @@ def uniqueQuery(settings,queryname):
         pymolScriptRe_2=dict();coordinateFiles=dict();nglList_1=dict();nglList_2=dict();dfgNumReprStr_1=dict();dfgNumReprStr_2=dict();subList=dict();\
         dfgNumReprStr_1['Human']=list();dfgNumReprStr_1['All']=list();dfgNumReprStr_1['Nonhuman']=list()
         dfgNumReprStr_2['Human']=list();dfgNumReprStr_2['All']=list();dfgNumReprStr_2['Nonhuman']=list();coordinateFiles_1=dict();coordinateFiles_2=dict()
-        csvFile_1=dict();csvFile_2=dict()
+        tsvFile_1=dict();tsvFile_2=dict()
         strCount_1_human='';geneCount_1_human='';totalGroup_1_human='';totalDihedral_1_human='';strCount_1_all='';geneCount_1_all='';totalGroup_1_all='';totalDihedral_1_all='';
         strCount_1_nonhuman='';geneCount_1_nonhuman='';totalGroup_1_nonhuman='';totalDihedral_1_nonhuman='';strCount_2_all='';geneCount_2_all='';totalGroup_2_all='';
         totalDihedral_2_all='';strCount_2_all='';geneCount_2_all='';totalGroup_2_all='';totalDihedral_2_all='';strCount_2_nonhuman='';geneCount_2_nonhuman='';
@@ -1010,8 +1010,8 @@ def uniqueQuery(settings,queryname):
                 pymolScript_1[tabs]=(f'downloads/pymolSessionScripts/{tabs}_{group_name_1[tabs]}_{domain_1}.zip')
                 pymolSessionRe_1[tabs]=(f'downloads/pymolSessions/Repr_{tabs}_{group_name_1[tabs]}_{domain_1}.pse.zip')
                 pymolScriptRe_1[tabs]=(f'downloads/pymolSessionScripts/Repr_{tabs}_{group_name_1[tabs]}_{domain_1}.zip')
-                csvFile_1[tabs]=f'downloads/text-files/{tabs}_{group_name_1[tabs]}_{domain_1}.tab'
-                write_text_file(gene_list_1[tabs],csvFile_1[tabs])
+                tsvFile_1[tabs]=f'downloads/text-files/{tabs}_{group_name_1[tabs]}_{domain_1}.tab'
+                write_text_file(gene_list_1[tabs],tsvFile_1[tabs])
 
                 coordinateFiles_1[tabs]=f'downloads/coordinateFiles/{tabs}_{group_name_1[tabs]}_{domain_1}'
 
@@ -1069,15 +1069,15 @@ def uniqueQuery(settings,queryname):
                 pymolScript_2[tabs]=(f'downloads/pymolSessionScripts/{tabs}_{group_name_2[tabs]}_{domain_2}.zip')
                 pymolSessionRe_2[tabs]=(f'downloads/pymolSessions/Repr_{tabs}_{group_name_2[tabs]}_{domain_2}.pse.zip')
                 pymolScriptRe_2[tabs]=(f'downloads/pymolSessionScripts/Repr_{tabs}_{group_name_2[tabs]}_{domain_2}.zip')
-                csvFile_2[tabs]=f'downloads/text-files/{tabs}_{group_name_2[tabs]}_{domain_2}.tab'
-                write_text_file(gene_list_2[tabs],csvFile_2[tabs])
+                tsvFile_2[tabs]=f'downloads/text-files/{tabs}_{group_name_2[tabs]}_{domain_2}.tab'
+                write_text_file(gene_list_2[tabs],tsvFile_2[tabs])
                 coordinateFiles_2[tabs]=f'downloads/coordinateFiles/{tabs}_{group_name_2[tabs]}_{domain_2}'
 
         return render_template('domain.html',first_entry_1=first_entry_1,first_entry_2=first_entry_2,geneName=geneName,protein_name=protein_name,\
         uniprotid=uniprotid,gene_list_1=gene_list_1,reprStr_1=reprStr_1,strCount_1_human=strCount_1_human,strCount_1_all=strCount_1_all,strCount_1_nonhuman=strCount_1_nonhuman,\
         total_count_1=total_count_1,pymolSession_1=pymolSession_1,pymolScript_1=pymolScript_1,gene_list_2=gene_list_2,reprStr_2=reprStr_2,strCount_2_human=strCount_2_human,\
         strCount_2_all=strCount_2_all,strCount_2_nonhuman=strCount_2_nonhuman,total_count_2=total_count_2,pymolSession_2=pymolSession_2,pymolScript_2=pymolScript_2,\
-        coordinateFiles_1=coordinateFiles_1,coordinateFiles_2=coordinateFiles_2,clusterColor=clusterColor,csvFile_1=csvFile_1,csvFile_2=csvFile_2,nglList_1=nglList_1,\
+        coordinateFiles_1=coordinateFiles_1,coordinateFiles_2=coordinateFiles_2,clusterColor=clusterColor,tsvFile_1=tsvFile_1,tsvFile_2=tsvFile_2,nglList_1=nglList_1,\
         nglList_2=nglList_2,dfgNumReprStr_1=dfgNumReprStr_1,dfgNumReprStr_2=dfgNumReprStr_2)
 
 
@@ -1164,14 +1164,14 @@ def uniqueQuery(settings,queryname):
             pymolSession[tabs]=(f'downloads/pymolSessions/{tabs}_{queryname}.pse.zip')
             pymolScript[tabs]=(f'downloads/pymolSessionScripts/{tabs}_{queryname}.zip')
 
-            csvFile[tabs]=f'downloads/text-files/{tabs}_{queryname}.tab'
-            write_text_file(ligand_list[tabs],csvFile[tabs])
+            tsvFile[tabs]=f'downloads/text-files/{tabs}_{queryname}.tab'
+            write_text_file(ligand_list[tabs],tsvFile[tabs])
             coordinateFiles[tabs]=f'downloads/coordinateFiles/{tabs}_{queryname}'
 
         return render_template('ligand.html',ligand_list=ligand_list,ligandname=queryname,geneCount_human=geneCount_human,geneCount_all=geneCount_all,\
         geneCount_nonhuman=geneCount_nonhuman,pymolSession=pymolSession,pymolScript=pymolScript,strCount_human=strCount_human,strCount_all=strCount_all,\
         strCount_nonhuman=strCount_nonhuman,reprStr=reprStr,total_count=total_count,clusterColor=clusterColor,coordinateFiles=coordinateFiles,\
-        csvFile=csvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr)
+        tsvFile=tsvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr)
 
 
 @app.route('/webserver', methods=['GET','POST'])
