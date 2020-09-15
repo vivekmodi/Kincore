@@ -233,8 +233,20 @@ def write_text_file(sublist,csvFile):
         else:
             ligandname=item.ligand.split(':')[0]
             ligand_list.append(ligandname)
-        ligand_list=','.join(ligand_list)
-        fhandle_textFile.write(f'{item.specie}\t{item.group}\t{item.domain}\t{item.uniprotid}\t{item.pdb}\t{item.method}\t{item.resolution}\t{item.rvalue}\t{item.freervalue}\t{item.spatial}\t{item.dihedral}\t{item.chelix}\t{ligand_list}\t{item.ligand_type}\t{item.dfgnum}\t{item.x_o_edia}\t{item.asp_o_edia}\t{item.phe_o_edia}\t{item.gly_o_edia}\t{item.protein_name}\n')
+        ligand_list=' '.join(ligand_list) #Join by a space and not comma
+        
+        ligandtype_list=list()
+        if ',' in item.ligand_type:
+            ligtype_items=item.ligand_type.split(',')
+            for ligtype in ligtype_items:
+                ligandtype_list.append(ligtype)
+                
+        else:
+            ligandtype_list.append(item.ligand_type)
+        print(ligandtype_list)
+        ligandtype_list=' '.join(ligandtype_list) #Join by a space and not comma
+        print(ligandtype_list)
+        fhandle_textFile.write(f'{item.specie}\t{item.group}\t{item.domain}\t{item.uniprotid}\t{item.pdb}\t{item.method}\t{item.resolution}\t{item.rvalue}\t{item.freervalue}\t{item.spatial}\t{item.dihedral}\t{item.chelix}\t{ligand_list}\t{ligandtype_list}\t{item.dfgnum}\t{item.x_o_edia}\t{item.asp_o_edia}\t{item.phe_o_edia}\t{item.gly_o_edia}\t{item.protein_name}\n')
     fhandle_textFile.close()
 
 ##########ROUTES##########################
@@ -255,7 +267,7 @@ def browse():
 
 @app.route('/geneListHelp')
 def geneListHelp():
-	fhandle_genehelp=open('{pwd}/static/geneListHelpFile.tab','r')
+	fhandle_genehelp=open(f'{pwd}/static/geneListHelpFile.tab','r')
 	genehelp=fhandle_genehelp.read()
 	fhandle_genehelp.close()
 	return render_template('genelisthelp.html', text=genehelp)
