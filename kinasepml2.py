@@ -42,26 +42,26 @@ from geneListHelp import geneListHelp
 from copy_ngl_files import copy_ngl_files
 from create_datefile import create_datefile
 from get_release_date import get_release_date
- 
+
 
 
 
 def Main(pwd):
     today=str(datetime.now())[0:10].strip()
     df=pd.DataFrame()
-    #create_dirs(pwd)          #No need to run this because directories already exist
-    #download_pdbaa(pwd+'/pdbaa_psiblast_dir')
-    #create_blastdb('pdbaa',f'{pwd}/pdbaa_psiblast_dir')
-    #run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
-    
+    create_dirs(pwd)          #No need to run this because directories already exist
+    download_pdbaa(pwd+'/pdbaa_psiblast_dir')
+    create_blastdb('pdbaa',f'{pwd}/pdbaa_psiblast_dir')
+    run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
+
     df=read_psiblast(df,f'{pwd}/pdbaa_psiblast_dir/AURKA.pdbaa.xml', f'{pwd}/pdbaa_psiblast_dir/psiblast_excluded.log')   #sequences from pdbaa also contain cloning tags
-    
-    #create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
+
+    create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
     df=gene_dict(pwd,df)        # Also prints New_uniprots.txt
-    df=uniprotseq(pwd,df)      
-    
-    df=identify_pseudokinases(df)  
-    
+    df=uniprotseq(pwd,df)
+
+    df=identify_pseudokinases(df)
+
     download_cifs(f'{pwd}/kinasecifs',df)
     get_release_date(f'{pwd}/kinasecifs',df)
     download_sifts(f'{pwd}/kinasesifts',df)
@@ -69,10 +69,10 @@ def Main(pwd):
     parse_sifts(f'{pwd}/kinasesifts',df)
     df=renumber_by_uniprot(pwd,df)      #Also returns deposition date
     renumber_by_alignment(pwd,df)
-    
+
     download_phases(pwd,df)
-    run_phoenix(pwd,df)      
-    run_edia(pwd,df)         
+    run_phoenix(pwd,df)
+    run_edia(pwd,df)
     df=read_edia(pwd,df)
     compute_dihedrals(pwd,df)
     df=read_dihedrals(pwd,df)
@@ -81,15 +81,15 @@ def Main(pwd):
     df=identify_mutation(pwd,df)
     df=extract_ligands(pwd,df)
     format_seq_html(pwd,df)
-    #df=get_seq_from_cif(pwd,df)      #Do not need it right now; Always use after generating uniprot numbered files - this uses incorrect chain id, maybe try .pdb files
-    
-    
-    df=compute_all_distances(pwd,df)    
-    df=chelix_disposition(pwd,df)    
+    df=get_seq_from_cif(pwd,df)      #Do not need it right now; Always use after generating uniprot numbered files - this uses incorrect chain id, maybe try .pdb files
+
+
+    df=compute_all_distances(pwd,df)
+    df=chelix_disposition(pwd,df)
     df=spatial_labels(pwd,df)
     df=dihedral_labels(df,0.45)
     df=chain_color(df)
-    
+
     df=classify_ligands(pwd,df)
     geneListHelp(pwd,df)
     copy_ngl_files(pwd,df)
@@ -97,18 +97,17 @@ def Main(pwd):
     df_sorted=df.sort_values(['Specie','Group','Gene','Spatial','Dihedral','Ligand_label']).copy()
     df_sorted.to_excel(f'Kinases_df-{today}.xlsx',index=False)   #Write excel and csv
     df_sorted.to_csv(f'Kinases_df-{today}.csv',sep='\t',index=False)
-    
+
     df_datesorted=df.sort_values(['Date'],ascending=False).copy()
     df_datesorted[['Date','Specie','UniprotID','Gene','PDBid']].to_excel(f'Kinases_df_date_sorted.xlsx',index=False)
-    
+
     subListPymolSession(pwd,df)   #This function also copies coordinate files
 
 
-    
 
-        
-if __name__ == '__main__':    
+
+
+if __name__ == '__main__':
     pwd=os.getcwd()
     print("Present working directory: "+pwd)
     Main(pwd)
-    

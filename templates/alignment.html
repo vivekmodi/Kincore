@@ -32,9 +32,11 @@
                   Download text file
                 </button>
                 <div class="dropdown-menu">
-                  <h6 class="dropdown-header very-dark-text">File format</h6>
+                  <h6 class="dropdown-header very-dark-text">Alignment File format</h6>
                   <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename='downloads/alignment-files/Human-PK-alignment.aln') }}">Clustal</a>
                   <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename='downloads/alignment-files/Human-PK-alignment.fasta') }}">Fasta</a>
+                  <h6 class="dropdown-header very-dark-text">All human PK sequences</h6>
+                  <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename='downloads/alignment-files/Human-PK.fasta') }}">Fasta</a>
                 </div>
               </div>
             </div>

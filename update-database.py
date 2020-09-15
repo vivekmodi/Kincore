@@ -16,7 +16,7 @@ db.create_all()
 for i in df.index:
     if df.at[i,'Ligand']=='No_ligand':
         df.at[i,'Ligand_label']='No_ligand'
-        
+
     pdb1=Cluster(pdb=df.at[i,'PDBid'],\
     protein_name=df.at[i,'Protein'],\
     uniprotid=df.at[i,'UniprotID'],\
@@ -72,7 +72,7 @@ for i in df.index:
     gly_psi=df.at[i,'Gly_Psi'],\
     domainBreak=df.at[i,'DomainBreak'],\
     loopBreak=int(df.at[i,'LoopBreak']),\
-    synonym=df.at[i,'Synonym'],\
+    synonym='X',\
     x_mut=df.at[i,'X_mut'],\
     asp_mut=df.at[i,'Asp_mut'],\
     phe_mut=df.at[i,'Phe_mut'],\
@@ -93,12 +93,11 @@ for i in df.index:
     phe_lys=df.at[i,'Phe_Lys'],\
     chelix=df.at[i,'C-helix'],\
     spatial=df.at[i,'Spatial'],\
-    dihedral=df.at[i,'Dihedral'],\                  #Only one label in final scheme - without chi1
+    dihedral=df.at[i,'Dihedral'],\
     #dihedral_nochi1=df.at[i,'Dihedral_NoChi1'],\
     color=df.at[i,'Color'],\
     ligand_type=df.at[i,'Ligand_label'])
-    
-           
+
+
     db.session.add(pdb1)
     db.session.commit()
-
