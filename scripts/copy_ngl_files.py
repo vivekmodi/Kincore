@@ -9,7 +9,7 @@ import subprocess, os
 
 def copy_ngl_files(pwd,df):
         print('Copying .pdb files for NGL')
-        cmd=f'cp {pwd}/kinasechains_renumber_alignment/*.pdb.gz {pwd}/static/kinasechainsNGL/'
+        cmd=f'cp {pwd}/kinasechains_renumber_uniprot/*.pdb.gz {pwd}/static/kinasechainsNGL/'
         subprocess.call(cmd,shell=True)
         os.chdir(f'{pwd}/static/kinasechainsNGL')
         cmd='gunzip -f *.pdb.gz'
