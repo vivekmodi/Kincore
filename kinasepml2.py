@@ -42,6 +42,8 @@ from geneListHelp import geneListHelp
 from copy_ngl_files import copy_ngl_files
 from create_datefile import create_datefile
 from get_release_date import get_release_date
+from identify_author_dfg import identify_author_dfg
+from pdbe-annotation import pdbe-annotation
 
 
 
@@ -69,7 +71,7 @@ def Main(pwd):
     parse_sifts(f'{pwd}/kinasesifts',df)
     df=renumber_by_uniprot(pwd,df)      #Also returns deposition date
     renumber_by_alignment(pwd,df)
-
+    df=identify_author_dfg(pwd,df)
     download_phases(pwd,df)
     run_phoenix(pwd,df)
     run_edia(pwd,df)
@@ -102,6 +104,8 @@ def Main(pwd):
     df_datesorted[['Date','Specie','UniprotID','Gene','PDBid']].to_excel(f'Kinases_df_date_sorted.xlsx',index=False)
 
     subListPymolSession(pwd,df)   #This function also copies coordinate files
+
+    pdbe-annotation(pwd,f'Kinases_df-{today}.csv')
 
 
 
