@@ -8,7 +8,7 @@ Created on Tue Sep 15 15:40:00 2020
 import json, sys, subprocess, os
 from datetime import datetime
 import pandas as pd
-from Bio.SeqUtils import seq3
+from Bio.SeqUtils import seq1
 
 def create_json_dirs(pwd,pdb):
     dir_name=pdb[1:3].lower()
@@ -25,7 +25,7 @@ def create_json(pwd,filename):
     for i in df.index:
         pdb=df.at[i,'PDBid'][0:4]
         
-        if str(df.at[i,'Author_DFGnum']).lower() == 'nan':   #Do not include the structures where Phe is not resolved; Pandas read null as nan
+        if str(df.at[i,'Author_Aspnum']).lower() == 'nan':   #Do not include the structures where Phe is not resolved; Pandas read null as nan
             pdb_skip.append(pdb)
             continue
         
@@ -62,11 +62,11 @@ def create_json(pwd,filename):
                 chain_label=df.at[i,'PDBid'][4]
                 spatial=df.at[i,'Spatial']
                 dihedral=df.at[i,'Dihedral']
-                dfgnum=str(df.at[i,'Author_DFGnum'])
+                dfgnum=str(df.at[i,'Author_Aspnum'])      #Asp num is used
                 if '.' in dfgnum:
                     dfgnum=dfgnum[0:-2]      #Remove the trailing decimal if present
                 
-                aatype=(seq3(df.at[i,"DFGres"])).upper()
+                aatype=(df.at[i,"Author_Aspres"]).upper()
 
                 residues=[{"pdb_res_label": dfgnum,"aa_type": aatype,"site_data": [{"site_id_ref": site_id,"confidence_classification": "curated"}]}]
                 sites={"site_id": site_id, "label": spatial, "additional_site_annotations": {"dihedral_label": dihedral}}
@@ -75,7 +75,7 @@ def create_json(pwd,filename):
                 pdbe["sites"].append(sites)
 
         dir_name=create_json_dirs(pwd,pdb)
-        fhandle_json=open(f'JSON/{dir_name}/{pdb}.json','w')
+        fhandle_json=open(f'JSON/{dir_name}/'+pdb.lower()+'.json','w')
         json.dump(pdbe,fhandle_json,indent=2)
         fhandle_json.close()
 

@@ -14,12 +14,14 @@ from flask import Markup
 #from werkzeug.utils import secure_filename
 #from collections import defaultdict
 from sqlalchemy import asc
-
+#str = unicode(str, errors='replace')
 
 pwd=os.getcwd()
 #pwd='/var/www/html/site'
 sys.path.append(pwd+'/scripts')        #To import webserver_script from this directory
+#sys.path.append('/home/vivekmodi/Applications/Flask/Kinases/Kincore-standalone/')
 from webserver_script import identify_state
+#from webserver_script import identify_state
 
 UPLOAD_FOLDER = (pwd+'/server/uploads')
 ALLOWED_EXTENSIONS = {'gz', 'pdb','cif'}
@@ -1193,11 +1195,13 @@ def webserver():
             #userpdb.save(os.path.join(UPLOAD_FOLDER,userpdb.filename))
             userpdb.save(os.path.join(UPLOAD_FOLDER,userpdb.filename))
 
-            (group,chain_list,xdfg,dfg_asp,dfg_phe,xdfg_res,dfg_asp_res,dfg_phe_res,xdfg_phi,xdfg_psi,dfg_asp_phi,dfg_asp_psi,dfg_phe_phi,dfg_phe_psi,dfg_phe_chi1,chelix_conf,dfg_label,dfg_bkbone)=identify_state(pwd,userpdb.filename)
-            print(userpdb.filename,group,dfg_label,dfg_bkbone)
-            return render_template('conformation.html',userfilename=userpdb.filename,group=group,chain_list=chain_list,xdfg=xdfg,dfg_asp=dfg_asp,dfg_phe=dfg_phe,xdfg_res=xdfg_res,dfg_asp_res=dfg_asp_res,\
-            dfg_phe_res=dfg_phe_res,xdfg_phi=xdfg_phi,xdfg_psi=xdfg_psi,dfg_asp_phi=dfg_asp_phi,dfg_asp_psi=dfg_asp_psi,\
-            dfg_phe_phi=dfg_phe_phi,dfg_phe_psi=dfg_phe_psi,dfg_phe_chi1=dfg_phe_chi1,chelix_conf=chelix_conf,dfg_label=dfg_label,dfg_bkbone=dfg_bkbone)
+            #(group,chain_list,xdfg,dfg_asp,dfg_phe,xdfg_res,dfg_asp_res,dfg_phe_res,xdfg_phi,xdfg_psi,dfg_asp_phi,dfg_asp_psi,dfg_phe_phi,dfg_phe_psi,dfg_phe_chi1,chelix_conf,dfg_label,dfg_bkbone)=identify_state(pwd,userpdb.filename)
+            conf_df=identify_state(pwd,userpdb.filename,'True','','','','')
+            #print(userpdb.filename,group,dfg_label,dfg_bkbone)
+            #return render_template('conformation.html',userfilename=userpdb.filename,group=group,chain_list=chain_list,xdfg=xdfg,dfg_asp=dfg_asp,dfg_phe=dfg_phe,xdfg_res=xdfg_res,dfg_asp_res=dfg_asp_res,\
+            #dfg_phe_res=dfg_phe_res,xdfg_phi=xdfg_phi,xdfg_psi=xdfg_psi,dfg_asp_phi=dfg_asp_phi,dfg_asp_psi=dfg_asp_psi,\
+            #dfg_phe_phi=dfg_phe_phi,dfg_phe_psi=dfg_phe_psi,dfg_phe_chi1=dfg_phe_chi1,chelix_conf=chelix_conf,dfg_label=dfg_label,dfg_bkbone=dfg_bkbone)
+            return render_template('conformation.html',conf_df=conf_df)
 
     return render_template('webserver.html')
 
