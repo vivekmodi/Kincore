@@ -15,7 +15,7 @@ from flask import Markup
 #from collections import defaultdict
 from sqlalchemy import asc
 #str = unicode(str, errors='replace')
-
+#test - remove later
 pwd=os.getcwd()
 #pwd='/var/www/html/site'
 sys.path.append(pwd+'/scripts')        #To import webserver_script from this directory
