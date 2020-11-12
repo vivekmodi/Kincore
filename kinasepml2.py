@@ -43,7 +43,7 @@ from copy_ngl_files import copy_ngl_files
 from create_datefile import create_datefile
 from get_release_date import get_release_date
 from identify_author_dfg import identify_author_dfg
-from pdbe-annotation import pdbe-annotation
+from pdbe_annotation import create_json
 
 
 
@@ -105,7 +105,7 @@ def Main(pwd):
 
     subListPymolSession(pwd,df)   #This function also copies coordinate files
 
-    pdbe-annotation(pwd,f'Kinases_df-{today}.csv')
+    create_json(pwd,f'Kinases_df-{today}.csv')
 
 
 
