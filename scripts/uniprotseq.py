@@ -35,7 +35,7 @@ def uniprotseq(pwd,df):
                 found=1
                 
         if found==0:
-            description=os.popen(f'grep -w {uniname} /mnt/Data/Databases/Uniprot/TremblIDGeneProteinMapping.csv').read()               
+            description=os.popen(f'grep -w {uniname} {pwd}/TremblIDGeneProteinMapping.csv').read()               
             if description:
                 description=description.strip()
                 description=description.split('\t')
