@@ -44,7 +44,7 @@ from create_datefile import create_datefile
 from get_release_date import get_release_date
 from identify_author_dfg import identify_author_dfg
 from pdbe_annotation import create_json
-
+from transfer_to_dunbrack3 import transfer_to_dunbrack3
 
 
 
@@ -108,7 +108,7 @@ def Main(pwd):
     create_json(pwd,f'Kinases_df-{today}.csv')
 
 
-
+    transfer_to_dunbrack3(pwd)
 
 
 if __name__ == '__main__':
