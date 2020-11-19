@@ -421,6 +421,7 @@ def createPymolSession(pwd,subListPymol,outputName):
         ligand=subListPymol.at[i,'Ligand']
         dfgPhe=int(subListPymol.at[i,'DFGnum']);dfgAsp=dfgPhe-1;xdfg=dfgAsp-1
         ape=int(subListPymol.at[i,'APEnum'])
+        hrd=int(subListPymol.at[i,'HRDnum'])
         color=subListPymol.at[i,'Color']
         filename=(pdbs+'.cif.gz')
         objName=f'{group}_{domain}_{spatial}_{dihedral}_{pdbs}'
@@ -430,12 +431,20 @@ def createPymolSession(pwd,subListPymol,outputName):
         fhandle.write("hide spheres\nhide dots\n")
         fhandle.write(f"set_name {pdbs}, {objName}\n")
         fhandle.write(f"hide lines, {objName}\n")
-        fhandle.write(f"show ribbon, {objName}\n")
+        fhandle.write(f"show cartoon, {objName}\n")
         #fhandle.write(f"set_color mycolor-{dihedral}, {color}\n")
         #fhandle.write(f"set_color light-grey, (230,230,230)\n")
         #fhandle.write(f"color mycolor-{dihedral}, {objName}\n")
         #fhandle.write(f"color light-grey, {objName}\n")
         fhandle.write(f"select res {xdfg}-{dfgPhe} and {objName}\n")
+        fhandle.write("show sticks, sele\n")
+        fhandle.write(f"select res {hrd} and {objName}\n")
+        fhandle.write("show sticks, sele\n")
+        fhandle.write(f"select resname PTR and {objName}\n")
+        fhandle.write("show sticks, sele\n")
+        fhandle.write(f"select resname SEP and {objName}\n")
+        fhandle.write("show sticks, sele\n")
+        fhandle.write(f"select resname TPO and {objName}\n")
         fhandle.write("show sticks, sele\n")
         #fhandle.write(f"color mycolor-{dihedral}, (name C*) and {objName}\n")
         #fhandle.write(f"color mycolor-{dihedral}, res {dfgAsp}-{ape} and {objName}\n")
@@ -444,11 +453,15 @@ def createPymolSession(pwd,subListPymol,outputName):
             for lig_items in ligand.split(','):
                 ligname=lig_items.split(':')[0]
                 fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
+                fhandle.write(f"color white, sele\n")
         else:
             ligname=ligand.split(':')[0]
             fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
+            fhandle.write(f"color white, sele\n")
 
         fhandle.write(f"spectrum count, rainbow,{objName}\n")
+        fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
+        fhandle.write(f"color magenta, sele\n")
         fhandle.write(f"color nitrogen, elem N\n")
         fhandle.write(f"color oxygen, elem O\n")
 
@@ -508,6 +521,7 @@ def pymolSessionScript(pwd,subListPymol,outputName):
         ligand=subListPymol.at[i,'Ligand']
         dfgPhe=int(subListPymol.at[i,'DFGnum']);dfgAsp=dfgPhe-1;xdfg=dfgAsp-1
         ape=int(subListPymol.at[i,'APEnum'])
+        hrd=int(subListPymol.at[i,'HRDnum'])
         color=subListPymol.at[i,'Color']
         filename=(pdbs+'.cif.gz')
         objName=f'{group}_{domain}_{spatial}_{dihedral}_{pdbs}'
@@ -524,6 +538,14 @@ def pymolSessionScript(pwd,subListPymol,outputName):
         #fhandle.write(f"color light-grey, {objName}\n")
         fhandle.write(f"select res {xdfg}-{dfgPhe} and {objName}\n")
         fhandle.write("show sticks, sele\n")
+        fhandle.write(f"select res {hrd} and {objName}\n")
+        fhandle.write("show sticks, sele\n")
+        fhandle.write(f"select resname PTR and {objName}\n")
+        fhandle.write("show sticks, sele\n")
+        fhandle.write(f"select resname SEP and {objName}\n")
+        fhandle.write("show sticks, sele\n")
+        fhandle.write(f"select resname TPO and {objName}\n")
+        fhandle.write("show sticks, sele\n")
         #fhandle.write(f"color mycolor-{dihedral}, (name C*) and {objName}\n")
         #fhandle.write(f"color mycolor-{dihedral}, res {dfgAsp}-{ape} and {objName}\n")
 
@@ -531,13 +553,17 @@ def pymolSessionScript(pwd,subListPymol,outputName):
             for lig_items in ligand.split(','):
                 ligname=lig_items.split(':')[0]
                 fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
+                fhandle.write(f"color white, sele\n")
         else:
             ligname=ligand.split(':')[0]
             fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
+            fhandle.write(f"color white, sele\n")
 
         #fhandle.write(f"color nitrogen, elem N\n")
         #fhandle.write(f"color oxygen, elem O\n")
         fhandle.write(f"spectrum count, rainbow,{objName}\n")
+        fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
+        fhandle.write(f"color magenta, sele\n")
         fhandle.write(f"color nitrogen, elem N\n")
         fhandle.write(f"color oxygen, elem O\n")
 
@@ -593,6 +619,7 @@ def createPymolSessionRepresentative(pwd,subListPymol,outputName):
             ligand=subListPymol.at[i,'Ligand']
             dfgPhe=int(subListPymol.at[i,'DFGnum']);dfgAsp=dfgPhe-1;xdfg=dfgAsp-1
             ape=int(subListPymol.at[i,'APEnum'])
+            hrd=int(subListPymol.at[i,'HRDnum'])
             color=subListPymol.at[i,'Color']
 
             if count[uniprotid,domain,spatial,dihedral]>=1:  #count only one structure per domain
@@ -613,6 +640,14 @@ def createPymolSessionRepresentative(pwd,subListPymol,outputName):
             #fhandle.write(f"color light-grey, {objName}\n")
             fhandle.write(f"select res {xdfg}-{dfgPhe} and {objName}\n")
             fhandle.write("show sticks, sele\n")
+            fhandle.write(f"select res {hrd} and {objName}\n")
+            fhandle.write("show sticks, sele\n")
+            fhandle.write(f"select resname PTR and {objName}\n")
+            fhandle.write("show sticks, sele\n")
+            fhandle.write(f"select resname SEP and {objName}\n")
+            fhandle.write("show sticks, sele\n")
+            fhandle.write(f"select resname TPO and {objName}\n")
+            fhandle.write("show sticks, sele\n")
             #fhandle.write(f"color mycolor-{dihedral}, (name C*) and {objName}\n")
             #fhandle.write(f"color mycolor-{dihedral}, res {dfgAsp}-{ape} and {objName}\n")
 
@@ -620,12 +655,16 @@ def createPymolSessionRepresentative(pwd,subListPymol,outputName):
                 for lig_items in ligand.split(','):
                     ligname=lig_items.split(':')[0]
                     fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
+                    fhandle.write(f"color white, sele\n")
             else:
                 ligname=ligand.split(':')[0]
                 fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
+                fhandle.write(f"color white, sele\n")
 
 
             fhandle.write(f"spectrum count, rainbow,{objName}\n")
+            fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
+            fhandle.write(f"color magenta, sele\n")
             fhandle.write(f"color nitrogen, elem N\n")
             fhandle.write(f"color oxygen, elem O\n")
 
@@ -684,6 +723,7 @@ def pymolScriptRepresentative(pwd,subListPymol,outputName):
             ligand=subListPymol.at[i,'Ligand']
             dfgPhe=int(subListPymol.at[i,'DFGnum']);dfgAsp=dfgPhe-1;xdfg=dfgAsp-1
             ape=int(subListPymol.at[i,'APEnum'])
+            hrd=int(subListPymol.at[i,'HRDnum'])
             color=subListPymol.at[i,'Color']
             if count[uniprotid,domain,spatial,dihedral]>=1:  #count only one structure per domain
                 continue
@@ -711,6 +751,14 @@ def pymolScriptRepresentative(pwd,subListPymol,outputName):
             #fhandle.write(f"color light-grey, {objName}\n")
             fhandle.write(f"select res {xdfg}-{dfgPhe} and {objName}\n")
             fhandle.write("show sticks, sele\n")
+            fhandle.write(f"select res {hrd} and {objName}\n")
+            fhandle.write("show sticks, sele\n")
+            fhandle.write(f"select resname PTR and {objName}\n")
+            fhandle.write("show sticks, sele\n")
+            fhandle.write(f"select resname SEP and {objName}\n")
+            fhandle.write("show sticks, sele\n")
+            fhandle.write(f"select resname TPO and {objName}\n")
+            fhandle.write("show sticks, sele\n")
             #fhandle.write(f"color mycolor-{dihedral}, (name C*) and {objName}\n")
             #fhandle.write(f"color mycolor-{dihedral}, res {dfgAsp}-{ape} and {objName}\n")
 
@@ -718,11 +766,15 @@ def pymolScriptRepresentative(pwd,subListPymol,outputName):
                 for lig_items in ligand.split(','):
                     ligname=lig_items.split(':')[0]
                     fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
+                    fhandle.write(f"color white, sele\n")
             else:
                 ligname=ligand.split(':')[0]
                 fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
+                fhandle.write(f"color white, sele\n")
 
             fhandle.write(f"spectrum count, rainbow,{objName}\n")
+            fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
+            fhandle.write(f"color magenta, sele\n")
             fhandle.write(f"color nitrogen, elem N\n")
             fhandle.write(f"color oxygen, elem O\n")
 
