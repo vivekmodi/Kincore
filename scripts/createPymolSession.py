@@ -38,9 +38,9 @@ def subListPymolSession(pwd,df):
 
                                 if subListPymol.count().PDBid==0:
                                     continue
-                                if subListPymol.count().PDBid<=1000:        #too many structures in these cases
-                                    createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                #if subListPymol.count().PDBid<=1000:        #too many structures in these cases
+                                createPymolSession(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -408,7 +408,7 @@ def createPymolSession(pwd,subListPymol,outputName):
 
     fhandle=open(f'{pwd}/static/downloads/pymolSessions/{outputName}.pml','w')
     fhandle.write("bg_color black\n")
-    fhandle.write("space cmyk\n")
+    fhandle.write("space rgb\n")
 
     objectList=list()
 
@@ -446,6 +446,7 @@ def createPymolSession(pwd,subListPymol,outputName):
         fhandle.write("show sticks, sele\n")
         fhandle.write(f"select resname TPO and {objName}\n")
         fhandle.write("show sticks, sele\n")
+        fhandle.write(f"spectrum count, rainbow,{objName}\n")
         #fhandle.write(f"color mycolor-{dihedral}, (name C*) and {objName}\n")
         #fhandle.write(f"color mycolor-{dihedral}, res {dfgAsp}-{ape} and {objName}\n")
 
@@ -459,14 +460,14 @@ def createPymolSession(pwd,subListPymol,outputName):
             fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
             fhandle.write(f"color white, sele\n")
 
-        fhandle.write(f"spectrum count, rainbow,{objName}\n")
+       
         fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
         fhandle.write(f"color magenta, sele\n")
         fhandle.write(f"color nitrogen, elem N\n")
         fhandle.write(f"color oxygen, elem O\n")
 
 
-    fhandle.write("hide cartoon\n")
+    #fhandle.write("hide cartoon\n")
     fhandle.write(f"alignto {objectList[0]}\ncenter\n")
     fhandle.write(f"set orthoscopic, on\n")
     fhandle.write("order *,yes\n")
@@ -508,7 +509,7 @@ def pymolSessionScript(pwd,subListPymol,outputName):
 
     fhandle=open((f'{pwd}/static/downloads/pymolSessionScripts/{outputName}/{outputName}.pml'),'w')
     fhandle.write("bg_color black\n")
-    fhandle.write("space cmyk\n")
+    fhandle.write("space rgb\n")
 
     objectList=list()
 
@@ -531,7 +532,7 @@ def pymolSessionScript(pwd,subListPymol,outputName):
         fhandle.write("hide spheres\nhide dots\n")
         fhandle.write(f"set_name {pdbs}, {objName}\n")
         fhandle.write(f"hide lines, {objName}\n")
-        fhandle.write(f"show ribbon, {objName}\n")
+        fhandle.write(f"show cartoon, {objName}\n")
         #fhandle.write(f"set_color mycolor-{dihedral}, {color}\n")
         #fhandle.write(f"set_color light-grey, (230,230,230)\n")
         #fhandle.write(f"color mycolor-{dihedral}, {objName}\n")
@@ -546,6 +547,7 @@ def pymolSessionScript(pwd,subListPymol,outputName):
         fhandle.write("show sticks, sele\n")
         fhandle.write(f"select resname TPO and {objName}\n")
         fhandle.write("show sticks, sele\n")
+        fhandle.write(f"spectrum count, rainbow,{objName}\n")
         #fhandle.write(f"color mycolor-{dihedral}, (name C*) and {objName}\n")
         #fhandle.write(f"color mycolor-{dihedral}, res {dfgAsp}-{ape} and {objName}\n")
 
@@ -561,14 +563,14 @@ def pymolSessionScript(pwd,subListPymol,outputName):
 
         #fhandle.write(f"color nitrogen, elem N\n")
         #fhandle.write(f"color oxygen, elem O\n")
-        fhandle.write(f"spectrum count, rainbow,{objName}\n")
+       
         fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
         fhandle.write(f"color magenta, sele\n")
         fhandle.write(f"color nitrogen, elem N\n")
         fhandle.write(f"color oxygen, elem O\n")
 
 
-    fhandle.write("hide cartoon\n")
+    #fhandle.write("hide cartoon\n")
     fhandle.write(f"alignto {objectList[0]}\ncenter\n")
     fhandle.write(f"set orthoscopic, on\n")
     fhandle.write("order *,yes\n")
@@ -605,7 +607,7 @@ def createPymolSessionRepresentative(pwd,subListPymol,outputName):
 
     fhandle=open(f'{pwd}/static/downloads/pymolSessions/{outputName}.pml','w')
     fhandle.write("bg_color black\n")
-    fhandle.write("space cmyk\n")
+    fhandle.write("space rgb\n")
 
     objectList=list()
 
@@ -633,7 +635,7 @@ def createPymolSessionRepresentative(pwd,subListPymol,outputName):
             fhandle.write("hide spheres\nhide dots\n")
             fhandle.write(f"set_name {pdbs}, {objName}\n")
             fhandle.write(f"hide lines, {objName}\n")
-            fhandle.write(f"show ribbon, {objName}\n")
+            fhandle.write(f"show cartoon, {objName}\n")
             #fhandle.write(f"set_color mycolor-{dihedral}, {color}\n")
             #fhandle.write(f"set_color light-grey, (230,230,230)\n")
             #fhandle.write(f"color mycolor-{dihedral}, {objName}\n")
@@ -648,6 +650,7 @@ def createPymolSessionRepresentative(pwd,subListPymol,outputName):
             fhandle.write("show sticks, sele\n")
             fhandle.write(f"select resname TPO and {objName}\n")
             fhandle.write("show sticks, sele\n")
+            fhandle.write(f"spectrum count, rainbow,{objName}\n")
             #fhandle.write(f"color mycolor-{dihedral}, (name C*) and {objName}\n")
             #fhandle.write(f"color mycolor-{dihedral}, res {dfgAsp}-{ape} and {objName}\n")
 
@@ -661,15 +664,13 @@ def createPymolSessionRepresentative(pwd,subListPymol,outputName):
                 fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
                 fhandle.write(f"color white, sele\n")
 
-
-            fhandle.write(f"spectrum count, rainbow,{objName}\n")
             fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
             fhandle.write(f"color magenta, sele\n")
             fhandle.write(f"color nitrogen, elem N\n")
             fhandle.write(f"color oxygen, elem O\n")
 
 
-    fhandle.write("hide cartoon\n")
+    #fhandle.write("hide cartoon\n")
     fhandle.write(f"alignto {objectList[0]}\ncenter\n")
     fhandle.write(f"set orthoscopic, on\n")
     fhandle.write("order *,yes\n")
@@ -708,7 +709,7 @@ def pymolScriptRepresentative(pwd,subListPymol,outputName):
 
     fhandle=open((f'{pwd}/static/downloads/pymolSessionScripts/{outputName}/{outputName}.pml'),'w')
     fhandle.write("bg_color black\n")
-    fhandle.write("space cmyk\n")
+    fhandle.write("space rgb\n")
 
     objectList=list()
 
@@ -744,7 +745,7 @@ def pymolScriptRepresentative(pwd,subListPymol,outputName):
             fhandle.write("hide spheres\nhide dots\n")
             fhandle.write(f"set_name {pdbs}, {objName}\n")
             fhandle.write(f"hide lines, {objName}\n")
-            fhandle.write(f"show ribbon, {objName}\n")
+            fhandle.write(f"show cartoon, {objName}\n")
             #fhandle.write(f"set_color mycolor-{dihedral}, {color}\n")
             #fhandle.write(f"set_color light-grey, (230,230,230)\n")
             #fhandle.write(f"color mycolor-{dihedral}, {objName}\n")
@@ -759,6 +760,7 @@ def pymolScriptRepresentative(pwd,subListPymol,outputName):
             fhandle.write("show sticks, sele\n")
             fhandle.write(f"select resname TPO and {objName}\n")
             fhandle.write("show sticks, sele\n")
+            fhandle.write(f"spectrum count, rainbow,{objName}\n")
             #fhandle.write(f"color mycolor-{dihedral}, (name C*) and {objName}\n")
             #fhandle.write(f"color mycolor-{dihedral}, res {dfgAsp}-{ape} and {objName}\n")
 
@@ -772,14 +774,14 @@ def pymolScriptRepresentative(pwd,subListPymol,outputName):
                 fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
                 fhandle.write(f"color white, sele\n")
 
-            fhandle.write(f"spectrum count, rainbow,{objName}\n")
+           
             fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
             fhandle.write(f"color magenta, sele\n")
             fhandle.write(f"color nitrogen, elem N\n")
             fhandle.write(f"color oxygen, elem O\n")
 
 
-    fhandle.write("hide cartoon\n")
+    #fhandle.write("hide cartoon\n")
     fhandle.write(f"alignto {objectList[0]}\ncenter\n")
     fhandle.write(f"set orthoscopic, on\n")
     fhandle.write("order *,yes\n")
