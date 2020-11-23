@@ -40,7 +40,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -62,7 +62,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -84,7 +84,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -108,7 +108,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -130,7 +130,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -152,7 +152,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -176,7 +176,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -198,7 +198,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -220,7 +220,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -243,7 +243,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -265,7 +265,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
@@ -287,7 +287,7 @@ def subListPymolSession(pwd,df):
                                     continue
                                 if subListPymol.count().PDBid<=1000:        #too many structures in these cases
                                     createPymolSession(pwd,subListPymol,outputName)
-                                    pymolSessionScript(pwd,subListPymol,outputName)
+                                pymolSessionScript(pwd,subListPymol,outputName)
                                 createPymolSessionRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 pymolScriptRepresentative(pwd,subListPymol,f'Repr_{outputName}')
                                 copyCoordinateFiles(pwd,subListPymol,outputName)

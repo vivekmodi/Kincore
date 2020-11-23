@@ -73,8 +73,9 @@
                         <h6 class="dropdown-item very-dark-text">No Pymol session because the query has >1000 chains</h6>
                         {% else %}
                         <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSession['Human']) }}">Pymol session(ver 2.3)</a>
-                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['Human']) }}">Pymol script</a>
                         {% endif %}
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['Human']) }}">Pymol script</a>
+
                       </div>
                     </div>
 
@@ -211,8 +212,9 @@
                         <h6 class="dropdown-item very-dark-text">No Pymol session because the query has >1000 chains</h6>
                         {% else %}
                         <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSession['All']) }}">Pymol session(ver 2.3)</a>
-                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['All']) }}">Pymol script</a>
                         {% endif %}
+                        <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['All']) }}">Pymol script</a>
+
                       </div>
                     </div>
 
@@ -351,8 +353,9 @@
                       <h6 class="dropdown-item very-dark-text">No Pymol session because the query has >1000 chains</h6>
                       {% else %}
                       <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSession['Nonhuman']) }}">Pymol session(ver 2.3)</a>
-                      <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['Nonhuman']) }}">Pymol script</a>
                       {% endif %}
+                      <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['Nonhuman']) }}">Pymol script</a>
+
                     </div>
                   </div>
 
