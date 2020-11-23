@@ -80,8 +80,12 @@
                     <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSessionRe['Human']) }}" target="_blank">Pymol session(ver 2.3)</a>
                     <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScriptRe['Human']) }}" target="_blank">Pymol script</a>
                     <h6 class="dropdown-header very-dark-text">All chains</h6>
+                    {% if total_count['Human']>1000 %}
+                    <h6 class="dropdown-item very-dark-text">No Pymol session because the query has >1000 chains</h6>
+                    {% else %}
                     <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSession['Human']) }}">Pymol session(ver 2.3)</a>
                     <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['Human']) }}">Pymol script</a>
+                    {% endif %}
                   </div>
                 </div>
 
@@ -244,8 +248,12 @@
                     <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScriptRe['All']) }}" target="_blank">Pymol script</a>
 
                     <h6 class="dropdown-header very-dark-text">All chains</h6>
+                    {% if total_count['All']>1000 %}
+                    <h6 class="dropdown-item very-dark-text">No Pymol session because the query has >1000 chains</h6>
+                    {% else %}
                     <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSession['All']) }}">Pymol session(ver 2.3)</a>
                     <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['All']) }}">Pymol script</a>
+                    {% endif %}
                   </div>
                 </div>
 
@@ -404,8 +412,12 @@
                     <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScriptRe['Nonhuman']) }}" target="_blank">Pymol script</a>
 
                     <h6 class="dropdown-header very-dark-text">All chains</h6>
+                    {% if total_count['Nonhuman']>1000 %}
+                    <h6 class="dropdown-item very-dark-text">No Pymol session because the query has >1000 chains</h6>
+                    {% else %}
                     <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolSession['Nonhuman']) }}">Pymol session(ver 2.3)</a>
                     <a class="dropdown-item" style='color: #0683bf;' href="{{ url_for('static',filename=pymolScript['Nonhuman']) }}">Pymol script</a>
+                    {% endif %}
                   </div>
                 </div>
 
