@@ -45,8 +45,7 @@ from get_release_date import get_release_date
 from identify_author_dfg import identify_author_dfg
 from pdbe_annotation import create_json
 from transfer_to_dunbrack3 import transfer_to_dunbrack3
-
-
+from transfer_to_pdbe import transfer_to_pdbe
 
 def Main(pwd):
     today=str(datetime.now())[0:10].strip()
@@ -109,6 +108,7 @@ def Main(pwd):
 
 
     transfer_to_dunbrack3(pwd)
+    transfer_to_pdbe(pwd)
 
 
 if __name__ == '__main__':
