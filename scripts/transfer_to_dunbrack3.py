@@ -17,7 +17,8 @@ def transfer_to_dunbrack3(pwd):
         rsync -avr --progress {pwd}/static/kinasechainsNGL/* vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/static/kinasechainsNGL;\
         scp -r {pwd}/static/downloads/coordinateFiles/* vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/static/downloads/coordinateFiles/;\
         scp -r {pwd}/static/downloads/pymolSessions/* vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/static/downloads/pymolSessions/;\
-        scp -r {pwd}/static/downloads/pymolSessionScripts/* vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/static/downloads/pymolSessionScripts/;')
+        scp -r {pwd}/static/downloads/pymolSessionScripts/* vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/static/downloads/pymolSessionScripts/;\
+        scp -r {pwd}/update-date.txt vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/;')
     
     subprocess.call(cmd,shell=True)
     
