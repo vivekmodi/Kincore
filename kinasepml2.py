@@ -43,6 +43,7 @@ from copy_ngl_files import copy_ngl_files
 from create_datefile import create_datefile
 from get_release_date import get_release_date
 from identify_author_dfg import identify_author_dfg
+from update_database import update_database
 from pdbe_annotation import create_json
 from transfer_to_dunbrack3 import transfer_to_dunbrack3
 from transfer_to_pdbe import transfer_to_pdbe
@@ -104,6 +105,7 @@ def Main(pwd):
 
     subListPymolSession(pwd,df)   #This function also copies coordinate files
 
+    update_database(df)
     create_json(pwd,f'Kinases_df-{today}.csv')
 
 

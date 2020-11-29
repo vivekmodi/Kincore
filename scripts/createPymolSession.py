@@ -312,10 +312,10 @@ def subListPymolSession(pwd,df):
                 break
 
         outputName=f'{group}_{gene}_{pdbName}'
-        if not os.path.isfile(f'{pwd}/static/downloads/pymolSessions/{outputName}.pse.zip'):
-            createPymolSession(pwd,subListPymol,outputName)
-            pymolSessionScript(pwd,subListPymol,outputName)
-            copyCoordinateFiles(pwd,subListPymol,outputName)
+        #if not os.path.isfile(f'{pwd}/static/downloads/pymolSessions/{outputName}.pse.zip'):
+        createPymolSession(pwd,subListPymol,outputName)
+        pymolSessionScript(pwd,subListPymol,outputName)
+        copyCoordinateFiles(pwd,subListPymol,outputName)
         
     #Pymol sessions for unique queries - Gene
     print('Creating Pymol sessions for genes...')
