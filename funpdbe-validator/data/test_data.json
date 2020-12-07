@@ -1,0 +1,17 @@
+{
+  "data_resource": "Kincore",
+  "resource_version": "1.0.0",
+  "resource_entry_url": "http://dunbrack3.fccc.edu/kincore/pdb/3T8O",
+  "model_coordinates_url": "http://dunbrack3.fccc.edu/kincore/static/downloads/coordinateFiles/AGC_GRK1_3T8O_uniNum.zip",
+  "release_date": "2011-08-01",
+  "pdb_id": "3t8o",
+  "chains": [
+    {
+      "chain_label": "A",
+      "additional_chain_annotations": {
+        "Spatial label": "DFGin",
+        "Dihedral label": "BLAminus"
+      }
+    }
+  ]
+}

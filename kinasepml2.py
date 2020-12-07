@@ -3,6 +3,7 @@
 
 import os, sys
 sys.path.append(os.getcwd()+'/scripts')
+sys.path.append(os.getcwd()+'/funpdbe-validator')
 
 import pandas as pd
 from datetime import datetime
@@ -45,6 +46,7 @@ from get_release_date import get_release_date
 from identify_author_dfg import identify_author_dfg
 from update_database import update_database
 from pdbe_annotation import create_json
+from validate import validate
 from transfer_to_dunbrack3 import transfer_to_dunbrack3
 from transfer_to_pdbe import transfer_to_pdbe
 
@@ -107,13 +109,14 @@ def Main(pwd):
 
     update_database(df)
     create_json(pwd,f'Kinases_df-{today}.csv')
-
+    validate(pwd,f'Kinases_df-{today}.csv')
 
     transfer_to_dunbrack3(pwd)
-    transfer_to_pdbe(pwd)
+    #transfer_to_pdbe(pwd)
 
 
 if __name__ == '__main__':
-    pwd=os.getcwd()
+    #pwd=os.getcwd()
+    pwd='/home/vivek/Applications/Flask/Kincore'     #location in workhorse;required to start cronjob
     print("Present working directory: "+pwd)
     Main(pwd)
