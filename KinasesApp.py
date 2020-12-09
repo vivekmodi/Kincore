@@ -152,6 +152,7 @@ class Cluster(db.Model):
 ###################FUNCTIONS###############################
 def create_lists():
     pdbListDb=list();chainListDb=list();uniprotIdListDb=list();uniprotAccListDb=list();geneListDb=list();ligandListDb=list();specieListDb=list()
+    ligandSynDict=dict()
     for pdbs in Cluster.query.with_entities(Cluster.pdb):
         pdbListDb.append(str(pdbs[0])[0:4])
     for pdbs in Cluster.query.with_entities(Cluster.pdb):
@@ -167,7 +168,14 @@ def create_lists():
     for species in Cluster.query.with_entities(Cluster.specie):
         specieListDb.append(species[0])
 
-    return (pdbListDb,chainListDb,uniprotIdListDb,uniprotAccListDb,geneListDb,ligandListDb,specieListDb)
+    ligandSynDict={'Abemaciclib':'6ZV','Afatinib':'0WN','Alectinib':'EMH','Axitinib':'AXI','Baricitinib':'3JW','Bosutinib':'DB8','Brigatinib':'6GY',\
+                   'Cabozantinib':'XIN','Ceritinib':'4MK','Cobimetinib':'EUI','Crizotinib':'VGH','Dabrafenib':'P06','Dacomitinib':'1C9','Dasatinib':'1N1',\
+                   'Entrectinib':'YMX','Erlotinib':'AQ4','Gefitinib':'IRE','Gilteritinib':'C6F','Ibrutinib':'8E8','Imatinib':'STI','Lapatinib':'FMM',\
+                   'Lenvatinib':'LEV','Midostaurin':'2K2','Nilotinib':'NIL','Nintedanib':'XIN','Palbociclib':'LQQ','Pexidartinib':'P31','Ponatinib':'0LI',\
+                   'Ribociclib':'6ZZ','Ruxolitinib':'RXT','Selumetinib':'3EW','Sorafenib':'BAX','Sunitinib':'B49','Tofacitinib':'MI1','Vemurafenib':'032',\
+                   'Zanubrutinib':'BA0'}
+
+    return (pdbListDb,chainListDb,uniprotIdListDb,uniprotAccListDb,geneListDb,ligandListDb,specieListDb,ligandSynDict)
 
 def create_color_lists():
     clusterColor={'BLAminus':'rgb(179,215,229)','BLAplus':'rgb(254, 214, 154)','ABAminus':'rgba(243,140,184)','BLBminus':'rgb(250,128,114)',\
@@ -276,7 +284,7 @@ def geneListHelp():
 
 @app.route('/formSearch', methods=['GET','POST'])
 def formSearch():
-    (pdbListDb,chainListDb,uniprotIdListDb,uniprotAccListDb,geneListDb,ligandListDb,specieListDb)=create_lists()
+    (pdbListDb,chainListDb,uniprotIdListDb,uniprotAccListDb,geneListDb,ligandListDb,specieListDb,ligandSynDict)=create_lists()
 
     if request.method=='POST':
         inputString=request.form['inputString'].upper()
@@ -294,6 +302,9 @@ def formSearch():
         for items in ligandListDb:          #Loop is required because some entries have two ligands
             if inputString in items:
                 return redirect(url_for('uniqueQuery',queryname=inputString,settings='LIGAND'))
+        for lig_syn in ligandSynDict.keys():
+            if inputString==lig_syn.upper():
+                return redirect(url_for('uniqueQuery',queryname=ligandSynDict[lig_syn].upper(),settings='LIGAND'))
         else:
             return render_template('nomatch.html')
 

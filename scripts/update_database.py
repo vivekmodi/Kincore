@@ -103,4 +103,5 @@ def update_database(df):
 if __name__ == '__main__':
     filename=sys.argv[1]
     today=str(datetime.now())[0:10].strip()
-    df=pd.read_csv(filename,sep='\t')
+    df=pd.read_csv(filename,sep='\t',header='infer')
+    update_database(df)
