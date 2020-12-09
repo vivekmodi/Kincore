@@ -287,6 +287,8 @@ def formSearch():
             return redirect(url_for('uniqueQuery',queryname=inputString,settings='PDB'))
         if inputString in uniprotIdListDb:
             return redirect(url_for('uniqueQuery',queryname=inputString,settings='UNIPROTID'))
+        if inputString in uniprotAccListDb:
+            return redirect(url_for('uniqueQuery',queryname=inputString,settings='UNIPROTACC'))
         if inputString in geneListDb:                 
             return redirect(url_for('uniqueQuery',queryname=inputString,settings='GENE'))
         for items in ligandListDb:          #Loop is required because some entries have two ligands
@@ -928,6 +930,14 @@ def uniqueQuery(settings,queryname):
         first_entry=Cluster.query.filter(func.lower(Cluster.uniprotid)==func.lower(queryname)).first()
         geneName=first_entry.gene
         return redirect(url_for('uniqueQuery',settings='GENE',queryname=geneName))
+    
+    if settings=='UNIPROTACC' and queryname.upper() not in ('P23458','O60674','P52333','Q9P2K8','Q9P2K8','P51812',\
+    'O75582','Q9UK32','P29597'):
+        queryname=queryname.upper()
+        first_entry=Cluster.query.filter(func.lower(Cluster.uniprotacc)==func.lower(queryname)).first()
+        geneName=first_entry.gene
+        return redirect(url_for('uniqueQuery',settings='GENE',queryname=geneName))
+    
 
     if settings=='GENE' and queryname.upper() in ('JAK1','JAK2','JAK3','EIF2AK4','RPS6KA1','RPS6KA3','RPS6KA5','RPS6KA6','TYK2'):
         queryname=queryname.upper()
@@ -1090,6 +1100,12 @@ def uniqueQuery(settings,queryname):
         geneName=first_entry.gene
         return redirect(url_for('uniqueQuery',settings='GENE',queryname=geneName))
 
+    if settings=='UNIPROTACC' and queryname.upper() in ('P23458','O60674','P52333','Q9P2K8','Q9P2K8','P51812',\
+    'O75582','Q9UK32','P29597'):
+        queryname=queryname.upper()
+        first_entry=Cluster.query.filter(func.lower(Cluster.uniprotacc)==func.lower(queryname)).first()
+        geneName=first_entry.gene
+        return redirect(url_for('uniqueQuery',settings='GENE',queryname=geneName))
 
     if settings=='SPATIAL':
         return redirect(url_for('multipleQuery',groupSelect='All',labelSelect=queryname,ligTypeSelect='All'))
