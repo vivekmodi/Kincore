@@ -39,7 +39,7 @@ def read_psiblast(df,psiblast_result, excluded_output):
                     if uniprot_name in ('NA','D3DSX2_HUMAN','RIOK1_HUMAN','RIOK2_HUMAN','RIOK3_HUMAN','PAN3_DROME','SG196_MOUSE','SG196_DANRE','E0W1I1_PEDHC','D3ZKP6_RAT'):
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
                         fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
-                        continue                           #Remove the case which do not have uniprot assigned, D3DSX2 in not the correct uniprot but comes up in some PDB annotation
+                        continue                           #Remove the case which do not have uniprot assigned, D3DSX2 is not the correct uniprot but comes up in some PDB annotation
                         
                           
                     if hsp.hit_id[0:4] in ('6T28','6T29','3LZBE','3LZBF','3LZBG','3LZBH','5CNOX','6PYHA','6PYHD','6TLJS','6Z1T','6Z1Q','6Z83','6Z84','6YUL','6YUM'):     # Description of these structures is in the kinasepml notes file
