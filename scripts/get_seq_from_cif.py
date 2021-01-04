@@ -11,18 +11,26 @@ import warnings
 from Bio import BiopythonWarning
 warnings.simplefilter('ignore', BiopythonWarning)
 
+
 def get_seq_from_cif(pwd,df):
     print('Reading sequence from Uniprot numbered .cif file...')
+    log=open(f'{pwd}/kinasepml.log','a')
+    
     for i in df.index:
         pdbs=df.at[i,'PDBid']
-        handle=gzip.open(f'{pwd}/kinasechains_renumber_uniprot/{pdbs}.cif.gz','rt')    #will contain only the Uniprot residues, not 
+        try:
+            handle=gzip.open(f'{pwd}/kinasechains_renumber_uniprot/{pdbs}.cif.gz','rt')    #will contain only the Uniprot residues, not 
+        except:
+            log.write(f'get_seq_from_cif: File not found {pdbs}.dih\n')
+            continue
+        
         for record in SeqIO.parse(handle, "cif-atom"):
             sequence=list(str(record.seq))
-            for letters in sequence[::-1]:    #fix for a probable bug in Biopython, it introduces a trail  of 'X' in some cases at the end of the sequence
-                if letters=='X':
-                    sequence.pop()
-                else:
-                    break
+            #for letters in sequence[::-1]:    #fix for a probable bug in Biopython, it introduces a trail  of 'X' in some cases at the end of the sequence
+            #    if letters=='X':
+            #        sequence.pop()
+            #    else:
+            #        break
             
             df.at[i,'StrSeq']=''.join(sequence)
         
