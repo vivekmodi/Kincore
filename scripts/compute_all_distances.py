@@ -10,7 +10,11 @@ import gzip
 from Bio import PDB
 
 def compute_distance(input_dir,filename,res1,atm1,res2,atm2):
-    handle=gzip.open((input_dir+'/'+filename+'.cif.gz'),'rt')
+    try:
+        handle=gzip.open((input_dir+'/'+filename+'.cif.gz'),'rt')
+    except:
+        continue
+
     parser=PDB.MMCIFParser(QUIET=True)
     structure=parser.get_structure("PDB",handle)
     ignoremodified=open(f'List_modified_aminoacid.txt','r')
@@ -38,12 +42,12 @@ def compute_distance(input_dir,filename,res1,atm1,res2,atm2):
         return distance
     else:
         return 999
-    
-    
+
+
 def compute_all_distances(pwd,df):
     #Compute distance between residues
     kinasechains_renumber_uniprot=f'{pwd}/kinasechains_renumber_uniprot'
-    
+
     print('Computing distance between residue pairs...')
 
     for i in df.index:

@@ -132,7 +132,13 @@ def classify_ligands(pwd,df):
         else:
             df.at[i,'Ligand_label']='None'    #make default label None
 
-        handle=gzip.open(f'{pwd}/kinasechains_renumber_alignment/{pdbs}.cif.gz','rt')
+        try:
+            handle=gzip.open(f'{pwd}/kinasechains_renumber_alignment/{pdbs}.cif.gz','rt')
+        except:
+            log=open(f'{pwd}/kinasepml.log','a')
+            log.write(f'classify_ligands: File not found {pdbs}.cif.gz\n')
+            continue
+
         parser=PDB.MMCIFParser()
         structure=parser.get_structure(pdbs,handle)
 
