@@ -30,6 +30,7 @@ def extract_ligands(pwd,df):
             try:
                 handle=gzip.open(f'{pwd}/kinasechains_renumber_uniprot/{pdbs}.cif.gz','rt')
             except:
+                df.at[i,'Ligand']='XXXX'    #use a default value 
                 log.write(f'extract_ligands: File not found {pdbs}.cif.gz\n')
                 continue
             

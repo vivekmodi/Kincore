@@ -49,6 +49,7 @@ from pdbe_annotation import create_json
 from validate import validate
 from transfer_to_dunbrack3 import transfer_to_dunbrack3
 from transfer_to_pdbe import transfer_to_pdbe
+from create_fasta_with_labels import create_fasta_with_labels
 
 def Main(pwd):
     today=str(datetime.now())[0:10].strip()
@@ -104,7 +105,7 @@ def Main(pwd):
 
     df_datesorted=df.sort_values(['Date'],ascending=False).copy()
     df_datesorted[['Date','Specie','UniprotID','Gene','PDBid']].to_excel(f'Kinases_df_date_sorted.xlsx',index=False)
-
+    df=create_fasta_with_labels(pwd,df)
     subListPymolSession(pwd,df)   #This function also copies coordinate files
 
     update_database(df)
