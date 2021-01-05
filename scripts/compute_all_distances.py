@@ -13,7 +13,7 @@ def compute_distance(input_dir,filename,res1,atm1,res2,atm2):
     try:
         handle=gzip.open((input_dir+'/'+filename+'.cif.gz'),'rt')
     except:
-        continue
+        return 999
 
     parser=PDB.MMCIFParser(QUIET=True)
     structure=parser.get_structure("PDB",handle)
