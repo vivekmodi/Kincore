@@ -100,12 +100,13 @@ def Main(pwd):
     copy_ngl_files(pwd,df)
     create_datefile(pwd)
     df_sorted=df.sort_values(['Specie','Group','Gene','Spatial','Dihedral','Ligand_label']).copy()
+    df_sorted=create_fasta_with_labels(pwd,df_sorted)    #Prints sorted fasta file with sequences from pdbaa
     df_sorted.to_excel(f'Kinases_df-{today}.xlsx',index=False)   #Write excel and csv
     df_sorted.to_csv(f'Kinases_df-{today}.csv',sep='\t',index=False)
 
     df_datesorted=df.sort_values(['Date'],ascending=False).copy()
     df_datesorted[['Date','Specie','UniprotID','Gene','PDBid']].to_excel(f'Kinases_df_date_sorted.xlsx',index=False)
-    df=create_fasta_with_labels(pwd,df)
+    
     subListPymolSession(pwd,df)   #This function also copies coordinate files
 
     update_database(df)
