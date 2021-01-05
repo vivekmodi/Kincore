@@ -64,7 +64,7 @@ def compute_distance_from_pocket_residues(structure,ligandname,ligandid):
     backpocket_count=dict();frontpocket_count=dict()
     backpocket_count[ligandname+':'+ligandid]=0
     frontpocket_count[ligandname+':'+ligandid]=0
-    
+
     for chain1 in structure:
                 for model1 in chain1:
                     for residue1 in model1:
@@ -79,7 +79,7 @@ def compute_distance_from_pocket_residues(structure,ligandname,ligandid):
                                                 ignoremodified.seek(0)
                                                 if (res_id>=106 and res_id<=184) or (res_id>=187 and res_id<=195)  or (res_id>=420 and res_id<=422) or \
                                                         res_id==1011 or res_id==959 or (res_id>=1337 and res_id<=1339):
-                                                          
+
                                                             for atom2 in residue2:
                                                                 if atom2.element!='H':
                                                                     if (res_id>=1337 and res_id<=1338) and (atom2.fullname!='O' and atom2.fullname!='N'):
@@ -105,7 +105,7 @@ def compute_distance_from_pocket_residues(structure,ligandname,ligandid):
 
                                                                     if (res_id==1011 or res_id==959 or res_id==153 or res_id==149) and distance<=4.5:  #contact with Type2 pocket present
                                                                         dfgoutcontact+=1
-                                                                        
+
     return frontpocket_count, backpocket_count, dfgoutcontact
 
 def classify_ligands(pwd,df):
@@ -123,7 +123,7 @@ def classify_ligands(pwd,df):
         ligand_label=list()
 
         ligand_label=list()
-        
+
 
 
         if 'No_ligand' in df.at[i,'Ligand']:
@@ -131,7 +131,7 @@ def classify_ligands(pwd,df):
             continue
         else:
             df.at[i,'Ligand_label']='None'    #make default label None
-            
+
         handle=gzip.open(f'{pwd}/kinasechains_renumber_alignment/{pdbs}.cif.gz','rt')
         parser=PDB.MMCIFParser()
         structure=parser.get_structure(pdbs,handle)
@@ -145,34 +145,34 @@ def classify_ligands(pwd,df):
             ligandname=items.split(':')[0]
             ligandid=items.split(':')[1]
 
-            
-            
+
+
             #Identify allosteric ligands
             min_rre4=compute_distance_from_rre4(structure,ligandname,ligandid,rre4num)
             min_hinge=compute_distance_from_hinge(structure,ligandname,ligandid,hinge1)
-            
+
             #Contacts with pocket residues
             (frontpocket_count, backpocket_count, dfgoutcontact)=compute_distance_from_pocket_residues(structure,ligandname,ligandid)
-            
+
             if min_rre4!=999 or min_hinge!=999:
                 if min_rre4>=6.5 and min_hinge>=6.5:
                     ligand_label.append('Allosteric')
                     fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tAllosteric\n')
                 elif min_hinge>=6 and backpocket_count[ligandname+':'+ligandid]>=3:     #min_hinge changed from 5 to 6 to correct TypeIII classification in DFGout, e.g 3II5A
-                    ligand_label.append('Type3')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType3\n')
+                    ligand_label.append('Type III')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType III\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and frontpocket_count[ligandname+':'+ligandid]==0 and dfgoutcontact==0:
-                    ligand_label.append('Type1.5_Back')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1.5_Back\n')
+                    ligand_label.append('Type I½_Back')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType I½_Back\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and frontpocket_count[ligandname+':'+ligandid]>=1 and dfgoutcontact==0:
-                    ligand_label.append('Type1.5_Front')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1.5_Front\n')
+                    ligand_label.append('Type I½_Front')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType I½_Front\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and dfgoutcontact>=1 and spatial=='DFGout':
-                    ligand_label.append('Type2')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType2\n')
+                    ligand_label.append('Type II')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType II\n')
                 else:
                     ligand_label.append('Type1')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1\n')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType I\n')
 
 
         df.at[i,'Ligand_label']=','.join(ligand_label)

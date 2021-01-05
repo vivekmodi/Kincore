@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Conformation</title>
+    {% extends "base.html" %}
+  </head>
+  {% block content %}
+  <body>
+    <div class="container-fluid">
+      {% for chain in chain_list %}
+      <div class="row very-dark-text">
+
+        {% if group[chain]=='NA' %}
+        <h6>Chain {{ chain }} is probably not a kinase domain.</h6>
+        {% else %}
+
+        <br><br>
+        <h5>The kinase domain in Chain {{ chain }} of uploaded structure is closest to {{ group[chain] }} group of kinases.
+        <br><br>
+          The dihedrals of XDF residues are:<br>
+
+          <table class="table very-dark-text">
+            <thead>
+              <tr>
+                <th scope="col">Motif</th>
+                <th scope='col'>Residue</th>
+                <th scope='col'>Phi</th>
+                <th scope='col'>Psi</th>
+                <th scope='col'>Phe-Chi1</th>
+              </tr>
+            </thead>
+
+            <tr>
+              <td>X-DFG</td>
+              <td>{{ xdfg_res[chain] }}{{ xdfg[chain] }}</td>
+              <td>{{ xdfg_phi[chain] }}</td>
+              <td>{{ xdfg_psi[chain] }}</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>DFG-Asp</td>
+              <td>{{ dfg_asp_res[chain] }}{{ dfg_asp[chain] }}</td>
+              <td>{{ dfg_asp_phi[chain] }}</td>
+              <td>{{ dfg_asp_psi[chain] }}</td>
+              <td>-</td>
+            </tr>
+            <td>DFG-Phe</td>
+            <td>{{ dfg_phe_res[chain] }}{{ dfg_phe[chain] }}</td>
+            <td>{{ dfg_phe_phi[chain] }}</td>
+            <td>{{ dfg_phe_psi[chain] }}</td>
+            <td>{{ dfg_phe_chi1[chain] }}</td>
+          </table>
+
+        The conformation is: {{ dfg_label[chain] }} - {{ dfg_bkbone[chain] }}, with {{ chelix_conf[chain] }}.</h5>
+        {% endif %}
+
+      </div>
+<div class="row">
+  <hr class="my-4">
+</div>
+
+
+
+      {% endfor %}
+      <div class="row very-dark-text">
+        <p>If the conformation is 'None' then either the residues required for calculation are not resolved in structure, or the conformation is not close to any of the clusters.</p>
+      </div>
+    </div>
+
+  </body>
+  {% endblock %}
+</html>

@@ -7,16 +7,16 @@ Created on Mon Mar 23 11:52:35 2020
 """
 
 import subprocess,os
-            
+
 def subListPymolSession(pwd,df):
     print('Creating Pymol sessions for Groups, Labels...')
     for organism in ('Human','All','Nonhuman'):
         for groups in ('AGC','CAMK','CK1','CMGC','NEK','STE','TKL','TYR','OTHER','.*'):
             group_out=groups
-            for ligand_label in ('Type1','Type1.5','Type2','Type3','Allosteric','No_ligand','.*'):
+            for ligand_label in ('Type I','Type I½','Type II','Type III','Allosteric','No_ligand','.*'):
                 lig_out=ligand_label
-                if ligand_label=='Type1':
-                    dontmatch='Type1.5'
+                if ligand_label=='Type I':
+                    dontmatch='Type I½'
                 else:
                     dontmatch='X'
 
@@ -316,7 +316,7 @@ def subListPymolSession(pwd,df):
         createPymolSession(pwd,subListPymol,outputName)
         pymolSessionScript(pwd,subListPymol,outputName)
         copyCoordinateFiles(pwd,subListPymol,outputName)
-        
+
     #Pymol sessions for unique queries - Gene
     print('Creating Pymol sessions for genes...')
     for domain in sorted(set(df.Domain)):
@@ -460,7 +460,7 @@ def createPymolSession(pwd,subListPymol,outputName):
             fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
             fhandle.write(f"color white, sele\n")
 
-       
+
         fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
         fhandle.write(f"color magenta, sele\n")
         fhandle.write(f"color nitrogen, elem N\n")
@@ -563,7 +563,7 @@ def pymolSessionScript(pwd,subListPymol,outputName):
 
         #fhandle.write(f"color nitrogen, elem N\n")
         #fhandle.write(f"color oxygen, elem O\n")
-       
+
         fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
         fhandle.write(f"color magenta, sele\n")
         fhandle.write(f"color nitrogen, elem N\n")
@@ -774,7 +774,7 @@ def pymolScriptRepresentative(pwd,subListPymol,outputName):
                 fhandle.write(f"select resname {ligname}\nshow sticks, sele\n")
                 fhandle.write(f"color white, sele\n")
 
-           
+
             fhandle.write(f"select res {xdfg}-{ape} and {objName}\n")
             fhandle.write(f"color magenta, sele\n")
             fhandle.write(f"color nitrogen, elem N\n")
