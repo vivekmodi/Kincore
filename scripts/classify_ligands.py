@@ -165,20 +165,20 @@ def classify_ligands(pwd,df):
                     ligand_label.append('Allosteric')
                     fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tAllosteric\n')
                 elif min_hinge>=6 and backpocket_count[ligandname+':'+ligandid]>=3:     #min_hinge changed from 5 to 6 to correct TypeIII classification in DFGout, e.g 3II5A
-                    ligand_label.append('Type III')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType III\n')
+                    ligand_label.append('TypeIII')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tTypeIII\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and frontpocket_count[ligandname+':'+ligandid]==0 and dfgoutcontact==0:
-                    ligand_label.append('Type I½_Back')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType I½_Back\n')
+                    ligand_label.append('TypeI½_Back')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tTypeI½_Back\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and frontpocket_count[ligandname+':'+ligandid]>=1 and dfgoutcontact==0:
-                    ligand_label.append('Type I½_Front')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType I½_Front\n')
+                    ligand_label.append('TypeI½_Front')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tTypeI½_Front\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and dfgoutcontact>=1 and spatial=='DFGout':
-                    ligand_label.append('Type II')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType II\n')
+                    ligand_label.append('TypeII')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tTypeII\n')
                 else:
-                    ligand_label.append('Type1')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType I\n')
+                    ligand_label.append('TypeI')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tTypeI\n')
 
 
         df.at[i,'Ligand_label']=','.join(ligand_label)

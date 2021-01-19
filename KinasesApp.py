@@ -409,12 +409,12 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
     if ligTypeSelect=='All':
         ligTypeSelect=''
         ligand_type='All'
-    if ligTypeSelect=='Type I':      #without this condition Type I also matches Type I½
-        dontmatch1='%Type I½%';dontmatch2='%Type II%';dontmatch3='%Type III%'
+    if ligTypeSelect=='TypeI':      #without this condition Type I also matches Type I½
+        dontmatch1='%TypeI½%';dontmatch2='%TypeII%';dontmatch3='%TypeIII%'
     else:
         dontmatch1=dontmatch2=dontmatch3=''
-    if ligTypeSelect=='Type I½_Front' or ligTypeSelect=='Type I½_Back':
-        ligTypeSelect='Type I½';ligand_type='Type I½'
+    if ligTypeSelect=='TypeI½_Front' or ligTypeSelect=='TypeI½_Back':
+        ligTypeSelect='TypeI½';ligand_type='TypeI½'
     if groupSelect=='All':
         groupSelect=''
 
@@ -1134,30 +1134,33 @@ def uniqueQuery(settings,queryname):
 
     if settings=='LIGAND':
         if queryname!='No_ligand':
-            queryname=queryname.upper()
+            queryname=queryname.upper()    
+            modified_queryname=queryname.upper()+':'   #Colon included so that ligand id is matched and not residue number
+        else:
+            modified_queryname=queryname
         ligand_list=dict();total_count=dict();geneList=dict();geneList['Human']=list();geneList['All']=list();geneList['Nonhuman']=list();
         reprStr=dict();nglList=dict();subList=dict();pymolSession=dict();pymolSession=dict();coordinateFiles=dict()
         dfgNumReprStr=dict();dfgNumReprStr['Human']=list();dfgNumReprStr['All']=list();dfgNumReprStr['Nonhuman']=list()
 
         for tabs in ('Human','All','Nonhuman'):
-            ligand_list['Human']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie=='Homo sapiens').order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
-            total_count['Human']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie=='Homo sapiens').count()
+            ligand_list['Human']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie=='Homo sapiens').order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
+            total_count['Human']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie=='Homo sapiens').count()
             (strCount_human,geneCount_human)=count_structures_all(ligand_list['Human'])
 
-            ligand_list['All']=Cluster.query.filter(Cluster.ligand.contains(queryname)).order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
-            total_count['All']=Cluster.query.filter(Cluster.ligand.contains(queryname)).count()
+            ligand_list['All']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname)).order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
+            total_count['All']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname)).count()
             (strCount_all,geneCount_all)=count_structures_all(ligand_list['All'])
 
-            ligand_list['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie!='Homo sapiens').order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
-            total_count['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie!='Homo sapiens').count()
+            ligand_list['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie!='Homo sapiens').order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
+            total_count['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie!='Homo sapiens').count()
             (strCount_nonhuman,geneCount_nonhuman)=count_structures_all(ligand_list['Nonhuman'])
 
             for spatial in ('DFGin','DFGinter','DFGout','None'):
                 if spatial=='DFGin':
                     for dihedral in ('BLAminus','BLAplus','ABAminus','BLBminus','BLBplus','BLBtrans','None'):
-                        subList['Human']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie=='Homo sapiens',Cluster.spatial=='DFGin',Cluster.dihedral==dihedral).all()
-                        subList['All']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.spatial=='DFGin',Cluster.dihedral==dihedral).all()
-                        subList['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie!='Homo sapiens',Cluster.spatial=='DFGin',Cluster.dihedral==dihedral).all()
+                        subList['Human']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie=='Homo sapiens',Cluster.spatial=='DFGin',Cluster.dihedral==dihedral).all()
+                        subList['All']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.spatial=='DFGin',Cluster.dihedral==dihedral).all()
+                        subList['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie!='Homo sapiens',Cluster.spatial=='DFGin',Cluster.dihedral==dihedral).all()
 
                         reprStr[tabs,'DFGin',dihedral]=min_atom_missing(subList[tabs])
                         nglList[tabs,reprStr[tabs,'DFGin',dihedral]]=Cluster.query.filter(Cluster.pdb==reprStr[tabs,'DFGin',dihedral]).all()
@@ -1165,9 +1168,9 @@ def uniqueQuery(settings,queryname):
                             dfgNumReprStr[tabs].append(Cluster.query.filter(Cluster.pdb==reprStr[tabs,'DFGin',dihedral]).first().dfgnum)
                 if spatial=='DFGinter':
                     for dihedral in ('BABtrans','None'):
-                        subList['Human']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie=='Homo sapiens',Cluster.spatial=='DFGinter',Cluster.dihedral==dihedral).all()
-                        subList['All']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.spatial=='DFGinter',Cluster.dihedral==dihedral).all()
-                        subList['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie!='Homo sapiens',Cluster.spatial=='DFGinter',Cluster.dihedral==dihedral).all()
+                        subList['Human']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie=='Homo sapiens',Cluster.spatial=='DFGinter',Cluster.dihedral==dihedral).all()
+                        subList['All']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.spatial=='DFGinter',Cluster.dihedral==dihedral).all()
+                        subList['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie!='Homo sapiens',Cluster.spatial=='DFGinter',Cluster.dihedral==dihedral).all()
 
                         reprStr[tabs,'DFGinter',dihedral]=min_atom_missing(subList[tabs])
                         nglList[tabs,reprStr[tabs,'DFGinter',dihedral]]=Cluster.query.filter(Cluster.pdb==reprStr[tabs,'DFGinter',dihedral]).all()
@@ -1175,18 +1178,18 @@ def uniqueQuery(settings,queryname):
                             dfgNumReprStr[tabs].append(Cluster.query.filter(Cluster.pdb==reprStr[tabs,'DFGinter',dihedral]).first().dfgnum)
                 if spatial=='DFGout':
                     for dihedral in ('BBAminus','None'):
-                        subList['Human']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie=='Homo sapiens',Cluster.spatial=='DFGout',Cluster.dihedral==dihedral).all()
-                        subList['All']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.spatial=='DFGout',Cluster.dihedral==dihedral).all()
-                        subList['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie!='Homo sapiens',Cluster.spatial=='DFGout',Cluster.dihedral==dihedral).all()
+                        subList['Human']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie=='Homo sapiens',Cluster.spatial=='DFGout',Cluster.dihedral==dihedral).all()
+                        subList['All']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.spatial=='DFGout',Cluster.dihedral==dihedral).all()
+                        subList['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie!='Homo sapiens',Cluster.spatial=='DFGout',Cluster.dihedral==dihedral).all()
 
                         reprStr[tabs,'DFGout',dihedral]=min_atom_missing(subList[tabs])
                         nglList[tabs,reprStr[tabs,'DFGout',dihedral]]=Cluster.query.filter(Cluster.pdb==reprStr[tabs,'DFGout',dihedral]).all()
                         if Cluster.query.filter(Cluster.pdb==reprStr[tabs,'DFGout',dihedral]).first():
                             dfgNumReprStr[tabs].append(Cluster.query.filter(Cluster.pdb==reprStr[tabs,'DFGout',dihedral]).first().dfgnum)
 
-                subList['Human']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie=='Homo sapiens',Cluster.spatial=='None').all()
-                subList['All']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.spatial=='None').all()
-                subList['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(queryname),Cluster.specie!='Homo sapiens',Cluster.spatial=='None').all()
+                subList['Human']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie=='Homo sapiens',Cluster.spatial=='None').all()
+                subList['All']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.spatial=='None').all()
+                subList['Nonhuman']=Cluster.query.filter(Cluster.ligand.contains(modified_queryname),Cluster.specie!='Homo sapiens',Cluster.spatial=='None').all()
 
                 reprStr[tabs,'None','None']=min_atom_missing(subList[tabs])
                 nglList[tabs,reprStr[tabs,'None','None']]=Cluster.query.filter(Cluster.pdb==reprStr[tabs,'None','None']).all()

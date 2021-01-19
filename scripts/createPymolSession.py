@@ -13,10 +13,10 @@ def subListPymolSession(pwd,df):
     for organism in ('Human','All','Nonhuman'):
         for groups in ('AGC','CAMK','CK1','CMGC','NEK','STE','TKL','TYR','OTHER','.*'):
             group_out=groups
-            for ligand_label in ('Type I','Type I½','Type II','Type III','Allosteric','No_ligand','.*'):
+            for ligand_label in ('TypeI','TypeI½','TypeII','TypeIII','Allosteric','No_ligand','.*'):
                 lig_out=ligand_label
-                if ligand_label=='Type I':
-                    dontmatch='Type I½'
+                if ligand_label=='TypeI':
+                    dontmatch='TypeI½'
                 else:
                     dontmatch='X'
 
