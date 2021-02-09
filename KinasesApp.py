@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, sys
+import os, sys, io
 from flask import Flask, render_template, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -228,7 +228,7 @@ def min_atom_missing(group_list):
     return 'None'
 
 def write_text_file(sublist,tsvFile):
-    fhandle_textFile=open(f'{pwd}/static/{tsvFile}','w')
+    fhandle_textFile=io.open(f'{pwd}/static/{tsvFile}','w',encoding='utf-8')
     fhandle_textFile.write('Organism\tGroup\tGene\tUniprotID\tPDB\tMethod\tResolution\tRfac\tFreeRfac\tSpatialLabel\tDihedralLabel\tC-helix\tLigand\tLigandType\tDFG_Phe\tEdia_X_O\tEdia_Asp_O\tEdia_Phe_O\tEdia_Gly_O\tProteinName\n')
 
     for item in sublist:
@@ -398,7 +398,7 @@ def help():
 
 @app.route('/multipleQuery/<groupSelect>/<labelSelect>/<ligTypeSelect>')
 def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
-    print('check'+ligTypeSelect)
+    
     group_list=dict();total_count=dict();strCount=dict();geneCount=dict();totalGroup=dict();totalDihedral=dict()
     gene_list=dict();total_count=dict();reprStr=dict();pymolSession=dict();pymolSessionRe=dict();pymolScript=dict();pymolScriptRe=dict();coordinateFiles=dict()
     nglList=dict();dfgNumReprStr=dict();subList=dict();subListPymol=dict();dfgNumReprStr['Human']=list();dfgNumReprStr['All']=list();dfgNumReprStr['Nonhuman']=list()
