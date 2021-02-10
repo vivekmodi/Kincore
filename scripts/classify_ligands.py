@@ -7,13 +7,15 @@ Created on Wed Jun 10 08:02:41 2020
 """
 from Bio import PDB
 import gzip
+import sys
+import pandas as pd
 
 def compute_distance_from_rre4(structure,ligandname,ligandid,rre4num):
     ignoremodified=open(f'List_modified_aminoacid.txt','r')
     min_rre4=999
-    for chain1 in structure:
-        for model1 in chain1:
-            for residue1 in model1:
+    for model1 in structure:
+        for chain1 in model1:
+            for residue1 in chain1:
                 if residue1.id[0]==('H_'+ligandname) and residue1.id[1]==int(ligandid):
                     for atom1 in residue1:
                         if atom1.element!='H':
@@ -21,7 +23,8 @@ def compute_distance_from_rre4(structure,ligandname,ligandid,rre4num):
                             for chain2 in structure:
                                 for model2 in chain2:
                                     for residue2 in model2:
-                                        #res_id=residue2.get_id()[1]
+                                        if residue2.get_id()[0]!=' ':    #Only protein atoms
+                                            continue
                                         ignoremodified.seek(0)
                                         if ((residue2.get_id()[0]==' ') or ((residue2.id[0][2:]+'\n') in ignoremodified.readlines())):
                                             if residue2.get_id()[1]==rre4num:    #compute distance from rre4
@@ -36,17 +39,18 @@ def compute_distance_from_rre4(structure,ligandname,ligandid,rre4num):
 def compute_distance_from_hinge(structure,ligandname,ligandid,hinge1):
     ignoremodified=open(f'List_modified_aminoacid.txt','r')
     min_hinge=999;
-    for chain1 in structure:
-                for model1 in chain1:
-                    for residue1 in model1:
+    for model1 in structure:
+                for chain1 in model1:
+                    for residue1 in chain1:
                         if residue1.id[0]==('H_'+ligandname) and residue1.id[1]==int(ligandid):
                             for atom1 in residue1:
                                 if atom1.element!='H':
 
-                                    for chain2 in structure:
-                                        for model2 in chain2:
-                                            for residue2 in model2:
-                                                #res_id=residue2.get_id()[1]
+                                    for model2 in structure:
+                                        for chain2 in model2:
+                                            for residue2 in chain2:
+                                                if residue2.get_id()[0]!=' ':    #Only protein residues
+                                                    continue
                                                 ignoremodified.seek(0)
                                                 if residue2.get_id()[1]>=hinge1 and residue2.get_id()[1]<=hinge1+2:        #compute distance from hinge
                                                     for atom2 in residue2:
@@ -65,16 +69,18 @@ def compute_distance_from_pocket_residues(structure,ligandname,ligandid):
     backpocket_count[ligandname+':'+ligandid]=0
     frontpocket_count[ligandname+':'+ligandid]=0
 
-    for chain1 in structure:
-                for model1 in chain1:
-                    for residue1 in model1:
+    for model1 in structure:
+                for chain1 in model1:
+                    for residue1 in chain1:
                         if residue1.id[0]==('H_'+ligandname) and residue1.id[1]==int(ligandid):
                             for atom1 in residue1:
                                 if atom1.element!='H':
 
-                                    for chain2 in structure:
-                                        for model2 in chain2:
-                                            for residue2 in model2:
+                                    for model2 in structure:
+                                        for chain2 in model2:
+                                            for residue2 in chain2:
+                                                if residue2.get_id()[0]!=' ':    #Only protein atoms
+                                                    continue
                                                 res_id=residue2.get_id()[1]
                                                 ignoremodified.seek(0)
                                                 if (res_id>=106 and res_id<=184) or (res_id>=187 and res_id<=195)  or (res_id>=420 and res_id<=422) or \
@@ -87,10 +93,16 @@ def compute_distance_from_pocket_residues(structure,ligandname,ligandid):
                                                                     if (res_id>=1337 and res_id<=1339) and (atom2.fullname=='O' or atom2.fullname=='N') and dfgcontact==1:
                                                                         continue
 
-                                                                    distance=residue1[atom1.fullname]-residue2[atom2.fullname]
-                                                                    if distance<=4 and res_id not in contact_list:
-                                                                        distance=round(float(distance),2)
+                                                                    distance=(residue1[atom1.fullname]-residue2[atom2.fullname])
+                                                                    distance=round(float(distance),2)
+                                                                    
+                                                                    if (res_id>=1337 and res_id<=1339) and (atom2.fullname=='O' or atom2.fullname=='N') and distance>3.5:  #contact with dfg should be very close
+                                                                        continue
+                                                                    
+                                                                    if distance<=4.1 and res_id not in contact_list:
+                                                                        
                                                                         backpocket_count[ligandname+':'+ligandid]+=1
+                                                                        #print(f'Backpocket {res_id} {distance}')
                                                                         if res_id==1339 and (atom2.fullname=='O' or atom2.fullname=='N'):   #Always update contact list except for phe backbone
                                                                             pass
                                                                         else:
@@ -102,6 +114,7 @@ def compute_distance_from_pocket_residues(structure,ligandname,ligandid):
                                                                         if ((res_id>=106 and res_id<=143)) and res_id not in contact_list_front:     #contact with front pocket present
                                                                             frontpocket_count[ligandname+':'+ligandid]+=1
                                                                             contact_list_front.append(res_id)
+                                                                            print(f'Frontpocket {res_id}')
 
                                                                     if (res_id==1011 or res_id==959 or res_id==153 or res_id==149) and distance<=4.5:  #contact with Type2 pocket present
                                                                         dfgoutcontact+=1
@@ -113,6 +126,8 @@ def classify_ligands(pwd,df):
     print('Classifying different kinds of ligands...')
     for i in df.index:
         pdbs=df.at[i,'PDBid']
+        #if 'VX6' not in df.at[i,'Ligand']:
+        #    continue
         uniprotid=df.at[i,'UniprotID']
         spatial=df.at[i,'Spatial']
         dihedral=df.at[i,'Dihedral']
@@ -184,3 +199,9 @@ def classify_ligands(pwd,df):
         df.at[i,'Ligand_label']=','.join(ligand_label)
     fhandle_output.close()
     return df
+
+if __name__=='__main__':
+    pwd='/home/vivekmodi/Applications/Flask/Kinases'
+    filename=sys.argv[1]
+    df=pd.read_csv(filename,sep='\t',header='infer')
+    classify_ligands(pwd,df)
