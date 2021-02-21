@@ -524,10 +524,10 @@ def pymolSessionScript(pwd,subListPymol,outputName):
         ape=int(subListPymol.at[i,'APEnum'])
         hrd=int(subListPymol.at[i,'HRDnum'])
         color=subListPymol.at[i,'Color']
-        filename=(pdbs+'.cif.gz')
+        filename=(pdbs+'.cif')
         objName=f'{group}_{domain}_{spatial}_{dihedral}_{pdbs}'
         objectList.append(objName)
-        fhandle.write(f"load {kinasechainsRenumberUniprot}/{filename}\n")
+        fhandle.write(f"load {filename}\n")
         fhandle.write("remove hydrogens\nremove solvent\n")
         fhandle.write("hide spheres\nhide dots\n")
         fhandle.write(f"set_name {pdbs}, {objName}\n")
@@ -574,7 +574,7 @@ def pymolSessionScript(pwd,subListPymol,outputName):
     fhandle.write(f"alignto {objectList[0]}\ncenter\n")
     fhandle.write(f"set orthoscopic, on\n")
     fhandle.write("order *,yes\n")
-    fhandle.write(f"save {pwd}/static/downloads/pymolSessions/{outputName}/{outputName}.pse\n")
+    #fhandle.write(f"save {pwd}/static/downloads/pymolSessions/{outputName}/{outputName}.pse\n")
     fhandle.close()
 
     #Zip directories
@@ -737,10 +737,10 @@ def pymolScriptRepresentative(pwd,subListPymol,outputName):
             process=subprocess.Popen(cmd,shell=True)
             process.wait()
 
-            filename=(pdbs+'.cif.gz')
+            filename=(pdbs+'.cif')
             objName=f'{group}_{domain}_{spatial}_{dihedral}_{pdbs}'
             objectList.append(objName)
-            fhandle.write(f"load {kinasechainsRenumberUniprot}/{filename}\n")
+            fhandle.write(f"load {filename}\n")
             fhandle.write("remove hydrogens\nremove solvent\n")
             fhandle.write("hide spheres\nhide dots\n")
             fhandle.write(f"set_name {pdbs}, {objName}\n")
@@ -785,7 +785,7 @@ def pymolScriptRepresentative(pwd,subListPymol,outputName):
     fhandle.write(f"alignto {objectList[0]}\ncenter\n")
     fhandle.write(f"set orthoscopic, on\n")
     fhandle.write("order *,yes\n")
-    fhandle.write(f"save {pwd}/static/downloads/pymolSessions/{outputName}/{outputName}.pse\n")
+    #fhandle.write(f"save {pwd}/static/downloads/pymolSessions/{outputName}/{outputName}.pse\n")
     fhandle.close()
 
     #Zip directories
