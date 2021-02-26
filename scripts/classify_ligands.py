@@ -144,10 +144,8 @@ def classify_ligands(pwd,df):
 
         if 'No_ligand' in df.at[i,'Ligand']:
             df.at[i,'Ligand_label']='No_ligand'
-            df.at[i,'Ligand_label_old']=df.at[i,'Ligand_label']
             continue
         else:
-            df.at[i,'Ligand_label_old']=df.at[i,'Ligand_label']
             df.at[i,'Ligand_label']='None'    #make default label None
 
         try:
