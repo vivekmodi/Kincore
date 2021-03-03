@@ -20,7 +20,7 @@ def assign_default_values(index,conf_df):
     conf_df.at[index,'XDFG_restype']='X'
     conf_df.at[index,'Asp_num']=999
     conf_df.at[index,'Asp_restype']='X'
-    conf_df.at[index,'Phe_num']=999
+    conf_df.at[index,'Phe_num']=int(999)
     conf_df.at[index,'Phe_restype']='X'
     conf_df.at[index,'Glu4-Phe-dis']=999
     conf_df.at[index,'Lys-Phe-dis']=999

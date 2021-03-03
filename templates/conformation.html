@@ -8,64 +8,56 @@
   {% block content %}
   <body>
     <div class="container-fluid">
-      {% for key,value in conf_df.iterrows() %}
       <div class="row very-dark-text">
-
-        {% if value['Group']=='None' %}
-        <h6>Model {{ value['Model_id'] }}, Chain {{ value['Chain_id'] }} is probably not a kinase domain.</h6>
-        {% else %}
-
-        <br><br>
-        <h5>The kinase domain in Model {{ value['Model_id'] }}, Chain {{ value['Chain_id'] }} is closest to {{ value['Group'] }} group of kinases.
-        <br><br>
-          The dihedrals of XDF residues are:<br>
-
-          <table class="table very-dark-text">
+        <div class="col-lg-11 offset-lg-1">
+        <table class="table table-responsive table-striped table-hover very-dark-text">
             <thead>
               <tr>
-                <th scope="col">Motif</th>
-                <th scope='col'>Residue</th>
-                <th scope='col'>Phi</th>
-                <th scope='col'>Psi</th>
-                <th scope='col'>Phe-Chi1</th>
+                <th scope="col">Model</th>
+                <th scope="col">Chain</th>
+                <th scope="col">Group</th>
+                <th scope="col">Spatial label</th>
+                <th scope="col">Dihedral label</th>
+                <th scope="col">Ligand name:id</th>
+                <th scope="col">Ligand label</th>
+                <th scope='col' colspan="2">X-DFG Φ, Ψ</th>
+                <th scope='col' colspan="2">DFG-Asp Φ, Ψ</th>
+                <th cope='col' colspan="2">DFG-Phe Φ, Ψ, χ1</th>
               </tr>
             </thead>
-
+            {% for key,value in conf_df.iterrows() %}
+            {% if value['Group']!='None' %}
             <tr>
-              <td>X-DFG</td>
-              <td>{{ value['XDFG_restype'] }}{{ value['XDFG_num'] }}</td>
-              <td>{{ value['XDFG_Phi'] }}</td>
-              <td>{{ value['XDFG_Psi'] }}</td>
-              <td>-</td>
+              <td>{{ value['Model_id'] }}</td>
+              <td>{{ value['Chain_id'] }}</td>
+              <td>{{ value['Group'] }}</td>
+              <td>{{ value['Spatial_label'] }}</td>
+              <td>{{ value['Dihedral_label'] }}</td>
+              <td>{{ value['Ligand'] }}</td>
+              <td>{{ value['Ligand_label'] }}</td>
+              <td>{{ value['XDFG_restype'] }}{{ value['XDFG_num']|int }}</td>
+              <td>{{ value['XDFG_Phi'] }}, {{ value['XDFG_Psi'] }}</td>
+              <td>{{ value['Asp_restype'] }}{{ value['Asp_num']|int }}</td>
+              <td>{{ value['Asp_Phi'] }}, {{ value['Asp_Psi'] }}</td>
+              <td>{{ value['Phe_restype'] }}{{ value['Phe_num']|int }}</td>
+              <td>{{ value['Phe_Phi'] }}, {{ value['Phe_Psi'] }}, {{ value['Phe_Chi1'] }}</td>
             </tr>
-            <tr>
-              <td>DFG-Asp</td>
-              <td>{{ value['Asp_restype'] }}{{ value['Asp_num'] }}</td>
-              <td>{{ value['Asp_Phi'] }}</td>
-              <td>{{ value['Asp_Psi'] }}</td>
-              <td>-</td>
-            </tr>
-            <td>DFG-Phe</td>
-            <td>{{ value['Phe_restype'] }}{{ value['Phe_num'] }}</td>
-            <td>{{ value['Phe_Phi'] }}</td>
-            <td>{{ value['Phe_Psi'] }}</td>
-            <td>{{ value['Phe_Chi1'] }}</td>
+            {% endif %}
+            {% endfor %}
           </table>
 
-        The conformation is: {{ value['Spatial_label'] }} - {{ value['Dihedral_label'] }}, with {{ value['Chelix'] }}.</h5>
+
+
+
+        {% for key,value in conf_df.iterrows() %}
+        {% if value['Group']=='None' %}
+        <h6>Model {{ value['Model_id'] }}, Chain {{ value['Chain_id'] }} is probably not a kinase domain.</h6>
         {% endif %}
+        {% endfor %}
 
+        <p>If the label is 'None' then either the residues required for calculation are not resolved in structure, or the conformation is not close to any of the clusters.</p>
       </div>
-<div class="row">
-  <hr class="my-4">
-</div>
-
-
-
-      {% endfor %}
-      <div class="row very-dark-text">
-        <p>If the conformation is 'None' then either the residues required for calculation are not resolved in structure, or the conformation is not close to any of the clusters.</p>
-      </div>
+    </div>
     </div>
 
   </body>

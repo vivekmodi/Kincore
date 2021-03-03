@@ -27,6 +27,8 @@ from modules.compute_dihedrals import compute_dihedrals
 from modules.chelix import chelix_conformation
 from modules.spatial_label import spatial_label
 from modules.dihedral_label import dihedral_label
+from modules.extract_ligands_webserver import extract_ligands_webserver
+from modules.classify_ligands_webserver import classify_ligands_webserver
 from modules.delete_files import delete_files
 
 def identify_state(pwd,pdbfilename,align,user_chain,user_lys,user_glu,user_phe):
@@ -45,33 +47,6 @@ def identify_state(pwd,pdbfilename,align,user_chain,user_lys,user_glu,user_phe):
             
     structure=parser.get_structure(pdbfilename, handle)
         
-#    if align.upper()=='FALSE':
-#        print('Input'.rjust(13)+'Model'.rjust(6)+'Chain'.rjust(6)+'B3-Lys'.rjust(7)+'C-helix-Glu'.rjust(12)+'DFG-Phe'.rjust(8)+'Spatial_label'.rjust(14)+\
-#                                  'Dihedral_label'.rjust(15)+'C-helix_label'.rjust(14))
-#        
-#        for model in structure:
-#            index=int(model.id)
-#            conf_df.at[index,'Model_id']=int(model.id)
-#            for chain in model:
-#                for chains in list(user_chain.split(',')):
-#                    if chain.id==chains:       #Match user chain with chain in structure
-#                        conf_df.at[index,'Chain_id']=chain.id
-#                        conf_df=assign_default_values(index,conf_df)
-#                        conf_df.at[index,'Lys_num']=int(user_lys)
-#                        conf_df.at[index,'Glu_num']=int(user_glu)
-#                        conf_df.at[index,'Glu4_num']=int(user_glu)+4
-#                        conf_df.at[index,'Phe_num']=int(user_phe)
-#                        conf_df.at[index,'XDFG_num']=int(user_phe)-2
-#                        conf_df.at[index,'Asp_num']=int(user_phe)-1
-#                        conf_df=identify_restypes(pdbfilename,conf_df,index,structure)
-#                        conf_df=compute_distance(pdbfilename,index,conf_df,structure)
-#                        conf_df=compute_dihedrals(pdbfilename,index,conf_df,structure)
-#                        conf_df=spatial_label(index,conf_df)
-#                        conf_df=dihedral_label(index,conf_df,0.45)
-#                        conf_df=chelix_conformation(index,conf_df)
-#                        print(pdbfilename.rjust(13)+str(int(conf_df.at[index,'Model_id'])).rjust(6)+conf_df.at[index,'Chain_id'].rjust(6)+\
-#                              str(int(conf_df.at[index,'Lys_num'])).rjust(7)+str(int(conf_df.at[index,'Glu_num'])).rjust(12)+str(int(conf_df.at[index,'Phe_num'])).rjust(8)+conf_df.at[index,'Spatial_label'].rjust(14)+\
-#                              conf_df.at[index,'Dihedral_label'].rjust(15)+conf_df.at[index,'Chelix'].rjust(14))
     
     if align.upper()=='TRUE':                
         index=-1
@@ -95,7 +70,7 @@ def identify_state(pwd,pdbfilename,align,user_chain,user_lys,user_glu,user_phe):
                 conf_df=identify_group(pwd,pdbfilename,index,conf_df)
                 
                 if conf_df.at[index,'Group']=='None':
-                    print(f'{pdbfilename} Model {model.id}, Chain {chain.id} is probably not a protein kinase.\n')
+                    #print(f'{pdbfilename} Model {model.id}, Chain {chain.id} is probably not a protein kinase.\n')
                     delete_files(pdbfilename,conf_df.at[index,'Model_id'],conf_df.at[index,'Chain_id'])
 
                 
@@ -124,13 +99,15 @@ def identify_state(pwd,pdbfilename,align,user_chain,user_lys,user_glu,user_phe):
                         conf_df=spatial_label(pwd,index,conf_df)
                         conf_df=dihedral_label(pwd,index,conf_df,0.45)
                         conf_df=chelix_conformation(pwd,index,conf_df)
+                        conf_df=extract_ligands_webserver(pwd,pdbfilename,index,conf_df,structure)
+                        conf_df=classify_ligands_webserver(pwd,pdbfilename,index,conf_df,structure)
                         
-                        if len(chain_list)==1:
-                            print('Input'.rjust(13)+'Group'.rjust(6)+'Model'.rjust(6)+'Chain'.rjust(6)+'B3-Lys'.rjust(7)+'C-helix-Glu'.rjust(12)+'DFG-Phe'.rjust(8)+'Spatial_label'.rjust(14)+\
-                                  'Dihedral_label'.rjust(15)+'C-helix_label'.rjust(14))
-                        print(pdbfilename.rjust(13)+conf_df.at[index,'Group'].rjust(6)+conf_df.at[index,'Model_id'].rjust(6)+conf_df.at[index,'Chain_id'].rjust(6)+\
-                              str(int(conf_df.at[index,'Lys_num'])).rjust(7)+str(int(conf_df.at[index,'Glu_num'])).rjust(12)+str(int(conf_df.at[index,'Phe_num'])).rjust(8)+conf_df.at[index,'Spatial_label'].rjust(14)+\
-                              conf_df.at[index,'Dihedral_label'].rjust(15)+conf_df.at[index,'Chelix'].rjust(14))
+                        #if len(chain_list)==1:
+                            #print('Input'.rjust(13)+'Group'.rjust(6)+'Model'.rjust(6)+'Chain'.rjust(6)+'B3-Lys'.rjust(7)+'C-helix-Glu'.rjust(12)+'DFG-Phe'.rjust(8)+'Spatial_label'.rjust(14)+\
+                        #          'Dihedral_label'.rjust(15)+'C-helix_label'.rjust(14))
+                        #print(pdbfilename.rjust(13)+conf_df.at[index,'Group'].rjust(6)+conf_df.at[index,'Model_id'].rjust(6)+conf_df.at[index,'Chain_id'].rjust(6)+\
+                        #      str(int(conf_df.at[index,'Lys_num'])).rjust(7)+str(int(conf_df.at[index,'Glu_num'])).rjust(12)+str(int(conf_df.at[index,'Phe_num'])).rjust(8)+conf_df.at[index,'Spatial_label'].rjust(14)+\
+                        #      conf_df.at[index,'Dihedral_label'].rjust(15)+conf_df.at[index,'Chelix'].rjust(14),conf_df.at[index,'Ligand'],conf_df.at[index,'Ligand_label'])
                         #delete_files(pdbfilename,conf_df.at[index,'Model_id'],conf_df.at[index,'Chain_id'])
                         
     return conf_df
