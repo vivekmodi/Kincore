@@ -10,8 +10,17 @@ import gzip
 import sys
 import pandas as pd
 
+omitligands=('1PE','1PE','2HT','2PE','5LS','5LS','5TH','5TK','5TM','7PE','ACE','ACT','ACY','AF3','ALA','ALY','ARS','AU','BA','BCT','BEN','BME','BOG','BR',\
+                 'BU1','BU3','BUD','BWB','CA','CAC','CAF','CAS','CAS','CD','CIT','CL','CME','CME','CO','CO3','CS','CSD','CSO','CSO','CSS','CSS','CSX','CXM',\
+                 'CXS','CXS','DIO','DMS','DOD','DTD','DTT','DTT','DTV','DVT','DVT','EDO','EMC','EOH','EPE','EPE','FLC','FMT','GBL','GG5','GLC','GLC','GOL','HC4',\
+                 'HG','HSJ','IMD','IOD','IPA','IPH','K','KCX','LGY','MES','MG','MG8','MGF','MK8','MLA','MLI','MLY','MN','MOH','MPD','MRD','MSE','MXE','MYR','NA',\
+                 'NEP','NH4','NI','NO3','OCS','OCT','OCY','P4G','P6G','PDX','PEG','PG0','PG4','PGE','PGF','PGO','PHU','PO4','PPI','PSE','PTR','PUP','PZO','S26',\
+                 'SBT','SCN','SCS','SEP','SEP','SGM','SIN','SO3','SO4','SR','SRT','SVQ','T8L','TAM','TAR','TCE','TFA','TLA','TLA','TMA','TPO','TRS','UNX','VO4',\
+                 'YT3','Z4K','ZN')
+modified_aa=('ACE','ALY','AME','BWB','CAF','CAS','CME','COM','CSD','CSO','CSS','CSX','CXM','CY0','CYO','KCX','LGY','MHO','MK8','MLY','MSE','NEP','NMM',\
+                 'OCS','OCY','PHD','PTR','SCS','SEP','T8L','TPO','UNK')
+
 def compute_distance_from_rre4(structure,model_id,chain_id,ligandname,ligandid,rre4num):
-    ignoremodified=open(f'List_modified_aminoacid.txt','r')
     min_rre4=999
     
     for model in structure:
@@ -24,8 +33,8 @@ def compute_distance_from_rre4(structure,model_id,chain_id,ligandname,ligandid,r
     
                                 for residue2 in chain:
                                     if residue2.get_id()[1]==rre4num:    #Only rre4num
-                                        ignoremodified.seek(0)
-                                        if residue2.get_id()[0]==' ' or ((residue2.id[0][2:]+'\n') in ignoremodified.readlines()):  #Only protein atoms or modified residues
+                                       
+                                        if residue2.get_id()[0]==' ' or (residue2.id[0][2:] in modified_aa):  #Only protein atoms or modified residues
                                             for atom2 in residue2:
                                                 if atom2.element!='H' and atom2.fullname.strip() not in ('CA','O','N','C'):   #Side chain contact
                                                     distance=residue1[atom1.fullname.strip()]-residue2[atom2.fullname.strip()]
@@ -34,7 +43,7 @@ def compute_distance_from_rre4(structure,model_id,chain_id,ligandname,ligandid,r
     return min_rre4
 
 def compute_distance_from_hinge(structure,model_id,chain_id,ligandname,ligandid,hinge1):
-    ignoremodified=open(f'List_modified_aminoacid.txt','r')
+    
     min_hinge=999;
     for model in structure:
         for chain in model:
@@ -46,8 +55,8 @@ def compute_distance_from_hinge(structure,model_id,chain_id,ligandname,ligandid,
     
                                 for residue2 in chain:
                                     if residue2.get_id()[1]>=hinge1 and residue2.get_id()[1]<=hinge1+2:        #compute distance from hinge
-                                        ignoremodified.seek(0)
-                                        if residue2.get_id()[0]==' ' or ((residue2.id[0][2:]+'\n') in ignoremodified.readlines()):
+                                      
+                                        if residue2.get_id()[0]==' ' or residue2.id[0][2:] in modified_aa:
                                             for atom2 in residue2:
                                                 if atom2.element!='H' and (atom2.fullname.strip()=='O' or atom2.fullname.strip()=='N'):    #Main chain contact
                                                     distance=residue1[atom1.fullname.strip()]-residue2[atom2.fullname.strip()]
@@ -56,7 +65,6 @@ def compute_distance_from_hinge(structure,model_id,chain_id,ligandname,ligandid,
     return min_hinge
 
 def compute_distance_from_pocket_residues(structure,model_id,chain_id,ligandname,ligandid,type2_resi,back_pocket1_num,back_pocket2_num,back_pocket3_num,front_pocket_num,xdfg_num):
-    ignoremodified=open(f'List_modified_aminoacid.txt','r')
     dfgcontact=0;dfgoutcontact=0;distance=dict()
     contact_list=list();contact_list_front=list()
     backpocket_count=dict();frontpocket_count=dict()
@@ -71,8 +79,7 @@ def compute_distance_from_pocket_residues(structure,model_id,chain_id,ligandname
                         for atom1 in residue1:
                             if atom1.element!='H':
                                 for residue2 in chain:
-                                    ignoremodified.seek(0)
-                                    if residue2.get_id()[0]==' ' or ((residue2.id[0][2:]+'\n') in ignoremodified.readlines()):    #Only protein atoms
+                                    if residue2.get_id()[0]==' ' or (residue2.id[0][2:] in modified_aa):    #Only protein atoms
                                         res_id=residue2.get_id()[1]
                                         
                                         if res_id in back_pocket1_num or res_id in back_pocket2_num  or res_id in back_pocket3_num or int(res_id)==int(xdfg_num) or int(res_id)==int(xdfg_num+1) or int(res_id)==int(xdfg_num+2) or res_id in type2_resi:
