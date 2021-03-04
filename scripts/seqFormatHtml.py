@@ -6,6 +6,7 @@ Created on Tue Feb 11 17:45:06 2020
 @author: vivekmodi
 """
 import gzip,sys,os,re
+import pandas as pd
 
 
 def format_seq_text(pwd,df):
@@ -22,7 +23,7 @@ def format_seq_text(pwd,df):
     for i in df.index:
         uni_pdb_dict=dict()
         pdbs=df.at[i,'PDBid']
-        siftsFile=(pwd+'/kinasesifts/'+pdbs[0:4].lower()+'.csv.gz')
+        fhandle_sifts=(pwd+'/kinasesifts/'+pdbs[0:4].lower()+'.csv.gz')
         
         
      
@@ -102,12 +103,9 @@ def format_seq_html(pwd,df):
     print('Fomatting sequences for html...')
     for i in df.index:
         pdbs=df.at[i,'PDBid']
-        #if pdbs!='4FIEA':
-        #    continue                
-       # print(pdbs)
+       
         uni_pdb_dict=dict();
         siftsFile=(pwd+'/kinasesifts/'+pdbs[0:4].lower()+'.csv.gz')
-        
         try:
             fhandle_sifts=gzip.open(siftsFile,'rt')
         except:
@@ -116,10 +114,10 @@ def format_seq_html(pwd,df):
         
       
         outputfile=(pwd+'/formattedSeq/'+pdbs[0:4]+'.html')
-        if os.path.isfile(outputfile):
-            continue
+        #if os.path.isfile(outputfile):
+        #    continue
         fhandle_output=open(outputfile,'w')
-        fhandle_output.write(f'<pre class="very-dark-text">')
+        fhandle_output.write(f'<pre class="very-dark-text">Representative sequence - Chain {pdbs[4:]}<br>')
         fhandle_sifts.readline()
         firstResi='True'
         insertion_location=0;insertion_size=0
@@ -250,4 +248,9 @@ def format_seq_html(pwd,df):
         fhandle_output.write(f'</pre>')
         fhandle_output.close()
         fhandle_sifts.close()
-        log.close()
+    log.close()
+
+if __name__=='__main__':
+    pwd='/home/vivekmodi/Applications/Flask/Kinases'
+    df=pd.read_csv(sys.argv[1],sep='\t',header='infer')
+    format_seq_html(pwd,df)

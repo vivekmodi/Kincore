@@ -12,7 +12,7 @@ from flask import Markup
 #from wtforms import StringField, SubmitField
 #from wtforms.validators import DataRequired
 #from werkzeug.utils import secure_filename
-#from collections import defaultdict
+from collections import defaultdict
 from sqlalchemy import asc
 #str = unicode(str, errors='replace')
 pwd=os.getcwd()
@@ -834,24 +834,49 @@ def uniqueQuery(settings,queryname):
         formattedSeq='';nglList=dict()
         fhandleSeq=open(f'{pwd}/formattedSeq/'+queryname.upper()+'.html','r')
         formattedSeq=Markup(fhandleSeq.readline())
-        for items in pdb_list:
-            pdbReso=items.resolution;pdbGene=items.gene;pdbProtein=items.protein_name;pdbUniprot=items.uniprotid;pdbGroup=items.group
-            pdbMutation=items.chain_mut
-            pdbPhos=items.chain_phos
-            pdbPseudo=items.status
-            pdb_organism=items.specie
-            domain_begin=items.domain_begin;domain_end=items.domain_end
-            pheNum=int(items.dfgnum);aspNum=pheNum-1;xdfgNum=aspNum-1;glyNum=pheNum+1
-            nglList[items.pdb]=Cluster.query.filter(Cluster.pdb==items.pdb).all()
+        
+        pdbUniprot=set();pdbGene=set();pdbProtein=dict();pdbGroup=set();pdb_organism=set();domain_begin=dict();domain_end=dict();pdbPseudo=dict()
+        for items in pdb_list:   #Check for cases like 6U2G in which the two chains come from different uniprots
+            pdbUniprot.add(items.uniprotid);pdbProtein[items.gene]=list();domain_begin[items.uniprotid]=list();domain_end[items.uniprotid]=list();pdbPseudo[items.gene]=list()
+        uniprot_count=len(pdbUniprot)
+       
+        if uniprot_count==1:
+            pdbUniprot='';pdbGene='';pdbProtein='';pdbGroup='';pdb_organism='';domain_begin='';domain_end='';pdbPseudo=''
+            for items in pdb_list:
+                pdbReso=items.resolution;pdbGene=items.gene;pdbProtein=items.protein_name;pdbUniprot=items.uniprotid;pdbGroup=items.group
+                pdbMutation=items.chain_mut
+                pdbPhos=items.chain_phos
+                pdbPseudo=items.status
+                pdb_organism=items.specie
+                domain_begin=items.domain_begin;domain_end=items.domain_end
+                pheNum=int(items.dfgnum);aspNum=pheNum-1;xdfgNum=aspNum-1;glyNum=pheNum+1
+                nglList[items.pdb]=Cluster.query.filter(Cluster.pdb==items.pdb).all()
 
-        pymolSession=f'downloads/pymolSessions/{pdbGroup}_{pdbGene}_{queryname}.pse.zip'
-        pymolScript=f'downloads/pymolSessionScripts/{pdbGroup}_{pdbGene}_{queryname}.zip'
-        coordinateFiles=f'downloads/coordinateFiles/{pdbGroup}_{pdbGene}_{queryname}'
+            pymolSession=f'downloads/pymolSessions/{pdbGroup}_{pdbGene}_{queryname}.pse.zip'
+            pymolScript=f'downloads/pymolSessionScripts/{pdbGroup}_{pdbGene}_{queryname}.zip'
+            coordinateFiles=f'downloads/coordinateFiles/{pdbGroup}_{pdbGene}_{queryname}'
+        
+        
+        elif uniprot_count>1:
+            for count,items in enumerate(pdb_list):
+                pdbReso=items.resolution;pdbGene.add(items.gene);pdbProtein[items.gene]=items.protein_name
+                pdbUniprot.add(items.uniprotid);pdbGroup.add(items.group);pdb_organism.add(items.specie)
+                pdbMutation=items.chain_mut
+                pdbPhos=items.chain_phos
+                pdbPseudo[items.gene]=items.status
+                domain_begin[items.uniprotid]=items.domain_begin;domain_end[items.uniprotid]=items.domain_end
+                pheNum=int(items.dfgnum);aspNum=pheNum-1;xdfgNum=aspNum-1;glyNum=pheNum+1
+                nglList[items.pdb]=Cluster.query.filter(Cluster.pdb==items.pdb).all()
 
+                if count==0:    #Simply use the name of the group and gene which comes first in the database list
+                    pymolSession=f'downloads/pymolSessions/{items.group}_{items.gene}_{queryname}.pse.zip'
+                    pymolScript=f'downloads/pymolSessionScripts/{items.group}_{items.gene}_{queryname}.zip'
+                    coordinateFiles=f'downloads/coordinateFiles/{items.group}_{items.gene}_{queryname}'
+        
         return render_template('pdbs.html',queryname=queryname,pdb_list=pdb_list,pdbReso=pdbReso,pdbGene=pdbGene,pdbProtein=pdbProtein,\
         pdbUniprot=pdbUniprot,pdbGroup=pdbGroup,formattedSeq=formattedSeq,pdbMutation=pdbMutation,pdbPhos=pdbPhos,xdfgNum=xdfgNum,glyNum=glyNum,\
         clusterColor=clusterColor,pdbPseudo=pdbPseudo,domain_begin=domain_begin,domain_end=domain_end,pymolSession=pymolSession,pymolScript=pymolScript,\
-        coordinateFiles=coordinateFiles,nglList=nglList,pheNum=pheNum,pdb_organism=pdb_organism)
+        coordinateFiles=coordinateFiles,nglList=nglList,pheNum=pheNum,pdb_organism=pdb_organism,uniprot_count=uniprot_count)
 
     if settings=='GROUP':
         queryname=queryname.upper()

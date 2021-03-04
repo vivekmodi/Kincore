@@ -17,6 +17,8 @@
         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
           <div class="card  border-light bg-light mb-3">
             <div class="card-header light-pink-background"><h4><a href="https://www.rcsb.org/structure/{{ queryname.lower() }}" target="_blank">{{ queryname }}</a></h4>
+
+              {% if uniprot_count==1 %}
               <h5><a href="{{ url_for('uniqueQuery', queryname=pdbGene, settings='GENE') }}" target="_blank">{{ pdbGene }} </a>({{ pdbProtein }})</h5>
               {% if pdbPseudo=='Pseudo' %}
               <h5>Pseudokinase</h5>
@@ -28,7 +30,7 @@
                   <h5 class="card-title">Domain boundary: {{ domain_begin }} - {{ domain_end }}</h5>
                   <h5 class="card-title">Resolution: {{ pdbReso }}</h5><br>
 
-                  <div class="table-responsive">
+                  <div class="table-responsive table-hover very-dark-text" style="word-wrap: break-word;">
                   <table class="table dark-text">
                     <thead class="">
                       <tr>
@@ -85,6 +87,91 @@
                     {% endfor %}
                     </table>
                   </div>
+                  {% endif %}
+
+                  {% if uniprot_count>1 %}
+                  {% for gene in pdbGene %}<h5><a href="{{ url_for('uniqueQuery', queryname=gene, settings='GENE') }}" target="_blank">{{ gene }}</a> ({{ pdbProtein[gene] }}) </h5>{% endfor %}
+                  {% for items in pdbPseudo.keys() %}
+                  {% if pdbPseudo[items]=='Pseudo' %}
+                  <h5>Pseudokinase</h5>
+                  {% endif %}{% endfor %}
+                </div>
+
+                    <div class="card-body">
+                      <h5 class="card-title">Group: {% for group in pdbGroup %}<a href="{{ url_for('uniqueQuery', queryname=group, settings='GROUP') }}" target="_blank">{{ group }} </a>{% endfor %}</h5>
+                      <h5 class="card-title">Uniprot: {% for uniprot in pdbUniprot %}<a href="https://www.uniprot.org/uniprot/{{ uniprot }}" target="_blank">{{ uniprot }} </a>{% endfor %}</h5>
+                      <h5 class="card-title">Organism: {% for organism in pdb_organism %}{{ organism }} {% endfor %}</h5>
+                      <h5 class="card-title">Domain boundary: {% for items in domain_begin.keys() %}{{ domain_begin[items] }} - {{ domain_end[items] }}  {% endfor %}</h5>
+                      <h5 class="card-title">Resolution: {{ pdbReso }}</h5><br>
+
+                      <div class="table-responsive table-hover very-dark-text" style="word-wrap: break-word;">
+                      <table class="table dark-text">
+                        <thead class="">
+                          <tr>
+                            <th scope="col" style='text-align:left;'>Chain id</th>
+                            <th scope="col" style='text-align:left;'>Group</th>
+                            <th scope="col" style='text-align:left;'>Gene</th>
+                            <th scope="col" style='text-align:left;'>UniprotID</th>
+                            <th scope="col" style='text-align:left;'>Protein</th>
+                            <th scope="col" style='text-align:left;'>Organism</th>
+                            <th scope="col" style='text-align:left;'>Spatial</th>
+                            <th scope="col" style='text-align:left;'>Dihedral</th>
+                            <th scope="col" style='text-align:left;'>C-helix</th>
+                            <th scope="col" style='text-align:left;'>Ligand</th>
+                            <th scope="col" style='text-align:left;'>Type</th>
+                            <th scope="col" style='text-align:left;'>Residues in structure</th>
+                            <th scope="col" style='text-align:left;'>Unresolved residues in A-loop</th>
+                          </tr>
+                        </thead>
+                          {% for item in pdb_list %}
+                          <tr style="line-height:20px;">
+                            <td style='text-align:left;color:{{ clusterColor[item.dihedral] }};font-weight:bold;'>{{ item.pdb[4] }}</td>
+                            <td><a href="{{ url_for('uniqueQuery', queryname=item.group, settings='GROUP') }}" target="_blank">{{ item.group }}</td>
+                            <td><a href="{{ url_for('uniqueQuery', queryname=item.gene, settings='GENE') }}" target="_blank">{{ item.gene }}</td>
+                            <td>{{ item.uniprotid }}</td>
+                            <td>{{ item.protein_name }}</td>
+                            <td>{{ item.specie }}</td>
+                            <td style='text-align:left;'><a href="{{ url_for('uniqueQuery', queryname=item.spatial, settings='SPATIAL') }}" target="_blank">{{ item.spatial }}</td>
+                            {% if item.dihedral=='None' %}
+                            <td style='text-align:left;'><a href="{{ url_for('uniqueQuery', queryname=(item.spatial+item.dihedral), settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
+                            {% else %}
+                            <td style='text-align:left;'><a href="{{ url_for('uniqueQuery', queryname=item.dihedral, settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
+                            {% endif %}
+                            <td style='text-align:left;'>{{ item.chelix }}</td>
+                            {% if ',' in item.ligand %}
+                            <td style='text-align:left;'>
+                              {% set subitems=item.ligand.split(',') %}
+                              {% for ligname in subitems %}
+                              {% set sub_subitems=ligname.split(':') %}
+                              <a href="{{ url_for('uniqueQuery', queryname=sub_subitems[0], settings='LIGAND') }}" target="_blank">{{ sub_subitems[0] }}
+                              {% endfor %}
+                            </td>
+                            {% else %}
+                            {% set ligname=item.ligand.split(':') %}
+                            <td style='text-align:left;'><a href="{{ url_for('uniqueQuery', queryname=ligname[0], settings='LIGAND') }}" target="_blank">{{ ligname[0] }}</td>
+                            {% endif %}
+
+                            {% if ',' in item.ligand_type %}
+                            <td style='text-align:left;'>
+                            {% set subitems=item.ligand_type.split(',') %}
+                            {% for ligtypes in subitems %}
+                            <a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=ligtypes) }}" target="_blank">{{ ligtypes }}
+                            {% endfor %}
+                          </td>
+                          {% else %}
+                            <td style='text-align:left;'><a href="{{ url_for('multipleQuery', groupSelect='All', labelSelect='All', ligTypeSelect=item.ligand_type) }}" target="_blank">{{ item.ligand_type }}</td>
+                          {% endif %}
+                          <td style='text-align:left;'>{{ item.first_obs_res }} - {{ item.last_obs_res }}</td>
+                          {% if item.loopBreak>0 %}
+                          <td style='text-align:left;'>{{ item.loopBreak }}</td>
+                          {% else %}
+                          <td style='text-align:left;'>0</td>
+                          {% endif %}
+                        </tr>
+                        {% endfor %}
+                        </table>
+                      </div>
+                      {% endif %}
           </div>
         </div>
 
