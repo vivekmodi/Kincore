@@ -82,12 +82,15 @@ def renumber_by_alignment (pwd,df):
                             chain.detach_child(tuple(resid))
 
         #fhandle_column.close()
-        io=PDB.PDBIO()
-        io.set_structure(structure)
-        io.save(kinasechains_renumber_alignment+"/"+pdbs[0:]+".pdb")
-        
-        cmd=('gzip -f '+kinasechains_renumber_alignment+'/'+pdbs[0:]+'.pdb')
-        subprocess.call(cmd, shell=True)
+        try:       #cases like 6TULAAA can not have 3-letter chain id and give an error in writing pdb file
+            io=PDB.PDBIO()
+            io.set_structure(structure)
+            io.save(kinasechains_renumber_alignment+"/"+pdbs[0:]+".pdb")
+            
+            cmd=('gzip -f '+kinasechains_renumber_alignment+'/'+pdbs[0:]+'.pdb')
+            subprocess.call(cmd, shell=True)
+        except:
+            pass
 
         io=PDB.MMCIFIO()
         io.set_structure(structure)

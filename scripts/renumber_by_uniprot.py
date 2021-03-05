@@ -112,11 +112,14 @@ def renumber_by_uniprot(pwd,df):
         cmd=('gzip -f '+kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4:]+'.cif')
         subprocess.call(cmd, shell=True)
         
-        io=PDB.PDBIO()
-        io.set_structure(structure)
-        io.save(kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4:]+".pdb")
-        cmd=('gzip -f '+kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4:]+'.pdb')
-        subprocess.call(cmd, shell=True)
+        try:
+            io=PDB.PDBIO()
+            io.set_structure(structure)
+            io.save(kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4:]+".pdb")
+            cmd=('gzip -f '+kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4:]+'.pdb')
+            subprocess.call(cmd, shell=True)
+        except:
+            pass
         
     log.close()
     return df

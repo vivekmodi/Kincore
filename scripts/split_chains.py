@@ -47,26 +47,26 @@ def split_chains(pwd, df):
         
         
     
-        chain_filename=(kinasechains+"/"+pdbs+".pdb.gz")
-        if not os.path.isfile(chain_filename):
-            #print("Splitting pdbs and printing chains in separate files:"+pdbs)
-            handle=gzip.open(filename,"rt")
-            parser=PDB.MMCIFParser(QUIET=True)
-            structure=parser.get_structure(pdbs[0:4],handle)
-            io=PDB.PDBIO()
-            chain_id=pdbs[4:]    #Take the chain id from pdbs
-            for model in structure:
-                for chain in model:
-                    if(chain.id==chain_id):
-                        io.set_structure(chain)
-                        chain_filename=(kinasechains+"/"+structure.id+chain.id+".pdb")             #Output in PDB format
-                        io.save(chain_filename)        
-                        #cmd=(f'cp {kinasechains}/{pdbs[0:4]}{pdbs[4]}.pdb {pwd}/static/downloads/pdb-numbered')
-                        #print(cmd)
-                        #subprocess.call(cmd,shell=True)
-                        cmd=('gzip -f '+chain_filename)
-                        subprocess.call(cmd, shell=True)
-            #handle.close()
+        try:    #cases like 6TULAAA can not have 3-letter chain id and give an error in writing pdb file
+            chain_filename=(kinasechains+"/"+pdbs+".pdb.gz")
+            if not os.path.isfile(chain_filename):
+                #print("Splitting pdbs and printing chains in separate files:"+pdbs)
+                handle=gzip.open(filename,"rt")
+                parser=PDB.MMCIFParser(QUIET=True)
+                structure=parser.get_structure(pdbs[0:4],handle)
+                io=PDB.PDBIO()
+                chain_id=pdbs[4:]    #Take the chain id from pdbs
+                for model in structure:
+                    for chain in model:
+                        if(chain.id==chain_id):
+                            io.set_structure(chain)
+                            chain_filename=(kinasechains+"/"+structure.id+chain.id+".pdb")             #Output in PDB format
+                            io.save(chain_filename)        
+                            cmd=('gzip -f '+chain_filename)
+                            subprocess.call(cmd, shell=True)
+        except:
+            pass
+            
             
         chain_filename=(kinasechains+"/"+pdbs+".cif.gz")
         if not os.path.isfile(chain_filename):
