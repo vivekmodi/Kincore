@@ -59,7 +59,7 @@ def Main(pwd):
     create_blastdb('pdbaa',f'{pwd}/pdbaa_psiblast_dir')
     run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
 
-    df=read_psiblast(df,f'{pwd}/pdbaa_psiblast_dir/AURKA.pdbaa.xml', f'{pwd}/pdbaa_psiblast_dir/psiblast_excluded.log')   #sequences from pdbaa also contain cloning tags
+    df=read_psiblast(pwd,df,f'{pwd}/pdbaa_psiblast_dir/AURKA.pdbaa.xml', f'{pwd}/pdbaa_psiblast_dir/psiblast_excluded.log')   #sequences from pdbaa also contain cloning tags
 
     create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
     df=gene_dict(pwd,df)        # Also prints New_uniprots.txt
@@ -107,9 +107,9 @@ def Main(pwd):
     df_datesorted=df.sort_values(['Date'],ascending=False).copy()
     df_datesorted[['Date','Specie','UniprotID','Gene','PDBid']].to_excel(f'Kinases_df_date_sorted.xlsx',index=False)
     
+    update_database(df)
     subListPymolSession(pwd,df)   #This function also copies coordinate files
 
-    update_database(df)
     create_json(pwd,f'Kinases_df-{today}.csv')
     validate(pwd,f'Kinases_df-{today}.csv')
 

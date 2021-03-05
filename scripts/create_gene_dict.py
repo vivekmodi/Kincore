@@ -11,7 +11,7 @@ import pandas as pd
 def gene_dict(pwd,df):
     print('Creating gene dictionary...')
     df_motifs=pd.read_csv(f'{pwd}/motifs_all.tsv',sep=' ')
-    fhandle_newuniprots=open(f'{pwd}/New_uniprots.txt','w')
+    fhandle_motif_not_found=open(f'{pwd}/Motif_not_found.txt','a')
 
 
 
@@ -77,7 +77,7 @@ def gene_dict(pwd,df):
                 df.at[i,'Hinge1']=int(df_motifs[(df_motifs.Uniprot==uniprot)].Hinge1_num)
                 #df.at[i,'LRLres']='X';df.at[i,'LRLnum']=int(0);df.at[i,'DLWres']='X';df.at[i,'DLWnum']=int(0);df.at[i,'ISRres']='X';df.at[i,'ISRnum']=int(0);  these motifs are not included for now
             except:
-                fhandle_newuniprots.write(f"Missing {uniprot} {df.at[i,'PDBid']}\n")
+                fhandle_motif_not_found.write(f"Missing {uniprot} {df.at[i,'PDBid']}\n")
                 df.at[i,'Gene']='XXX'
                 df.at[i,'Domain']='XXX'
                 df.at[i,'Group']='XXX'
@@ -98,5 +98,5 @@ def gene_dict(pwd,df):
                 df.at[i,'GTKres']='XXX'
                 df.at[i,'GTKnum']=int(999)
                 df.at[i,'Hinge1']=int(999)
-    fhandle_newuniprots.close()
+    fhandle_motif_not_found.close()
     return(df)

@@ -59,7 +59,7 @@ def create_json(pwd,filename):
 
             if pdb in df.at[i,"PDBid"]:
                 site_id=site_id+1
-                chain_label=df.at[i,'PDBid'][4]
+                chain_label=df.at[i,'PDBid'][4:]
                 spatial=df.at[i,'Spatial']
                 dihedral=df.at[i,'Dihedral']
                 dfgnum=str(df.at[i,'Author_Aspnum'])      #Asp num is used

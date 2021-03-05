@@ -40,7 +40,7 @@ def format_seq_text(pwd,df):
             if uniResnum==-9999:
                 continue
             
-            if pdbs[4]!=pdbChain:
+            if pdbs[4:]!=pdbChain:
                 continue
             
             if firstResi=='True':
@@ -128,7 +128,7 @@ def format_seq_html(pwd,df):
             else:
                 pdbResname=lines[3];pdbChain=lines[4];uniResnum=int(lines[5]);uniResname=lines[6];uniAcc=lines[7];anno=lines[8];insertion_code=''
             
-            if pdbs[4]!=pdbChain:
+            if pdbs[4:]!=pdbChain:
                 continue
             if uniResnum==-9999:
                 continue

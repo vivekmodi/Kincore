@@ -19,9 +19,10 @@ def create_fasta_with_labels(pwd,df):
     
     fhandle_fasta=open(f'{pwd}/static/downloads/fasta_with_labels/PK_labels_PDB.fasta','w')
     for i in df.index:
-        pdbs=df.at[i,'PDBid'];uniprotid=df.at[i,'UniprotID'];gene=df.at[i,'Gene'];spatial=df.at[i,'Spatial'];dihedral=df.at[i,'Dihedral']
+        pdbs=df.at[i,'PDBid'];uniprotid=df.at[i,'UniprotID'];gene=df.at[i,'Gene'];spatial=df.at[i,'Spatial'];dihedral=df.at[i,'Dihedral'];ligand=df.at[i,'Ligand']
+        ligand_label=df.at[i,'Ligand_label']
         seq=df.at[i,'PDBAA_Seq']
-        fhandle_fasta.write(f'>{pdbs}\t{gene}\t{uniprotid}\t{spatial}\t{dihedral}\n')
+        fhandle_fasta.write(f'>{pdbs}\t{gene}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligand}\t{ligand_label}\n')
         fhandle_fasta.write(f'{seq}\n')
     fhandle_fasta.close()
     

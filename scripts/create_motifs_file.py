@@ -11,7 +11,7 @@ import pandas as pd
 def create_motifs_file(pwd):
     print('Creating motifs file...')
     df_align=pd.read_csv(f'{pwd}/All-organisms-alignment-residue-corresspondence.tab',sep=' ')  #make sure this file has a header Org Uniprot Domain ResType UniNum AlignNum
-    fhandle_notfound=open(f'{pwd}/Not_found_in-alignment.txt','w')
+    fhandle_motif_not_found=open(f'{pwd}/Motif_not_found.txt','a')   #Prints the motifs which are not found in the alignment of the domains already known; does not print new proteins identified
     fhandle_motifs=open(f'{pwd}/motifs_all.tsv','w')
     fhandle_motifs.write('Gene Domain Group Uniprot Uni_Acc Domain_start Domain_end ALK_res ALK_num RRE_res RRE_num HRD_res HRD_num DFGPhe_res DFGPhe_num DFGAsp_res DFGAsp_num APE_res APE_num DLW_res DLW_num GTK_res GTK_num Hinge1_res Hinge1_num\n')
 
@@ -47,47 +47,47 @@ def create_motifs_file(pwd):
                 alk_num=int(df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==lys)].UniNum)
                 alk_res=df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==lys)].ResType.to_string(index=False).strip()
             except:
-                fhandle_notfound.write(f'Not found in alignment {uniprotid} {domain} ALKnum\n')
+                fhandle_motif_not_found.write(f'Not found in alignment {uniprotid} {domain} ALKnum\n')
             try:                
                 rre_num=int(df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==glu)].UniNum)
                 rre_res=df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==glu)].ResType.to_string(index=False).strip()
             except:
-                fhandle_notfound.write(f'Not found in alignment {uniprotid} {domain} RREnum\n')
+                fhandle_motif_not_found.write(f'Not found in alignment {uniprotid} {domain} RREnum\n')
             try:                
                 hrd_num=int(df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==his_asp)].UniNum)
                 hrd_res=df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==his_asp)].ResType.to_string(index=False).strip()
             except:
-                fhandle_notfound.write(f'Not found in alignment {uniprotid} {domain} HRDnum\n')
+                fhandle_motif_not_found.write(f'Not found in alignment {uniprotid} {domain} HRDnum\n')
             try:
                 dfg_num=int(df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==phe)].UniNum)
                 dfg_res=df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==phe)].ResType.to_string(index=False).strip()
             except:
-                fhandle_notfound.write(f'Not found in alignment {uniprotid} {domain} DFGnum\n')
+                fhandle_motif_not_found.write(f'Not found in alignment {uniprotid} {domain} DFGnum\n')
             try:
                 dfgAsp_num=int(df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==asp)].UniNum)
                 dfgAsp_res=df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==asp)].ResType.to_string(index=False).strip()
             except:
-                fhandle_notfound.write(f'Not found in alignment {uniprotid} {domain} DFGAspnum\n')
+                fhandle_motif_not_found.write(f'Not found in alignment {uniprotid} {domain} DFGAspnum\n')
             try:
                 ape_num=int(df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==ape)].UniNum)
                 ape_res=df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==ape)].ResType.to_string(index=False).strip()
             except:
-                fhandle_notfound.write(f'Not found in alignment {uniprotid} {domain} APEnum\n')
+                fhandle_motif_not_found.write(f'Not found in alignment {uniprotid} {domain} APEnum\n')
             try:
                 dlw_num=int(df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==dlw_asp)].UniNum)
                 dlw_res=df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==dlw_asp)].ResType.to_string(index=False).strip()
             except:
-                fhandle_notfound.write(f'Not found in alignment {uniprotid} {domain} DLWnum\n')
+                fhandle_motif_not_found.write(f'Not found in alignment {uniprotid} {domain} DLWnum\n')
             try:
                 hinge1_num=int(df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==hinge1)].UniNum)
                 hinge1_res=df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==hinge1)].ResType.to_string(index=False).strip()
             except:
-                fhandle_notfound.write(f'Not found in alignment {uniprotid} {domain} Hinge1num\n')
+                fhandle_motif_not_found.write(f'Not found in alignment {uniprotid} {domain} Hinge1num\n')
             try:
                 gtk_num=int(df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==gtk)].UniNum)
                 gtk_res=df_align[(df_align.Uniprot==uniprotid) & (df_align.Domain==domain) & (df_align.AlignNum.astype(int)==gtk)].ResType.to_string(index=False).strip()
             except:
-                fhandle_notfound.write(f'Not found in alignment {uniprotid} {domain} GTKnum\n')
+                fhandle_motif_not_found.write(f'Not found in alignment {uniprotid} {domain} GTKnum\n')
 
             fhandle_motifs.write(f'{gene} {domain} {group} {uniprotid} {uniprotacc} {domain_begin} {domain_end} {alk_res} {alk_num} {rre_res} {rre_num} {hrd_res} {hrd_num} {dfg_res} {dfg_num} {dfgAsp_res} {dfgAsp_num} {ape_res} {ape_num} {dlw_res} {dlw_num} {gtk_res} {gtk_num} {hinge1_res} {hinge1_num}\n')
 
@@ -95,4 +95,4 @@ def create_motifs_file(pwd):
 
             
     fhandle_motifs.close()
-    fhandle_notfound.close()
+    fhandle_motif_not_found.close()

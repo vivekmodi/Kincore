@@ -47,7 +47,7 @@ def identify_mutation(pwd,df):
             log.write(f'identify_mutation: File not found {pdbs[0:4]}.csv.gz\n')
             continue
         
-        chain=str(pdbs[4]) 
+        chain=str(pdbs[4:]) 
         dfg_phe=int(df.at[i,'DFGnum'])
         dfg_asp=dfg_phe-1;xdfg=dfg_phe-2;dfg_gly=dfg_phe+1
         first_resi=0;mut_string_chain=list();phos_string_chain=list();modified_aa_chain=list()

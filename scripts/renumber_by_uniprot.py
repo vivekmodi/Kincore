@@ -22,9 +22,9 @@ def renumber_by_uniprot(pwd,df):
     for i in df.index:
         pdbs=df.at[i,'PDBid']
         
-        filename=(kinasechains+'/'+pdbs[0:4].upper()+pdbs[4]+".cif.gz")
-        if os.path.isfile(kinasechains_renumber_uniprot+"/"+pdbs[0:5]+".pdb.gz"):
-            if os.path.isfile(kinasechains_renumber_uniprot+"/"+pdbs[0:5]+".cif.gz"):
+        filename=(kinasechains+'/'+pdbs[0:4].upper()+pdbs[4:]+".cif.gz")
+        if os.path.isfile(kinasechains_renumber_uniprot+"/"+pdbs[0:]+".pdb.gz"):
+            if os.path.isfile(kinasechains_renumber_uniprot+"/"+pdbs[0:]+".cif.gz"):
                 continue 
         
         try:
@@ -108,14 +108,14 @@ def renumber_by_uniprot(pwd,df):
         siftshandle.close()
         io=PDB.MMCIFIO()
         io.set_structure(structure)
-        io.save(kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4]+".cif")
-        cmd=('gzip -f '+kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4]+'.cif')
+        io.save(kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4:]+".cif")
+        cmd=('gzip -f '+kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4:]+'.cif')
         subprocess.call(cmd, shell=True)
         
         io=PDB.PDBIO()
         io.set_structure(structure)
-        io.save(kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4]+".pdb")
-        cmd=('gzip -f '+kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4]+'.pdb')
+        io.save(kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4:]+".pdb")
+        cmd=('gzip -f '+kinasechains_renumber_uniprot+'/'+pdbs[0:4].upper()+pdbs[4:]+'.pdb')
         subprocess.call(cmd, shell=True)
         
     log.close()

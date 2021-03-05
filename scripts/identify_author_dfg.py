@@ -15,7 +15,7 @@ def identify_author_dfg(pwd,conf_df):
     for i in conf_df.index:
      
         pdbid=conf_df.at[i,'PDBid'];pdb=pdbid[0:4].lower()
-        chainid=pdbid[4];uni_dfgnum=conf_df.at[i,'DFGnum'];uni_aspnum=int(uni_dfgnum)-1
+        chainid=pdbid[4:];uni_dfgnum=conf_df.at[i,'DFGnum'];uni_aspnum=int(uni_dfgnum)-1
 
         sifts_handle=gzip.open(f'{pwd}/kinasesifts/{pdb}.csv.gz','rt')
         sifts_handle.seek(0)

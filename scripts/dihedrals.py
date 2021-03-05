@@ -206,7 +206,7 @@ def compute_dihedrals(pwd,df):
                             chi3=compute_chi3(structure,model,chain,curr_residue)       #right now works only for ARG, GLN, GLU, LYS and MET
                             chi4=compute_chi4(structure,model,chain,curr_residue)       #right now works only for ARG, LYS
         
-                            fhandle_output.write(f'{pdbfilename[0:-4]} {model.id} {chain.id} {curr_residue.id[1]} {curr_residue.resname} {phi} {psi} {omega} {chi1} {chi2} {chi3} {chi4}\n')
+                            fhandle_output.write(f'{pdbfilename[0:4]} {model.id} {chain.id} {curr_residue.id[1]} {curr_residue.resname} {phi} {psi} {omega} {chi1} {chi2} {chi3} {chi4}\n')
         
      #                       if curr_residue.id[1]==int(xdfg):
      #                           xdfg_phi=phi;xdfg_psi=psi
@@ -228,7 +228,7 @@ def compute_dihedrals(pwd,df):
                     chi3=compute_chi3(structure,model,chain,curr_residue)       #right now works only for ARG, GLN, GLU, LYS and MET
                     chi4=compute_chi4(structure,model,chain,curr_residue)       #right now works only for ARG, LYS
     
-                    fhandle_output.write(f'{pdbfilename[0:-4]} {model.id} {chain.id} {curr_residue.id[1]} {curr_residue.resname} {phi} 999.00 {omega} {chi1} {chi2} {chi3} {chi4}\n')
+                    fhandle_output.write(f'{pdbfilename[0:4]} {model.id} {chain.id} {curr_residue.id[1]} {curr_residue.resname} {phi} 999.00 {omega} {chi1} {chi2} {chi3} {chi4}\n')
     
     log.close()
     return

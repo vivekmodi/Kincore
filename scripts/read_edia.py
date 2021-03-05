@@ -12,7 +12,7 @@ def read_edia(pwd,df):
     for i in df.index:
         pdb=df.at[i,'PDBid'][0:4]
         pdb_lower=pdb.lower()
-        chain=df.at[i,'PDBid'][4]
+        chain=df.at[i,'PDBid'][4:]
         uniprotacc=df.at[i,'UniAcc']
         uni_phenum=int(df.at[i,'DFGnum'])
         uni_xnum=uni_phenum-2

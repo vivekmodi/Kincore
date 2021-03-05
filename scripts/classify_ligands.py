@@ -106,14 +106,14 @@ def compute_distance_from_pocket_residues(structure,ligandname,ligandid):
 def correct_chain_diff_in_ligand_type_labels(df):   #If two chains in the same PDB have Type1 and Type1.5 labels then keep only Type1.5 for both the chains
     for i in df.index:
         pdb1=df.at[i,'PDBid'][0:4]
-        chain1=df.at[i,'PDBid'][4]
+        chain1=df.at[i,'PDBid'][4:]
         ligand_label1=df.at[i,'Ligand_label']
         ligand_name1=df.at[i,'Ligand']
         
         
         for j in df.index:
             pdb2=df.at[j,'PDBid'][0:4]
-            chain2=df.at[j,'PDBid'][4]
+            chain2=df.at[j,'PDBid'][4:]
             ligand_label2=df.at[j,'Ligand_label']
             ligand_name2=df.at[j,'Ligand']
             

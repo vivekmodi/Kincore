@@ -19,11 +19,11 @@ def renumber_by_alignment (pwd,df):
     for i in df.index:
         pdbs=df.at[i,'PDBid']
         
-        if os.path.isfile(kinasechains_renumber_alignment+"/"+pdbs[0:5]+".pdb.gz"):
-            if os.path.isfile(kinasechains_renumber_alignment+"/"+pdbs[0:5]+".cif.gz"):
+        if os.path.isfile(kinasechains_renumber_alignment+"/"+pdbs[0:]+".pdb.gz"):
+            if os.path.isfile(kinasechains_renumber_alignment+"/"+pdbs[0:]+".cif.gz"):
                 continue
         
-        pdbfilename=(kinasechains_renumber_uniprot+'/'+pdbs[0:5]+'.cif.gz')
+        pdbfilename=(kinasechains_renumber_uniprot+'/'+pdbs[0:]+'.cif.gz')
         
         try:
             handle=gzip.open(pdbfilename,"rt")
@@ -84,16 +84,16 @@ def renumber_by_alignment (pwd,df):
         #fhandle_column.close()
         io=PDB.PDBIO()
         io.set_structure(structure)
-        io.save(kinasechains_renumber_alignment+"/"+pdbs[0:5]+".pdb")
+        io.save(kinasechains_renumber_alignment+"/"+pdbs[0:]+".pdb")
         
-        cmd=('gzip -f '+kinasechains_renumber_alignment+'/'+pdbs[0:5]+'.pdb')
+        cmd=('gzip -f '+kinasechains_renumber_alignment+'/'+pdbs[0:]+'.pdb')
         subprocess.call(cmd, shell=True)
 
         io=PDB.MMCIFIO()
         io.set_structure(structure)
-        io.save(kinasechains_renumber_alignment+"/"+pdbs[0:5]+".cif")
+        io.save(kinasechains_renumber_alignment+"/"+pdbs[0:]+".cif")
        
-        cmd=('gzip -f '+kinasechains_renumber_alignment+'/'+pdbs[0:5]+'.cif')
+        cmd=('gzip -f '+kinasechains_renumber_alignment+'/'+pdbs[0:]+'.cif')
         subprocess.call(cmd, shell=True)
        
     log.close()

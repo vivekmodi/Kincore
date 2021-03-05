@@ -54,7 +54,7 @@ def split_chains(pwd, df):
             parser=PDB.MMCIFParser(QUIET=True)
             structure=parser.get_structure(pdbs[0:4],handle)
             io=PDB.PDBIO()
-            chain_id=pdbs[4]    #Take the chain id from pdbs
+            chain_id=pdbs[4:]    #Take the chain id from pdbs
             for model in structure:
                 for chain in model:
                     if(chain.id==chain_id):
@@ -74,7 +74,7 @@ def split_chains(pwd, df):
             parser=PDB.MMCIFParser(QUIET=True)
             structure=parser.get_structure(pdbs[0:4],handle)
             io=PDB.MMCIFIO()
-            chain_id=pdbs[4]    #Take the chain id from pdbs    
+            chain_id=pdbs[4:]    #Take the chain id from pdbs    
             for model in structure:
                 for chain in model:
                     if(chain.id==chain_id):

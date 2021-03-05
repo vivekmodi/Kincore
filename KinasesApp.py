@@ -828,7 +828,7 @@ def uniqueQuery(settings,queryname):
     if settings=='PDB':
         queryname=queryname.upper()
         if len(queryname)==5:
-            queryname=queryname[0:-1]           #Remove chain so that only PDB id is always searched
+            queryname=queryname[0:4]           #Remove chain so that only PDB id is always searched
         pdb_list=Cluster.query.filter(Cluster.pdb.contains(queryname)).all()
 
         formattedSeq='';nglList=dict()

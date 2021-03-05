@@ -14,7 +14,8 @@ def transfer_to_dunbrack3(pwd):
         rsync -avr --progress {pwd}/static/downloads/pymolSessions/ vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/static/downloads/pymolSessions/;\
         rsync -avr --progress {pwd}/static/downloads/pymolSessionScripts/ vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/static/downloads/pymolSessionScripts/;\
         rsync -avr --progress {pwd}/update-date.txt vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/;\
-        rsync -avr --progress {pwd}/data_new.sqlite vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/')
+        rsync -avr --progress {pwd}/data_new.sqlite vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/;\
+        rsync -avr --progress {pwd}/static/downloads/fasta_with_labels/PK_labels_PDB.fasta vivekmodi@dunbrack3.fccc.edu:/var/www/html/site/static/downloads/fasta_with_labels/PK_labels_PDB.fasta')
     
     subprocess.call(cmd,shell=True)
     

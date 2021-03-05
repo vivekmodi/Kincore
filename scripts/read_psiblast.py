@@ -8,14 +8,15 @@ Created on Thu Jan  9 16:55:45 2020
 from Bio import SearchIO
 from datetime import datetime
 
-def read_psiblast(df,psiblast_result, excluded_output):
+def read_psiblast(pwd,df,psiblast_result, excluded_output):
     print("Reading psiblast output...")
     fhandle_psiblast=SearchIO.read(psiblast_result,"blast-xml")
     fhandle_excluded=open(excluded_output,"w")
+    fhandle_newuniprots=open(f'{pwd}/New_uniprots.txt','w')
   
     index=0  
     hit_accession_list=list()
-    specie_list=['HUMAN','MOUSE','RATTUS','SCROFA','BOVIN','XENLA','DROME','MACACA','SHEEP','DANIO']
+    specie_list=['HUMAN','MOUSE','RATTUS','SCROFA','BOVIN','XENLA','DROME','MACACA','SHEEP','DANIO','RABIT','CHICK']
    
     for hits in fhandle_psiblast:        #hits object does not have any evalue, only hsps have evalues
         #if index>10:
@@ -32,28 +33,28 @@ def read_psiblast(df,psiblast_result, excluded_output):
                     
                     if hsp.hit_description.find('|')!=-1:       #Skip fusion proteins; returns position of substring, -1 means not found
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))     #modified to remove the random string in the beginning
-                        fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
+                        fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
                         continue
                     uniprot_name=str(hsp.hit_description.split("<")[1].split(">")[0].split("(")[0])
                     
                     if uniprot_name in ('NA','D3DSX2_HUMAN','RIOK1_HUMAN','RIOK2_HUMAN','RIOK3_HUMAN','PAN3_DROME','SG196_MOUSE','SG196_DANRE','E0W1I1_PEDHC','D3ZKP6_RAT'):
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
-                        fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
+                        fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
                         continue                           #Remove the case which do not have uniprot assigned, D3DSX2 is not the correct uniprot but comes up in some PDB annotation
                         
                           
                     if hsp.hit_id[0:4] in ('6T28','6T29','3LZBE','3LZBF','3LZBG','3LZBH','5CNOX','6PYHA','6PYHD','6TLJS','6Z1T','6Z1Q','6Z83','6Z84','6YUL','6YUM'):     # Description of these structures is in the kinasepml notes file
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
-                        fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
+                        fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
                         continue
                    
                     if hsp.hit_description.split()[6]=='yes':    #Skip CA-only chains
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
-                        fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
+                        fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
                         continue
                     if hsp.hit_description.split()[2]=='EM':     #Skip EM structures
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
-                        fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
+                        fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
                         continue
                     
                     chain_length=hsp.hit_description.split()[1]
@@ -79,7 +80,7 @@ def read_psiblast(df,psiblast_result, excluded_output):
                         res2=int(residue_range.split("-")[1])
                     except IndexError:
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
-                        fhandle_excluded.write(hsp.hit_id[0:5]+','+description+'\n')
+                        fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
                         continue      #skip the structures which do not have residue information in pdbaa, e.g. 6NSLA
         
                         
@@ -117,14 +118,17 @@ def read_psiblast(df,psiblast_result, excluded_output):
                     df.at[index,'Specie']=specie
                     df.at[index,'Resolution']=round(float(reso),2)
                     df.at[index,'Method']=method
-                    
                     df.at[index,'Rvalue']=round(float(rvalue),2)
                     df.at[index,'FreeRvalue']=round(float(free_rvalue),2)
                    
                     index=index+1
+                    
+                else:
+                    fhandle_newuniprots.write(f"{hsp.hit_id} {hsp.hit_description}\n")
                 
                    
     fhandle_excluded.close()
+    fhandle_newuniprots.close()
     
     today=str(datetime.now())[0:10].strip()
     df.to_excel(f'pdbaa_psiblast_dir/df_psiblast_{today}.xlsx',index=False)   #Write excel and csv
