@@ -51,6 +51,12 @@ from transfer_to_dunbrack3 import transfer_to_dunbrack3
 from transfer_to_pdbe import transfer_to_pdbe
 from create_fasta_with_labels import create_fasta_with_labels
 
+aadict={'GLY':'G','ALA':'A','VAL':'V','ILE':'I','LEU':'L','MET':'M','PHE':'F','TYR':'Y',\
+        'TRP':'W','SER':'S','THR':'T','ASN':'N','GLN':'Q','ARG':'R','HIS':'H','LYS':'K',\
+        'ASP':'D','GLU':'E','CYS':'C','PRO':'P','SEC':'U','TPO':'T','CME':'C','CSS':'C',\
+        'MSE':'M','OCY':'C','PTR':'Y','SEP':'S','CAF':'C','LGY':'K','CAS':'C','CSO':'C','CSX':'C',\
+        'MK8':'E','NEP':'H','NMM':'R','CSD':'C','CYO':'Y','OCS':'C','OCY':'C','SCS':'C','ALY':'A',\
+        'KCX':'K','MHO':'M','T8L':'T','CY0':'C','UNK':'X','YTH':'T'}
 def Main(pwd):
     today=str(datetime.now())[0:10].strip()
     df=pd.DataFrame()
@@ -83,9 +89,9 @@ def Main(pwd):
     df=read_dihedrals(pwd,df)
     df=chain_break(pwd,df)
     #df=gene_synonym(pwd,df)        #modify to include non-human genes in the list
-    df=identify_mutation(pwd,df)
+    df=identify_mutation(pwd,df,aadict)
     df=extract_ligands(pwd,df)
-    format_seq_html(pwd,df)
+    format_seq_html(pwd,df,aadict)
     df=get_seq_from_cif(pwd,df)      #Do not need it right now; Always use after generating uniprot numbered files - this uses incorrect chain id, maybe try .pdb files
 
 

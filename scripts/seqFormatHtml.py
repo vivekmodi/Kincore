@@ -9,16 +9,8 @@ import gzip,sys,os,re
 import pandas as pd
 
 
-def format_seq_text(pwd,df):
-    aadict={'GLY':'G','ALA':'A','VAL':'V','ILE':'I','LEU':'L','MET':'M','PHE':'F','TYR':'Y',\
-        'TRP':'W','SER':'S','THR':'T','ASN':'N','GLN':'Q','ARG':'R','HIS':'H','LYS':'K',\
-        'ASP':'D','GLU':'E','CYS':'C','PRO':'P','SEC':'U','TPO':'T','CME':'C','CSS':'C',\
-        'MSE':'M','OCY':'C','PTR':'Y','SEP':'S','CAF':'C','LGY':'K','CAS':'C','CSO':'C','CSX':'C',\
-        'MK8':'E','NEP':'H','NMM':'R','CSD':'C','CYO':'Y','OCS':'C','OCY':'C','SCS':'C','ALY':'A',\
-        'KCX':'K','MHO':'M','T8L':'T','CY0':'C','UNK':'X','YTH':'T'}
-
+def format_seq_text(pwd,df,aadict):
     
-
     print('Fomatting sequences for html...')
     for i in df.index:
         uni_pdb_dict=dict()

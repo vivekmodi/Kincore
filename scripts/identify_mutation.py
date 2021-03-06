@@ -11,13 +11,7 @@ import gzip
 #        'W':'TRP','S':'SER','T':'THR','N':'ASN','Q':'GLN','R':'ARG','H':'HIS','K':'LYS',\
 #        'D':'ASP','E':'GLU','C':'CYS','P':'PRO','U':'SEC'}
 
-def identify_mutation(pwd,df):      
-    aadict={'GLY':'G','ALA':'A','VAL':'V','ILE':'I','LEU':'L','MET':'M','PHE':'F','TYR':'Y',\
-        'TRP':'W','SER':'S','THR':'T','ASN':'N','GLN':'Q','ARG':'R','HIS':'H','LYS':'K',\
-        'ASP':'D','GLU':'E','CYS':'C','PRO':'P','SEC':'U','TPO':'T','CME':'C','CSS':'C',\
-        'MSE':'M','OCY':'C','PTR':'Y','SEP':'S','CAF':'C','LGY':'K','CAS':'C','CSO':'C','CSX':'C',\
-        'MK8':'E','NEP':'H','NMM':'R','CSD':'C','CYO':'Y','OCS':'C','OCY':'C','SCS':'C','ALY':'A',\
-        'KCX':'K','MHO':'M','T8L':'T','CY0':'C','UNK':'X'}
+def identify_mutation(pwd,df,aadict):      
     print('Identifying mutations in X-D-F residues...')
     kinasesifts=f'{pwd}/kinasesifts'
     log=open(f'{pwd}/kinasepml.log','a')
