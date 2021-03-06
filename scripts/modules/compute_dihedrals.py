@@ -151,7 +151,7 @@ def compute_chi4(structure_,model_,chain_,curr_residue_):
 def compute_dihedrals(pwd,pdbfilename,index,conf_df,structure):
         
         ignoremodified=('PTR','TPO','SEP','MSE','BWB','CAS','CME','CSO','CSS','CSX','MK8','MLY','NEP','NMM','PHD','CAF','CSD','CYO','OCS','OCY','SCS',\
-                        'ALY','KCX',',LGY','CXM','MHO','T8L','ACE','AME','CY0','UNK','T8L','MHO','COM')
+                        'ALY','KCX',',LGY','CXM','MHO','T8L','ACE','AME','CY0','UNK','T8L','MHO','COM','YTH')
         
         model_id=conf_df.at[index,'Model_id']
         chain_id=conf_df.at[index,'Chain_id']        
