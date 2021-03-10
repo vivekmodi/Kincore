@@ -236,10 +236,11 @@ def write_text_file(sublist,tsvFile):
         if ',' in item.ligand:
             lig_items=item.ligand.split(',')
             for lig in lig_items:
-                ligandname=lig.split(':')[0];ligand_list.append(ligandname)
+                #ligandname=lig.split(':')[0];ligand_list.append(ligandname)
+                ligand_list.append(lig)
         else:
-            ligandname=item.ligand.split(':')[0]
-            ligand_list.append(ligandname)
+            #ligandname=item.ligand.split(':')[0];ligand_list.append(ligandname)
+            ligand_list.append(item.ligand)
         ligand_list=' '.join(ligand_list) #Join by a space and not comma
         
         ligandtype_list=list()
@@ -409,33 +410,32 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
     if ligTypeSelect=='All':
         ligTypeSelect=''
         ligand_type='All'
-    if ligTypeSelect=='TypeI':      #without this condition Type I also matches Type I½
-        dontmatch1='%TypeI½%';dontmatch2='%TypeII%';dontmatch3='%TypeIII%'
-    else:
-        dontmatch1=dontmatch2=dontmatch3=''
-    if ligTypeSelect=='TypeI½_Front' or ligTypeSelect=='TypeI½_Back':
-        ligTypeSelect='TypeI½';ligand_type='TypeI½'
+    dontmatch1=''
+    if ligTypeSelect=='Type1':      #without this condition Type 1 also matches Type 1.5
+        dontmatch1='%Type1.5%'
+    if ligTypeSelect=='Type1.5_Front' or ligTypeSelect=='Type1.5_Back':
+        ligTypeSelect='Type1.5';ligand_type='Type1.5'
     if groupSelect=='All':
         groupSelect=''
 
     if labelSelect=='All' and groupSelect=='':    #condition for All-All
         for tabs in ('Human','All','Nonhuman'):
             if tabs=='All':
-                group_list[tabs]=Cluster.query.filter(Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1),Cluster.ligand_type.notlike(dontmatch2),Cluster.ligand_type.notlike(dontmatch3)).order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
-                total_count[tabs]=Cluster.query.filter(Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1),Cluster.ligand_type.notlike(dontmatch2),Cluster.ligand_type.notlike(dontmatch3)).count()
+                group_list[tabs]=Cluster.query.filter(Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
+                total_count[tabs]=Cluster.query.filter(Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).count()
                 (strCount_all,geneCount_all,totalGroup_all,totalDihedral_all)=count_structures_groups(group_list[tabs])
             if tabs=='Human':
-                group_list[tabs]=Cluster.query.filter(Cluster.specie=='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1),Cluster.ligand_type.notlike(dontmatch2),Cluster.ligand_type.notlike(dontmatch3)).order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
-                total_count[tabs]=Cluster.query.filter(Cluster.specie=='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1),Cluster.ligand_type.notlike(dontmatch2),Cluster.ligand_type.notlike(dontmatch3)).count()
+                group_list[tabs]=Cluster.query.filter(Cluster.specie=='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
+                total_count[tabs]=Cluster.query.filter(Cluster.specie=='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).count()
                 (strCount_human,geneCount_human,totalGroup_human,totalDihedral_human)=count_structures_groups(group_list[tabs])
             if tabs=='Nonhuman':
-                group_list[tabs]=Cluster.query.filter(Cluster.specie!='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1),Cluster.ligand_type.notlike(dontmatch2),Cluster.ligand_type.notlike(dontmatch3)).order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
-                total_count[tabs]=Cluster.query.filter(Cluster.specie!='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1),Cluster.ligand_type.notlike(dontmatch2),Cluster.ligand_type.notlike(dontmatch3)).count()
+                group_list[tabs]=Cluster.query.filter(Cluster.specie!='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
+                total_count[tabs]=Cluster.query.filter(Cluster.specie!='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).count()
                 (strCount_nonhuman,geneCount_nonhuman,totalGroup_nonhuman,totalDihedral_nonhuman)=count_structures_groups(group_list[tabs])
 
-            subList['Human']=Cluster.query.filter(Cluster.specie=='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1),Cluster.ligand_type.notlike(dontmatch2),Cluster.ligand_type.notlike(dontmatch3)).all()
-            subList['All']=Cluster.query.filter(Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1),Cluster.ligand_type.notlike(dontmatch2),Cluster.ligand_type.notlike(dontmatch3)).all()
-            subList['Nonhuman']=Cluster.query.filter(Cluster.specie!='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1),Cluster.ligand_type.notlike(dontmatch2),Cluster.ligand_type.notlike(dontmatch3)).all()
+            subList['Human']=Cluster.query.filter(Cluster.specie=='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).all()
+            subList['All']=Cluster.query.filter(Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).all()
+            subList['Nonhuman']=Cluster.query.filter(Cluster.specie!='Homo sapiens',Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).all()
 
             reprStr[tabs,labelSelect,ligTypeSelect]=min_atom_missing(subList[tabs])
             pymolSession[tabs]=f'downloads/pymolSessions/{tabs}_Allgroups_Allspatials_Alldihedrals_{ligand_type}.pse.zip'
@@ -455,7 +455,7 @@ def multipleQuery(groupSelect,labelSelect,ligTypeSelect):
     if  groupSelect=='' and labelSelect in ('DFGin','DFGinter','DFGout','None'):    #condition for All-spatial
 
         for tabs in ('Human','All','Nonhuman'):
-            group_list['All']=Cluster.query.filter(Cluster.spatial==labelSelect,Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1),Cluster.ligand_type.notlike(dontmatch2),Cluster.ligand_type.notlike(dontmatch3)).order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
+            group_list['All']=Cluster.query.filter(Cluster.spatial==labelSelect,Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).order_by(Cluster.specie).order_by(Cluster.group).order_by(Cluster.gene).order_by(Cluster.spatial).order_by(Cluster.dihedral).order_by(asc(Cluster.ligand_type)).all()
             total_count['All']=Cluster.query.filter(Cluster.spatial==labelSelect,Cluster.ligand_type.contains(ligTypeSelect),Cluster.ligand_type.notlike(dontmatch1)).count()
             (strCount_all,geneCount_all,totalGroup_all,totalDihedral_all)=count_structures_groups(group_list['All'])
 
@@ -822,12 +822,12 @@ def uniqueQuery(settings,queryname):
     gene_list=dict();total_count=dict();first_entry=dict();reprStr=dict();
     group_name=dict();protein_name=dict();uniprotid=dict();pymolSession=dict();pymolScript=dict();pymolSessionRe=dict();pymolScriptRe=dict();coordinateFiles=dict()
     nglList=dict();dfgNumReprStr=dict();subList=dict();dfgNumReprStr['Human']=list();dfgNumReprStr['All']=list();dfgNumReprStr['Nonhuman']=list()
-    tsvFile=dict();tsvFile1=dict();tsvFile2=dict()
+    tsvFile=dict()
     clusterColor=create_color_lists()
 
     if settings=='PDB':
         queryname=queryname.upper()
-        if len(queryname)==5:
+        if len(queryname)>=5:
             queryname=queryname[0:4]           #Remove chain so that only PDB id is always searched
         pdb_list=Cluster.query.filter(Cluster.pdb.contains(queryname)).all()
 

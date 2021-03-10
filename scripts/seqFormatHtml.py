@@ -9,87 +9,81 @@ import gzip,sys,os,re
 import pandas as pd
 
 
-def format_seq_text(pwd,df,aadict):
-    
-    print('Fomatting sequences for html...')
-    for i in df.index:
-        uni_pdb_dict=dict()
-        pdbs=df.at[i,'PDBid']
-        fhandle_sifts=(pwd+'/kinasesifts/'+pdbs[0:4].lower()+'.csv.gz')
-        
-        
-     
-        outputfile=(pwd+'/formattedSeq/'+pdbs[0:4]+'.seq')
-        if os.path.isfile(outputfile):
-            continue
-        fhandle_output=open(outputfile,'w')
-        fhandle_sifts.readline()
-        firstResi='True';
-        for lines in fhandle_sifts:
-            lines=lines.strip();lines=lines.split(',');
-            pdbResname=lines[3];pdbChain=lines[4];uniResnum=int(lines[5]);uniResname=lines[6];uniAcc=lines[7];anno=lines[8]    #variable from sifts csv file
-            
-            if uniResnum==-9999:
-                continue
-            
-            if pdbs[4:]!=pdbChain:
-                continue
-            
-            if firstResi=='True':
-                lastResidue=uniResnum
-                firstResi='False'
-                
-            if uniResnum-lastResidue>1:            #if there is a gap in sequence numbering then assign '-'
-                diff=uniResnum-lastResidue
-                for i in range(diff):
-                    lastResidue=lastResidue+1
-                    uni_pdb_dict[lastResidue]='-'
-                
-            if uniResnum!=-9999:
-                if 'Not_Observed' in anno:
-                    uni_pdb_dict[uniResnum]=aadict[pdbResname].lower()              #assign lower case letters
-                    lastResidue=uniResnum
-                    
-                else:
-                    uni_pdb_dict[uniResnum]=aadict[pdbResname].upper()              #assign upper case letters
-                    lastResidue=uniResnum
-                    
-            
-        
-        printNum=0;count=0
-        for uniResnum in uni_pdb_dict:
-            if uniResnum>printNum and lastResidue>=printNum+10:
-                for i in range(9,51,10):
-                    if uniResnum+i<=lastResidue:
-                        printNum=uniResnum+i
-                        fhandle_output.write(f'{printNum:>10}  ')
-                fhandle_output.write('\n')
-                        
-            count=count+1
-            if count%50==1 and (lastResidue-uniResnum)<10:
-                fhandle_output.write(f'\n')
-            if count%10==0 and count%50!=0:
-                fhandle_output.write(f'{uni_pdb_dict[uniResnum]}')
-                fhandle_output.write(f'  ')
-            elif count%50==0:
-                fhandle_output.write(f'{uni_pdb_dict[uniResnum]}')
-                fhandle_output.write(f'\n')
-            #elif count%50==1 and (lastResidue-printNum)<10:
-            #    fhandle_output.write(f'\n')
-            else:
-                fhandle_output.write(f'{uni_pdb_dict[uniResnum]}')
-            
-        fhandle_output.close()
-        fhandle_sifts.close()
-  
+#def format_seq_text(pwd,df,aadict):
+#    
+#    print('Fomatting sequences for html...')
+#    for i in df.index:
+#        uni_pdb_dict=dict()
+#        pdbs=df.at[i,'PDBid']
+#        fhandle_sifts=(pwd+'/kinasesifts/'+pdbs[0:4].lower()+'.csv.gz')
+#        
+#        
+#     
+#        outputfile=(pwd+'/formattedSeq/'+pdbs[0:4]+'.seq')
+#        if os.path.isfile(outputfile):
+#            continue
+#        fhandle_output=open(outputfile,'w')
+#        fhandle_sifts.readline()
+#        firstResi='True';
+#        for lines in fhandle_sifts:
+#            lines=lines.strip();lines=lines.split(',');
+#            pdbResname=lines[3];pdbChain=lines[4];uniResnum=int(lines[5]);uniResname=lines[6];uniAcc=lines[7];anno=lines[8]    #variable from sifts csv file
+#            
+#            if uniResnum==-9999:
+#                continue
+#            
+#            if pdbs[4:]!=pdbChain:
+#                continue
+#            
+#            if firstResi=='True':
+#                lastResidue=uniResnum
+#                firstResi='False'
+#                
+#            if uniResnum-lastResidue>1:            #if there is a gap in sequence numbering then assign '-'
+#                diff=uniResnum-lastResidue
+#                for i in range(diff):
+#                    lastResidue=lastResidue+1
+#                    uni_pdb_dict[lastResidue]='-'
+#                
+#            if uniResnum!=-9999:
+#                if 'Not_Observed' in anno:
+#                    uni_pdb_dict[uniResnum]=aadict[pdbResname].lower()              #assign lower case letters
+#                    lastResidue=uniResnum
+#                    
+#                else:
+#                    uni_pdb_dict[uniResnum]=aadict[pdbResname].upper()              #assign upper case letters
+#                    lastResidue=uniResnum
+#                    
+#            
+#        
+#        printNum=0;count=0
+#        for uniResnum in uni_pdb_dict:
+#            if uniResnum>printNum and lastResidue>=printNum+10:
+#                for i in range(9,51,10):
+#                    if uniResnum+i<=lastResidue:
+#                        printNum=uniResnum+i
+#                        fhandle_output.write(f'{printNum:>10}  ')
+#                fhandle_output.write('\n')
+#                        
+#            count=count+1
+#            if count%50==1 and (lastResidue-uniResnum)<10:
+#                fhandle_output.write(f'\n')
+#            if count%10==0 and count%50!=0:
+#                fhandle_output.write(f'{uni_pdb_dict[uniResnum]}')
+#                fhandle_output.write(f'  ')
+#            elif count%50==0:
+#                fhandle_output.write(f'{uni_pdb_dict[uniResnum]}')
+#                fhandle_output.write(f'\n')
+#            #elif count%50==1 and (lastResidue-printNum)<10:
+#            #    fhandle_output.write(f'\n')
+#            else:
+#                fhandle_output.write(f'{uni_pdb_dict[uniResnum]}')
+#            
+#        fhandle_output.close()
+#        fhandle_sifts.close()
+#  
 
-def format_seq_html(pwd,df):
-    aadict={'GLY':'G','ALA':'A','VAL':'V','ILE':'I','LEU':'L','MET':'M','PHE':'F','TYR':'Y',\
-        'TRP':'W','SER':'S','THR':'T','ASN':'N','GLN':'Q','ARG':'R','HIS':'H','LYS':'K',\
-        'ASP':'D','GLU':'E','CYS':'C','PRO':'P','SEC':'U','TPO':'T','CME':'C','CSS':'C',\
-        'MSE':'M','OCY':'C','PTR':'Y','SEP':'S','CAF':'C','LGY':'K','CAS':'C','CSO':'C','CSX':'C',\
-        'MK8':'E','NEP':'H','NMM':'R','CSD':'C','CYO':'Y','OCS':'C','OCY':'C','SCS':'C','ALY':'A',\
-        'KCX':'K','MHO':'M','T8L':'T','CY0':'C','UNK':'X','YTH':'T'}
+def format_seq_html(pwd,df,aadict):
     
     log=open(f'{pwd}/kinasepml.log','a')
     print('Fomatting sequences for html...')

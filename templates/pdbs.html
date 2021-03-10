@@ -46,7 +46,7 @@
                     </thead>
                       {% for item in pdb_list %}
                       <tr style="line-height:20px;">
-                        <td style='text-align:left;color:{{ clusterColor[item.dihedral] }};font-weight:bold;'>{{ item.pdb[4] }}</td>
+                        <td style='text-align:left;color:{{ clusterColor[item.dihedral] }};font-weight:bold;'>{{ item.pdb[4:] }}</td>
                         <td style='text-align:left;'><a href="{{ url_for('uniqueQuery', queryname=item.spatial, settings='SPATIAL') }}" target="_blank">{{ item.spatial }}</td>
                         {% if item.dihedral=='None' %}
                         <td style='text-align:left;'><a href="{{ url_for('uniqueQuery', queryname=(item.spatial+item.dihedral), settings='DIHEDRAL') }}" target="_blank">{{ item.dihedral }}</td>
@@ -125,7 +125,7 @@
                         </thead>
                           {% for item in pdb_list %}
                           <tr style="line-height:20px;">
-                            <td style='text-align:left;color:{{ clusterColor[item.dihedral] }};font-weight:bold;'>{{ item.pdb[4] }}</td>
+                            <td style='text-align:left;color:{{ clusterColor[item.dihedral] }};font-weight:bold;'>{{ item.pdb[4:] }}</td>
                             <td><a href="{{ url_for('uniqueQuery', queryname=item.group, settings='GROUP') }}" target="_blank">{{ item.group }}</td>
                             <td><a href="{{ url_for('uniqueQuery', queryname=item.gene, settings='GENE') }}" target="_blank">{{ item.gene }}</td>
                             <td>{{ item.uniprotid }}</td>

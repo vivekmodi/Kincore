@@ -16,7 +16,7 @@ omitligands=('1PE','1PE','2HT','2PE','5LS','5LS','5TH','5TK','5TM','7PE','ACE','
                  'HG','HSJ','IMD','IOD','IPA','IPH','K','KCX','LGY','MES','MG','MG8','MGF','MK8','MLA','MLI','MLY','MN','MOH','MPD','MRD','MSE','MXE','MYR','NA',\
                  'NEP','NH4','NI','NO3','OCS','OCT','OCY','P4G','P6G','PDX','PEG','PG0','PG4','PGE','PGF','PGO','PHU','PO4','PPI','PSE','PTR','PUP','PZO','S26',\
                  'SBT','SCN','SCS','SEP','SEP','SGM','SIN','SO3','SO4','SR','SRT','SVQ','T8L','TAM','TAR','TCE','TFA','TLA','TLA','TMA','TPO','TRS','UNX','VO4',\
-                 'YT3','Z4K','ZN')
+                 'YT3','Z4K','ZN','P4C')
 modified_aa=('ACE','ALY','AME','BWB','CAF','CAS','CME','COM','CSD','CSO','CSS','CSX','CXM','CY0','CYO','KCX','LGY','MHO','MK8','MLY','MSE','NEP','NMM',\
                  'OCS','OCY','PHD','PTR','SCS','SEP','T8L','TPO','UNK')
 
@@ -137,11 +137,11 @@ def correct_chain_diff_in_ligand_type_labels(df):   #If two chains in the same P
                     for position1,ligand_n1 in enumerate(ligand_name1.split(',')):
                         for position2,ligand_n2 in enumerate(ligand_name2.split(',')):
                             if ligand_n1==ligand_n2:
-                                if 'TypeI'==ligand_label1.split(',')[position1] and 'TypeI½' in ligand_label2.split(',')[position2]:
+                                if 'Type1'==ligand_label1.split(',')[position1] and 'Type1.5' in ligand_label2.split(',')[position2]:
                                     df.at[i,'Ligand_label']=ligand_label2
                 else:
                     if ligand_name1==ligand_name2:
-                        if 'TypeI'==ligand_label1 and 'TypeI½' in ligand_label2:
+                        if 'Type1'==ligand_label1 and 'Type1.5' in ligand_label2:
                             df.at[i,'Ligand_label']=ligand_label2
     return df
                     
@@ -183,15 +183,15 @@ def classify_ligands_webserver(pwd,pdbfilename,index,df,structure):
                 if min_rre4>=6.5 and min_hinge>=6.5:
                     ligand_label.append('Allosteric')
                 elif min_hinge>=6 and backpocket_count[ligandname+':'+ligandid]>=3:
-                    ligand_label.append('TypeIII')
+                    ligand_label.append('Type3')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and frontpocket_count[ligandname+':'+ligandid]==0 and dfgoutcontact==0:
-                    ligand_label.append('TypeI½_Back')
+                    ligand_label.append('Type1.5_Back')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and frontpocket_count[ligandname+':'+ligandid]>=1 and dfgoutcontact==0:
-                    ligand_label.append('TypeI½_Front')
+                    ligand_label.append('Type1.5_Front')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and dfgoutcontact>=1 and spatial=='DFGout':
-                    ligand_label.append('TypeII')
+                    ligand_label.append('Type2')
                 else:
-                    ligand_label.append('TypeI')
+                    ligand_label.append('Type1')
 
         df.at[index,'Ligand_label']=','.join(ligand_label)
         

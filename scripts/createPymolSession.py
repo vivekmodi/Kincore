@@ -6,17 +6,18 @@ Created on Mon Mar 23 11:52:35 2020
 @author: vivekmodi
 """
 
-import subprocess,os
+import subprocess,os, sys
+import pandas as pd
 
 def subListPymolSession(pwd,df):
     print('Creating Pymol sessions for Groups, Labels...')
     for organism in ('Human','All','Nonhuman'):
         for groups in ('AGC','CAMK','CK1','CMGC','NEK','STE','TKL','TYR','OTHER','.*'):
             group_out=groups
-            for ligand_label in ('TypeI','TypeI½','TypeII','TypeIII','Allosteric','No_ligand','.*'):
+            for ligand_label in ('Type1','Type1.5','Type2','Type3','Allosteric','No_ligand','.*'):
                 lig_out=ligand_label
-                if ligand_label=='TypeI':
-                    dontmatch='TypeI½'
+                if ligand_label=='Type1':
+                    dontmatch='Type1.5'
                 else:
                     dontmatch='X'
 
@@ -375,21 +376,21 @@ def subListPymolSession(pwd,df):
     ligand_list=set(ligand_list)
 
     for ligands in ligand_list:
-        subListPymol=df[(df.Specie=='Homo sapiens') & (df.Ligand.str.match(ligands))]
+        subListPymol=df[(df.Specie=='Homo sapiens') & (df.Ligand.str.match(ligands+':'))]
         if len(subListPymol)>0:
             outputName=f'Human_{ligands}'
             createPymolSession(pwd,subListPymol,outputName)
             pymolSessionScript(pwd,subListPymol,outputName)
             copyCoordinateFiles(pwd,subListPymol,outputName)
 
-        subListPymol=df[(df.Ligand.str.match(ligands))]
+        subListPymol=df[(df.Ligand.str.match(ligands+':'))]
         if len(subListPymol)>0:
             outputName=f'All_{ligands}'
             createPymolSession(pwd,subListPymol,outputName)
             pymolSessionScript(pwd,subListPymol,outputName)
             copyCoordinateFiles(pwd,subListPymol,outputName)
 
-        subListPymol=df[(df.Specie!='Homo sapiens') & (df.Ligand.str.match(ligands))]
+        subListPymol=df[(df.Specie!='Homo sapiens') & (df.Ligand.str.match(ligands+':'))]
         if len(subListPymol)>0:
             outputName=f'Nonhuman_{ligands}'
             createPymolSession(pwd,subListPymol,outputName)
@@ -875,3 +876,11 @@ def copyCoordinateFiles(pwd,subList,outputName):
     process.wait()
 
     os.chdir(f'{pwd}')
+
+
+if __name__=='__main__':
+    filename=sys.argv[1]
+    pwd='/home/vivek/Applications/Flask/Kincore'    #location in workhorse
+    df=pd.read_csv(filename,sep='\t',header='infer')
+    subListPymolSession(pwd,df)
+    

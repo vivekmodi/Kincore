@@ -121,12 +121,12 @@ def correct_chain_diff_in_ligand_type_labels(df):   #If two chains in the same P
                 if ',' in ligand_name1:
                     for position1,ligand_n1 in enumerate(ligand_name1.split(',')):
                         for position2,ligand_n2 in enumerate(ligand_name2.split(',')):
-                            if ligand_n1==ligand_n2:
-                                if 'TypeI'==ligand_label1.split(',')[position1] and 'TypeI½' in ligand_label2.split(',')[position2]:
+                            if ligand_n1.split(':')[0]==ligand_n2.split(':')[0]:
+                                if 'Type1'==ligand_label1.split(',')[position1] and 'Type1.5' in ligand_label2.split(',')[position2]:
                                     df.at[i,'Ligand_label']=ligand_label2
                 else:
-                    if ligand_name1==ligand_name2:
-                        if 'TypeI'==ligand_label1 and 'TypeI½' in ligand_label2:
+                    if ligand_name1.split(':')[0]==ligand_name2.split(':')[0]:
+                        if 'Type1'==ligand_label1 and 'Type1.5' in ligand_label2:
                             df.at[i,'Ligand_label']=ligand_label2
     return df
                     
@@ -178,20 +178,20 @@ def classify_ligands(pwd,df):
                     ligand_label.append('Allosteric')
                     fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tAllosteric\n')
                 elif min_hinge>=6 and backpocket_count[ligandname+':'+ligandid]>=3:
-                    ligand_label.append('TypeIII')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tTypeIII\n')
+                    ligand_label.append('Type3')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType3\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and frontpocket_count[ligandname+':'+ligandid]==0 and dfgoutcontact==0:
-                    ligand_label.append('TypeI½_Back')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tTypeI½_Back\n')
+                    ligand_label.append('Type1.5_Back')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1.5_Back\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and frontpocket_count[ligandname+':'+ligandid]>=1 and dfgoutcontact==0:
-                    ligand_label.append('TypeI½_Front')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tTypeI½_Front\n')
+                    ligand_label.append('Type1.5_Front')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1.5_Front\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and dfgoutcontact>=1 and spatial=='DFGout':
-                    ligand_label.append('TypeII')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tTypeII\n')
+                    ligand_label.append('Type2')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType2\n')
                 else:
-                    ligand_label.append('TypeI')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tTypeI\n')
+                    ligand_label.append('Type1')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1\n')
 
 
         df.at[i,'Ligand_label']=','.join(ligand_label)
