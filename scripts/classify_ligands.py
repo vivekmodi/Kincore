@@ -52,7 +52,7 @@ def compute_distance_from_hinge(structure,ligandname,ligandid,hinge1):
                                                     min_hinge=distance
     return min_hinge
 
-def compute_distance_from_pocket_residues(structure,ligandname,ligandid):
+def compute_distance_from_pocket_residues(structure,ligandname,ligandid,spatial):
     ignoremodified=open(f'List_modified_aminoacid.txt','r')
     dfgcontact=0;dfgoutcontact=0;distance=dict()
     contact_list=list();contact_list_front=list()
@@ -80,18 +80,18 @@ def compute_distance_from_pocket_residues(structure,ligandname,ligandid):
                                                         dfgoutcontact+=1
                                                 
                                                 #Contact with X-D mainchain
-                                                if distance[res_id]<=4 and res_id in range(1337,1339) and (atom2.fullname=='O' or atom2.fullname=='N') and dfgcontact==0 and res_id not in contact_list: 
+                                                if distance[res_id]<=4.1 and res_id in range(1337,1339) and (atom2.fullname=='O' or atom2.fullname=='N') and dfgcontact==0 and res_id not in contact_list: 
                                                     dfgcontact=1
                                                     backpocket_count[ligandname+':'+ligandid]+=1
                                                     contact_list.append(res_id)
                                                 
                                                 #Contact with Phe sidechain
-                                                elif distance[res_id]<=4 and res_id==1339 and res_id not in contact_list and (atom2.fullname!='O' and atom2.fullname!='N' and atom2.fullname!='CA'):
+                                                elif distance[res_id]<=4.1 and res_id==1339 and res_id not in contact_list and (atom2.fullname!='O' and atom2.fullname!='N' and atom2.fullname!='CA') and (spatial!='DFGout' and spatial!='DFGinter'):  #Can not be out or inter because Phe moves out of the backpocket in these cases
                                                     backpocket_count[ligandname+':'+ligandid]+=1
                                                     contact_list.append(res_id)
                                                 
                                                 #Contact with non-XDF backpocket residues
-                                                elif distance[res_id]<=4 and res_id not in range(1337,1340) and res_id not in contact_list:
+                                                elif distance[res_id]<=4.1 and res_id not in range(1337,1340) and res_id not in contact_list:
                                                     backpocket_count[ligandname+':'+ligandid]+=1
                                                     contact_list.append(res_id)
 
@@ -170,7 +170,7 @@ def classify_ligands(pwd,df):
             min_hinge=compute_distance_from_hinge(structure,ligandname,ligandid,hinge1)
 
             #Contacts with pocket residues
-            (frontpocket_count, backpocket_count, dfgoutcontact,distance)=compute_distance_from_pocket_residues(structure,ligandname,ligandid)
+            (frontpocket_count, backpocket_count, dfgoutcontact,distance)=compute_distance_from_pocket_residues(structure,ligandname,ligandid,spatial)
            
 
             if min_rre4!=999 or min_hinge!=999:

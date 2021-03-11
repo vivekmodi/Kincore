@@ -256,6 +256,8 @@ def write_text_file(sublist,tsvFile):
         #print(ligandtype_list)
         fhandle_textFile.write(f'{item.specie}\t{item.group}\t{item.domain}\t{item.uniprotid}\t{item.pdb}\t{item.method}\t{item.resolution}\t{item.rvalue}\t{item.freervalue}\t{item.spatial}\t{item.dihedral}\t{item.chelix}\t{ligand_list}\t{ligandtype_list}\t{item.dfgnum}\t{item.x_o_edia}\t{item.asp_o_edia}\t{item.phe_o_edia}\t{item.gly_o_edia}\t{item.protein_name}\n')
     fhandle_textFile.close()
+    
+fda_dict={'6ZV':'Abemaciclib','0WN':'Afatinib','EMH':'Alectinib','AXI':'Axitinib','3JW':'Baricitinib','DB8':'Bosutinib','6GY':'Brigatinib','4MK':'Ceritinib','EUI':'Cobimetinib','VGH':'Crizotinib','P06':'Dabrafenib','1C9':'Dacomitinib','1N1':'Dasatinib','YMX':'Entrectinib','AQ4':'Erlotinib','IRE':'Gefitinib','C6F':'Gilteritinib','8E8':'Ibrutinib','STI':'Imatinib','FMM':'Lapatinib','LEV':'Lenvatinib','2K2':'Midostaurin','NIL':'Nilotinib','XIN':'Nintedanib','LQQ':'Palbociclib','P31':'Pexidartinib','0LI':'Ponatinib','6ZZ':'Ribociclib','RXT':'Ruxolitinib','3EW':'Selumetinib','BAX':'Sorafenib','B49':'Sunitinib','MI1':'Tofacitinib','032':'Vemurafenib','BA0':'Zanubrutinib'}
 
 ##########ROUTES##########################
 
@@ -1236,7 +1238,7 @@ def uniqueQuery(settings,queryname):
         return render_template('ligand.html',ligand_list=ligand_list,ligandname=queryname,geneCount_human=geneCount_human,geneCount_all=geneCount_all,\
         geneCount_nonhuman=geneCount_nonhuman,pymolSession=pymolSession,pymolScript=pymolScript,strCount_human=strCount_human,strCount_all=strCount_all,\
         strCount_nonhuman=strCount_nonhuman,reprStr=reprStr,total_count=total_count,clusterColor=clusterColor,coordinateFiles=coordinateFiles,\
-        tsvFile=tsvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr)
+        tsvFile=tsvFile,nglList=nglList,dfgNumReprStr=dfgNumReprStr,fda_dict=fda_dict)
 
 
 @app.route('/webserver', methods=['GET','POST'])
