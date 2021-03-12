@@ -73,25 +73,25 @@ def compute_distance_from_pocket_residues(structure,ligandname,ligandid,spatial)
                                     if res_id in range(106,185) or res_id in range(187,196)  or res_id in range(420,423) or res_id in range(1337,1340) or res_id==1011 or res_id==959 :
                                         for atom2 in residue2:
                                             if atom2.element!='H':
-                                                distance[res_id]=round(float((residue1[atom1.fullname]-residue2[atom2.fullname])),2)
+                                                distance[res_id]=round(float((residue1[atom1.fullname]-residue2[atom2.fullname])))
                                                 
                                                 #Contact with Type2 pocket present
                                                 if res_id in (149,153,959,1011) and distance[res_id]<=4.5:  
                                                         dfgoutcontact+=1
                                                 
                                                 #Contact with X-D mainchain
-                                                if distance[res_id]<=4.1 and res_id in range(1337,1339) and (atom2.fullname=='O' or atom2.fullname=='N') and dfgcontact==0 and res_id not in contact_list: 
+                                                if distance[res_id]<=4 and res_id in range(1337,1339) and (atom2.fullname=='O' or atom2.fullname=='N') and dfgcontact==0 and res_id not in contact_list: 
                                                     dfgcontact=1
                                                     backpocket_count[ligandname+':'+ligandid]+=1
                                                     contact_list.append(res_id)
                                                 
                                                 #Contact with Phe sidechain
-                                                elif distance[res_id]<=4.1 and res_id==1339 and res_id not in contact_list and (atom2.fullname!='O' and atom2.fullname!='N' and atom2.fullname!='CA') and (spatial!='DFGout' and spatial!='DFGinter'):  #Can not be out or inter because Phe moves out of the backpocket in these cases
+                                                elif distance[res_id]<=4 and res_id==1339 and res_id not in contact_list and (atom2.fullname!='O' and atom2.fullname!='N' and atom2.fullname!='CA') and (spatial!='DFGout' and spatial!='DFGinter'):  #Can not be out or inter because Phe moves out of the backpocket in these cases
                                                     backpocket_count[ligandname+':'+ligandid]+=1
                                                     contact_list.append(res_id)
                                                 
                                                 #Contact with non-XDF backpocket residues
-                                                elif distance[res_id]<=4.1 and res_id not in range(1337,1340) and res_id not in contact_list:
+                                                elif distance[res_id]<=4 and res_id not in range(1337,1340) and res_id not in contact_list:
                                                     backpocket_count[ligandname+':'+ligandid]+=1
                                                     contact_list.append(res_id)
 

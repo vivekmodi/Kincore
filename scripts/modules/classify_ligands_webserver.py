@@ -93,23 +93,18 @@ def compute_distance_from_pocket_residues(structure,model_id,chain_id,ligandname
                                                             dfgoutcontact+=1
 
                                                     #Contact with X-D mainchain
-                                                    if distance[res_id]<=4.1 and (int(res_id)==int(xdfg_num) or int(res_id)==int(xdfg_num+1)) and (atom2.fullname.strip()=='O' or atom2.fullname.strip()=='N') and dfgcontact==0 and res_id not in contact_list:
+                                                    if distance[res_id]<=4 and (int(res_id)==int(xdfg_num) or int(res_id)==int(xdfg_num+1)) and (atom2.fullname.strip()=='O' or atom2.fullname.strip()=='N') and dfgcontact==0 and res_id not in contact_list:
                                                         dfgcontact=1
                                                         backpocket_count[ligandname+':'+ligandid]+=1
                                                         contact_list.append(res_id)
 
                                                     #Contact with Phe sidechain
-                                                    elif distance[res_id]<=4.1 and int(res_id)==int(xdfg_num+2) and res_id not in contact_list and (atom2.fullname.strip()!='O' and atom2.fullname.strip()!='N' and atom2.fullname.strip()!='CA') and (spatial!='DFGout' and spatial!='DFGinter'):
+                                                    elif distance[res_id]<=4 and int(res_id)==int(xdfg_num+2) and res_id not in contact_list and (atom2.fullname.strip()!='O' and atom2.fullname.strip()!='N' and atom2.fullname.strip()!='CA') and (spatial!='DFGout' and spatial!='DFGinter'):
                                                         backpocket_count[ligandname+':'+ligandid]+=1
                                                         contact_list.append(res_id)
-                                                    
-#                                                    #Contact with Phe mainchain only in DFGout and DFGinter conformation
-#                                                    elif distance[res_id]<=4.1 and int(res_id)==int(xdfg_num+2) and res_id not in contact_list and (atom2.fullname.strip()=='O' or atom2.fullname.strip()=='N' or atom2.fullname.strip()=='CA') and (spatial=='DFGout' or spatial=='DFGinter'):
-#                                                        backpocket_count[ligandname+':'+ligandid]+=1
-#                                                        contact_list.append(res_id)
 
                                                     #Contact with non-XDF backpocket residues
-                                                    elif distance[res_id]<=4.1 and int(res_id)!=int(xdfg_num) and int(res_id)!=int(xdfg_num+1) and int(res_id)!=int(xdfg_num+2) and res_id not in contact_list:
+                                                    elif distance[res_id]<=4 and int(res_id)!=int(xdfg_num) and int(res_id)!=int(xdfg_num+1) and int(res_id)!=int(xdfg_num+2) and res_id not in contact_list:
                                                         backpocket_count[ligandname+':'+ligandid]+=1
                                                         contact_list.append(res_id)
 

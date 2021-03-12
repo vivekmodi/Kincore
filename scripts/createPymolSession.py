@@ -25,7 +25,7 @@ def subListPymolSession(pwd,df):
                     if spatial=='DFGin':
                         for dihedral in ('BLAminus','BLAplus','ABAminus','BLBminus','BLBplus','BLBtrans','None','.*'):
                             if organism=='Human':
-                                subListPymol=df[(df.Specie=='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Specie=='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))  & \
                                            (df.Spatial==spatial) & (df.Dihedral.str.match(dihedral))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
@@ -47,7 +47,7 @@ def subListPymolSession(pwd,df):
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
 
                             if organism=='All':
-                                subListPymol=df[(df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))  & \
                                            (df.Spatial==spatial) & (df.Dihedral.str.match(dihedral))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
@@ -69,7 +69,7 @@ def subListPymolSession(pwd,df):
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
 
                             if organism=='Nonhuman':
-                                subListPymol=df[(df.Specie!='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Specie!='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))  & \
                                            (df.Spatial==spatial) & (df.Dihedral.str.match(dihedral))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
@@ -93,7 +93,7 @@ def subListPymolSession(pwd,df):
                     if spatial=='DFGinter':
                         for dihedral in ('BABtrans','None','.*'):
                             if organism=='Human':
-                                subListPymol=df[(df.Specie=='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Specie=='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))  & \
                                            (df.Spatial==spatial) & (df.Dihedral.str.match(dihedral))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
@@ -115,7 +115,7 @@ def subListPymolSession(pwd,df):
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
 
                             if organism=='All':
-                                subListPymol=df[(df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))  & \
                                            (df.Spatial==spatial) & (df.Dihedral.str.match(dihedral))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
@@ -137,7 +137,7 @@ def subListPymolSession(pwd,df):
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
 
                             if organism=='Nonhuman':
-                                subListPymol=df[(df.Specie!='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Specie!='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))  & \
                                            (df.Spatial==spatial) & (df.Dihedral.str.match(dihedral))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
@@ -161,7 +161,7 @@ def subListPymolSession(pwd,df):
                     if spatial=='DFGout':
                         for dihedral in ('BBAminus','None','.*'):
                             if organism=='Human':
-                                subListPymol=df[(df.Specie=='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Specie=='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))  & \
                                            (df.Spatial==spatial) & (df.Dihedral.str.match(dihedral))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
@@ -183,7 +183,7 @@ def subListPymolSession(pwd,df):
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
 
                             if organism=='All':
-                                subListPymol=df[(df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))  & \
                                            (df.Spatial==spatial) & (df.Dihedral.str.match(dihedral))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
@@ -205,7 +205,7 @@ def subListPymolSession(pwd,df):
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
 
                             if organism=='Nonhuman':
-                                subListPymol=df[(df.Specie!='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Specie!='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))  & \
                                            (df.Spatial==spatial) & (df.Dihedral.str.match(dihedral))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
@@ -228,7 +228,7 @@ def subListPymolSession(pwd,df):
 
                     if spatial=='.*':    #condition for Allspatials_Alldihedrals
                             if organism=='Human':
-                                subListPymol=df[(df.Specie=='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Specie=='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
                                     group_out='Allgroups'
@@ -250,7 +250,7 @@ def subListPymolSession(pwd,df):
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
 
                             if organism=='All':
-                                subListPymol=df[(df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
                                     group_out='Allgroups'
@@ -272,7 +272,7 @@ def subListPymolSession(pwd,df):
                                 copyCoordinateFiles(pwd,subListPymol,outputName)
 
                             if organism=='Nonhuman':
-                                subListPymol=df[(df.Specie!='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.match(ligand_label) & \
+                                subListPymol=df[(df.Specie!='Homo sapiens') & (df.Group.str.match(groups)) & (df.Ligand_label.str.contains(ligand_label) & \
                                             (df.Ligand_label.str.contains(dontmatch)==False))].sort_values('Resolution').sort_values('DomainBreak')
                                 if group_out=='.*':   #changed to get the correct outputname
                                     group_out='Allgroups'
@@ -376,21 +376,21 @@ def subListPymolSession(pwd,df):
     ligand_list=set(ligand_list)
 
     for ligands in ligand_list:
-        subListPymol=df[(df.Specie=='Homo sapiens') & (df.Ligand.str.match(ligands+':'))]
+        subListPymol=df[(df.Specie=='Homo sapiens') & (df.Ligand.str.contains(ligands+':'))]
         if len(subListPymol)>0:
             outputName=f'Human_{ligands}'
             createPymolSession(pwd,subListPymol,outputName)
             pymolSessionScript(pwd,subListPymol,outputName)
             copyCoordinateFiles(pwd,subListPymol,outputName)
 
-        subListPymol=df[(df.Ligand.str.match(ligands+':'))]
+        subListPymol=df[(df.Ligand.str.contains(ligands+':'))]
         if len(subListPymol)>0:
             outputName=f'All_{ligands}'
             createPymolSession(pwd,subListPymol,outputName)
             pymolSessionScript(pwd,subListPymol,outputName)
             copyCoordinateFiles(pwd,subListPymol,outputName)
 
-        subListPymol=df[(df.Specie!='Homo sapiens') & (df.Ligand.str.match(ligands+':'))]
+        subListPymol=df[(df.Specie!='Homo sapiens') & (df.Ligand.str.contains(ligands+':'))]
         if len(subListPymol)>0:
             outputName=f'Nonhuman_{ligands}'
             createPymolSession(pwd,subListPymol,outputName)
