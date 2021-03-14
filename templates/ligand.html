@@ -31,7 +31,7 @@
                     {% if ligandname=="No_ligand" %}
                     <div class="card-header light-pink-background"><h4>Protein kinases with no ligand bound</h4></div>
                     {% else %}
-                    <div class="card-header light-pink-background"><h4>Protein kinases in complex with {{ ligandname }}{% if fda_dict[ligandname] %} ({{ fda_dict[ligandname] }})</h4>{% endif %}</div>
+                    <div class="card-header light-pink-background"><h4>Protein kinases in complex with {{ ligandname }}{% if fda_dict[ligandname] %} ({{ fda_dict[ligandname] }}){% endif %}</h4></div>
                     {% endif %}
                       <div class="card-body">
                         <h6 class="card-text">Total number of genes: {{ geneCount_human }}</h6>
@@ -227,7 +227,7 @@
                 {% if ligandname=="No_ligand" %}
                 <div class="card-header light-pink-background"><h4>Protein kinases with no ligand bound</h4></div>
                 {% else %}
-                <div class="card-header light-pink-background"><h4>Protein kinases in complex with {{ ligandname }}</h4></div>
+                <div class="card-header light-pink-background"><h4>Protein kinases in complex with {{ ligandname }}{% if fda_dict[ligandname] %} ({{ fda_dict[ligandname] }}){% endif %}</h4></div>
                 {% endif %}
                   <div class="card-body">
                     <h6 class="card-text">Total number of genes: {{ geneCount_all }}</h6>
@@ -426,7 +426,7 @@
             {% if ligandname=="No_ligand" %}
             <div class="card-header light-pink-background"><h4>Protein kinases with no ligand bound</h4></div>
             {% else %}
-            <div class="card-header light-pink-background"><h4>Protein kinases in complex with {{ ligandname }}</h4></div>
+            <div class="card-header light-pink-background"><h4>Protein kinases in complex with {{ ligandname }}{% if fda_dict[ligandname] %} ({{ fda_dict[ligandname] }}){% endif %}</h4></div>
             {% endif %}
               <div class="card-body">
                 <h6 class="card-text">Total number of genes: {{ geneCount_nonhuman }}</h6>
