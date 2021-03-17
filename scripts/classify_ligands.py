@@ -73,33 +73,37 @@ def compute_distance_from_pocket_residues(structure,ligandname,ligandid,spatial)
                                     if res_id in range(106,185) or res_id in range(187,196)  or res_id in range(420,423) or res_id in range(1337,1340) or res_id==1011 or res_id==959 :
                                         for atom2 in residue2:
                                             if atom2.element!='H':
-                                                distance[res_id]=round(float((residue1[atom1.fullname]-residue2[atom2.fullname])))
+                                                dist=round(float((residue1[atom1.fullname]-residue2[atom2.fullname])),1)
                                                 
                                                 #Contact with Type2 pocket present
-                                                if res_id in (149,153,959,1011) and distance[res_id]<=4.5:  
+                                                if res_id in (149,153,959,1011) and dist<=4.5:  
                                                         dfgoutcontact+=1
                                                 
                                                 #Contact with X-D mainchain
-                                                if distance[res_id]<=4 and res_id in range(1337,1339) and (atom2.fullname=='O' or atom2.fullname=='N') and dfgcontact==0 and res_id not in contact_list: 
+                                                if dist<=4 and res_id in range(1337,1339) and (atom2.fullname=='O' or atom2.fullname=='N') and dfgcontact==0 and res_id not in contact_list: 
                                                     dfgcontact=1
                                                     backpocket_count[ligandname+':'+ligandid]+=1
                                                     contact_list.append(res_id)
+                                                    distance[res_id]=dist
                                                 
                                                 #Contact with Phe sidechain
-                                                elif distance[res_id]<=4 and res_id==1339 and res_id not in contact_list and (atom2.fullname!='O' and atom2.fullname!='N' and atom2.fullname!='CA') and (spatial!='DFGout' and spatial!='DFGinter'):  #Can not be out or inter because Phe moves out of the backpocket in these cases
+                                                elif dist<=4 and res_id==1339 and res_id not in contact_list and (atom2.fullname!='O' and atom2.fullname!='N' and atom2.fullname!='CA') and (spatial!='DFGout' and spatial!='DFGinter'):  #Can not be out or inter because Phe moves out of the backpocket in these cases
                                                     backpocket_count[ligandname+':'+ligandid]+=1
                                                     contact_list.append(res_id)
+                                                    distance[res_id]=dist
                                                 
                                                 #Contact with non-XDF backpocket residues
-                                                elif distance[res_id]<=4 and res_id not in range(1337,1340) and res_id not in contact_list:
+                                                elif dist<=4 and res_id not in range(1337,1340) and res_id not in contact_list:
                                                     backpocket_count[ligandname+':'+ligandid]+=1
                                                     contact_list.append(res_id)
+                                                    distance[res_id]=dist
 
                                                     
                                                     #Contact with N-ter of C-helix (Frontpocket)
                                                     if res_id in range(106,144) and res_id not in contact_list_front:
                                                         frontpocket_count[ligandname+':'+ligandid]+=1
                                                         contact_list_front.append(res_id)
+                                                        distance[res_id]=dist
                                                         
     return frontpocket_count, backpocket_count, dfgoutcontact, distance
 
@@ -141,6 +145,7 @@ def classify_ligands(pwd,df):
         dihedral=df.at[i,'Dihedral']
         rre4num=150;hinge1=426
         ligand_label=list()
+       
 
         if 'No_ligand' in df.at[i,'Ligand']:
             df.at[i,'Ligand_label']='No_ligand'
@@ -176,22 +181,22 @@ def classify_ligands(pwd,df):
             if min_rre4!=999 or min_hinge!=999:
                 if min_rre4>=6.5 and min_hinge>=6.5:
                     ligand_label.append('Allosteric')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tAllosteric\n')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tAllosteric\t{distance}\n')
                 elif min_hinge>=6 and backpocket_count[ligandname+':'+ligandid]>=3:
                     ligand_label.append('Type3')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType3\n')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType3\t{distance}\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and frontpocket_count[ligandname+':'+ligandid]==0 and dfgoutcontact==0:
                     ligand_label.append('Type1.5_Back')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1.5_Back\n')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1.5_Back\t{distance}\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and frontpocket_count[ligandname+':'+ligandid]>=1 and dfgoutcontact==0:
                     ligand_label.append('Type1.5_Front')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1.5_Front\n')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1.5_Front\t{distance}\n')
                 elif backpocket_count[ligandname+':'+ligandid]>=3 and dfgoutcontact>=1 and spatial=='DFGout':
                     ligand_label.append('Type2')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType2\n')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType2\t{distance}\n')
                 else:
                     ligand_label.append('Type1')
-                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1\n')
+                    fhandle_output.write(f'{pdbs}\t{uniprotid}\t{spatial}\t{dihedral}\t{ligandname}\t{ligandid}\tType1\t{distance}\n')
 
 
         df.at[i,'Ligand_label']=','.join(ligand_label)
@@ -203,7 +208,7 @@ def classify_ligands(pwd,df):
     return df
 
 if __name__=='__main__':
-    pwd='/home/vivekmodi/Applications/Flask/Kinases'
+    pwd='/home/vivek/Applications/Flask/Kincore'      #Location in workhorse
     filename=sys.argv[1]
     df=pd.read_csv(filename,sep='\t',header='infer')
     classify_ligands(pwd,df)
