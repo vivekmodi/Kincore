@@ -52,10 +52,10 @@ def read_psiblast(pwd,df,psiblast_result, excluded_output):
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
                         fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
                         continue
-                    if hsp.hit_description.split()[2]=='EM':     #Skip EM structures
-                        description=(" ".join(hsp.hit_description.split(' ')[1:]))
-                        fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
-                        continue
+#                    if hsp.hit_description.split()[2]=='EM':     #Skip EM structures
+#                        description=(" ".join(hsp.hit_description.split(' ')[1:]))
+#                        fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
+#                        continue
                     
                     chain_length=hsp.hit_description.split()[1]
                     method=hsp.hit_description.split()[2]
