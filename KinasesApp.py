@@ -229,7 +229,7 @@ def min_atom_missing(group_list):
 
 def write_text_file(sublist,tsvFile):
     fhandle_textFile=io.open(f'{pwd}/static/{tsvFile}','w',encoding='utf-8')
-    fhandle_textFile.write('Organism\tGroup\tGene\tUniprotID\tPDB\tMethod\tResolution\tRfac\tFreeRfac\tSpatialLabel\tDihedralLabel\tC-helix\tLigand\tLigandType\tDFG_Phe\tEdia_X_O\tEdia_Asp_O\tEdia_Phe_O\tEdia_Gly_O\tProteinName\n')
+    fhandle_textFile.write('Organism\tGroup\tGene\tUniprotID\tPDB\tMethod\tResolution\tRfac\tFreeRfac\tDomainBoundary\tStructureBoundary\tLengthActivationLoopSeq\tLengthActivationLoopStr\tDisorderedResiActivationLoop\tSpatialLabel\tDihedralLabel\tC-helix\tLigand\tLigandType\tDFG_Phe\tEdia_X_O\tEdia_Asp_O\tEdia_Phe_O\tEdia_Gly_O\tPhosphorylation\tMutations\tProteinName\n')
 
     for item in sublist:
         ligand_list=list()
@@ -251,10 +251,34 @@ def write_text_file(sublist,tsvFile):
                 
         else:
             ligandtype_list.append(item.ligand_type)
-        #print(ligandtype_list)
+            
+        mut_list=list()
+        if ',' in item.chain_mut:
+            mut_items=item.chain_mut.split(',')
+            for mut in mut_items:
+                mut_list.append(mut)
+        else:
+            mut_list.append(item.chain_mut)
+        mut_list=' '.join(mut_list) #Join by a space and not comma
+        
+        phos_list=list()
+        if ',' in item.chain_phos:
+            phos_items=item.chain_phos.split(',')
+            for phos in phos_items:
+                phos_list.append(phos)
+        else:
+            phos_list.append(item.chain_phos)
+        phos_list=' '.join(phos_list) #Join by a space and not comma
+        
         ligandtype_list=' '.join(ligandtype_list) #Join by a space and not comma
-        #print(ligandtype_list)
-        fhandle_textFile.write(f'{item.specie}\t{item.group}\t{item.domain}\t{item.uniprotid}\t{item.pdb}\t{item.method}\t{item.resolution}\t{item.rvalue}\t{item.freervalue}\t{item.spatial}\t{item.dihedral}\t{item.chelix}\t{ligand_list}\t{ligandtype_list}\t{item.dfgnum}\t{item.x_o_edia}\t{item.asp_o_edia}\t{item.phe_o_edia}\t{item.gly_o_edia}\t{item.protein_name}\n')
+        dfg_asp_num=item.dfgnum-1
+        length_activation_loop_seq=item.apenum-dfg_asp_num+1
+        disorder_in_loop=item.loopBreak
+        if disorder_in_loop<0:
+            disorder_in_loop=0
+        length_activation_loop_str=length_activation_loop_seq-disorder_in_loop
+        
+        fhandle_textFile.write(f'{item.specie}\t{item.group}\t{item.domain}\t{item.uniprotid}\t{item.pdb}\t{item.method}\t{item.resolution}\t{item.rvalue}\t{item.freervalue}\t{item.domain_begin}-{item.domain_end}\t{item.first_obs_res}-{item.last_obs_res}\t{length_activation_loop_seq}\t{length_activation_loop_str}\t{disorder_in_loop}\t{item.spatial}\t{item.dihedral}\t{item.chelix}\t{ligand_list}\t{ligandtype_list}\t{item.dfgnum}\t{item.x_o_edia}\t{item.asp_o_edia}\t{item.phe_o_edia}\t{item.gly_o_edia}\t{phos_list}\t{mut_list}\t{item.protein_name}\n')
     fhandle_textFile.close()
     
 fda_dict={'6ZV':'Abemaciclib','0WN':'Afatinib','EMH':'Alectinib','AXI':'Axitinib','3JW':'Baricitinib','DB8':'Bosutinib','6GY':'Brigatinib','4MK':'Ceritinib','EUI':'Cobimetinib','VGH':'Crizotinib','P06':'Dabrafenib','1C9':'Dacomitinib','1N1':'Dasatinib','YMX':'Entrectinib','AQ4':'Erlotinib','IRE':'Gefitinib','C6F':'Gilteritinib','8E8':'Ibrutinib','STI':'Imatinib','FMM':'Lapatinib','LEV':'Lenvatinib','2K2':'Midostaurin','NIL':'Nilotinib','XIN':'Nintedanib','LQQ':'Palbociclib','P31':'Pexidartinib','0LI':'Ponatinib','6ZZ':'Ribociclib','RXT':'Ruxolitinib','3EW':'Selumetinib','BAX':'Sorafenib','B49':'Sunitinib','MI1':'Tofacitinib','032':'Vemurafenib','BA0':'Zanubrutinib'}
