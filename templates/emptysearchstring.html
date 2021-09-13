@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>No match</title>
+  </head>
+  <body>
+    {% extends "base.html" %}
+    {% block content %}
+    <div class="container-fluid">
+      <div class="container">
+      <div class="row">
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+          <div class="very-dark-text jumbotron">
+            <p class="lead">Empty query.</p>
+            <hr class="my-4 brand-background">
+            <p>A list of gene and protein names with known structures is provided <a href="{{ url_for('geneListHelp') }}" target="_blank">here</a>.</p>
+            <p>Please try to <a href="{{ url_for('formSearch') }}" target="_blank">Search</a> with another query or <a href="{{ url_for('browse') }}" target="_blank">Browse</a> to access the entire list of entries.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    {% endblock %}
+
+  </body>
+</html>
