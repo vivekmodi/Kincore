@@ -310,8 +310,13 @@ def geneListHelp():
 def formSearch():
     (pdbListDb,chainListDb,uniprotIdListDb,uniprotAccListDb,geneListDb,ligandListDb,specieListDb,ligandSynDict)=create_lists()
 
+   
     if request.method=='POST':
+        
         inputString=request.form['inputString'].upper()
+        
+        if not inputString:
+            return render_template('emptysearchstring.html')
 
         if inputString in pdbListDb:    #match without chain
             return redirect(url_for('uniqueQuery',queryname=inputString,settings='PDB'))
@@ -329,8 +334,9 @@ def formSearch():
         for lig_syn in ligandSynDict.keys():
             if inputString==lig_syn.upper():
                 return redirect(url_for('uniqueQuery',queryname=ligandSynDict[lig_syn].upper(),settings='LIGAND'))
-        else:
-            return render_template('nomatch.html')
+        
+        
+        return render_template('nomatch.html')
 
     return render_template ('search.html')
 

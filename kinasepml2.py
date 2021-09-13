@@ -61,13 +61,13 @@ def Main(pwd):
     today=str(datetime.now())[0:10].strip()
     df=pd.DataFrame()
     create_dirs(pwd)          #No need to run this because directories already exist
-    download_pdbaa(pwd+'/pdbaa_psiblast_dir')
+    #download_pdbaa(pwd+'/pdbaa_psiblast_dir')
     create_blastdb('pdbaa',f'{pwd}/pdbaa_psiblast_dir')
-    run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
+    #run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
 
     df=read_psiblast(pwd,df,f'{pwd}/pdbaa_psiblast_dir/AURKA.pdbaa.xml', f'{pwd}/pdbaa_psiblast_dir/psiblast_excluded.log')   #sequences from pdbaa also contain cloning tags
 
-    create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
+    #create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
     df=gene_dict(pwd,df)        # Also prints New_uniprots.txt
     df=uniprotseq(pwd,df)
 
@@ -112,7 +112,7 @@ def Main(pwd):
 
     df_datesorted=df.sort_values(['Date'],ascending=False).copy()
     df_datesorted[['Date','Specie','UniprotID','Gene','PDBid']].to_excel(f'Kinases_df_date_sorted.xlsx',index=False)
-    
+
     update_database(df)
     subListPymolSession(pwd,df)   #This function also copies coordinate files
 
@@ -126,5 +126,6 @@ def Main(pwd):
 if __name__ == '__main__':
     #pwd=os.getcwd()
     pwd='/home/vivek/Applications/Flask/Kincore'     #location in workhorse;required to start cronjob
+    #pwd='/home/vivekmodi/Applications/Flask/Kinases'  #location in laptop
     print("Present working directory: "+pwd)
     Main(pwd)
