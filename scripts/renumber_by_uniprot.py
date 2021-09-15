@@ -61,7 +61,7 @@ def renumber_by_uniprot(pwd,df):
                     ignoremodified.seek(0)
                     if residue.id[0]==' ' or (residue.id[0][2:]+'\n') in ignoremodified.readlines():
                         resid=list(residue.id)
-                        resid[1]=resid[1]+1000      #Change the residue numbers to a larger value so that while renumbering two residues do not have the same number
+                        resid[1]=resid[1]+5000      #Change the residue numbers to a larger value so that while renumbering two residues do not have the same number
                         residue.id=tuple(resid)
                        
     
@@ -75,7 +75,7 @@ def renumber_by_uniprot(pwd,df):
                         siftshandle.seek(0)
                         for line in siftshandle:
                             line=line.split(",")
-                            residue_with_insert_code=(str(resid[1]-1000)+resid[2])
+                            residue_with_insert_code=(str(resid[1]-5000)+resid[2])
                             residue_with_insert_code=residue_with_insert_code.strip()
                             if str(residue_with_insert_code)==str(line[2]) and str(line[4])==str(chain.id) and str(line[5])==str(-9999):      #Do not print residue not present in Uniprot in PDBfile
                                 #print(resid[0],resid[1],resid[2])

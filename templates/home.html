@@ -210,6 +210,68 @@
             </div>
           </div>
 
+          <div class="row">
+            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+              <div class="container-fluid very-dark-text">
+                <div class="card mb-3">
+                  <div class="card-header light-pink-background">
+                    <h5>Comparisons of different conformational states</h5>
+                  </div>
+
+
+                  <div class="no-gutters">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="row">
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+
+                            <p style="text-align:justify;"><b>A</b>. Pairwise comparisons of 5 different states of human BRAF kinase <br>DFGin-BLBplus structures (“SRC-inactive” conformation in blue with grayish-blue activation loop)
+compared with DFGin-BLAminus (orange, active conformations), BLBminus (magenta-pink), DFGinBLAplus (“FGFR-inactive”, cyan-lightcyan), and DFGout-BBAminus (Type-2 ligand binding, lightbrownyellow). A small number of outlier structures in some classes are not shown. In each case, the position of the activation loop and the C-helix is correlated with
+the state of the kinase, and differs among the 5 states.</p>Download in Pymol:
+<ul>
+<li><a href="{{ url_for('static',filename='img/Fig_A1_BRAF_BLBplus_blue_BLAminus_orange.pse.zip') }}" target="_blank">BRAF_BLBplus_BLAminus</a><br></li>
+<li><a href="{{ url_for('static',filename='img/Fig_A2_BRAF_BLBplus_blue_BLBminus_cyan.pse.zip') }}" target="_blank">BRAF_BLBplus_BLBminus</a></li>
+<li><a href="{{ url_for('static',filename='img/Fig_A3_BRAF_BLBplus_blue_BLAplus_green.pse.zip') }}" target="_blank">BRAF_BLBplus_BLAplus</a></li>
+<li><a href="{{ url_for('static',filename='img/Fig_A4_BRAF_BLBplus_blue_BBAminus_yellow.pse.zip') }}" target="_blank">BRAF_BLBplus_BBAminus</a></li>
+</ul>
+<p style="text-align:justify;"><b>B</b>. BLAminus and BLBplus states of EGFR<br> EGFR BLAminus (107
+chains, left, orange) and BLBplus (79 chains, right, blue) structures with both the activation loop
+(right side of each image) and C-terminal tail (left side of each image) shown in lighter colors. The C-terminus of each group is shown in magenta spheres. The state of the activation loop is highly correlated with the
+position of the C-terminal tail. In the active BLAminus structures, the tail is mostly coil and reaches up
+to strands B2 and B3 of the N-terminal domain. In the “SRC-inactive” BLBplus state, the tail contains a
+helix (residues 993-1002) in contact with the C-terminal domain, and then turns around with the C-terminus in contact with the I-helix of the C-terminal domain.</p>Download in Pymol:
+<ul>
+<li><a href="{{ url_for('static',filename='img/Fig_B1_EGFR_BLAminus_orange_tail.pse.zip') }}" target="_blank">EGFR_BLAminus</a><br></li>
+<li><a href="{{ url_for('static',filename='img/Fig_B2_EGFR_BLBplus_blue_tail.pse.zip') }}" target="_blank">EGFR_BLBplus</a></li>
+</ul>
+
+<p style="text-align:justify;"><b>C</b>. Results of searches with the Kincore website<br> ATP-bound BLAminus structures from 14
+different kinases in 6 kinase families (left) and BBAminus structures from 29 kinases with bound
+Type 2 inhibitors (right).In the
+BLAminus structures, the position of the DFG Phe (in yellow) and the conformation of the DFGmotif at
+the beginning of the activation loop (shown in magenta) and the overall position of the activation loop
+are consistent across the structures.</p>
+Download in Pymol:
+<ul>
+<li><a href="{{ url_for('static',filename='img/Fig_C1_BLAminus with ATP.pse.zip') }}" target="_blank">BLAminus_ATP</a><br></li>
+<li><a href="{{ url_for('static',filename='img/Fig_C2_TYR_BBAminus_Type2.pse.zip') }}" target="_blank">BBAminus_Type2</a></li>
+</ul>
+
+</div>
+
+<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+  <img src="{{ url_for('static', filename="img/Kincore-states-comparison.png") }}" width=100%>
+</div>
+</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
 
           <div class="row">
             <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
@@ -218,6 +280,8 @@
                   <div class="card-header light-pink-background">
                     <h5>Protein kinase inhibitors</h5>
                   </div>
+
+
                   <div class="no-gutters">
                       <div class="card-body">
                         <div class="row">
