@@ -24,10 +24,11 @@ def identify_group(pwd,pdbfilename,index,conf_df):
     hmm_result_WNK=SearchIO.read(f'{pwd}/server/{pdbfilename[0:-4]}_{model_id}_{chain_id}_WNK.hmmer.txt',format='hmmer3-text')
     hmm_result_BUB=SearchIO.read(f'{pwd}/server/{pdbfilename[0:-4]}_{model_id}_{chain_id}_BUB.hmmer.txt',format='hmmer3-text')
     hmm_result_ULK=SearchIO.read(f'{pwd}/server/{pdbfilename[0:-4]}_{model_id}_{chain_id}_ULK.hmmer.txt',format='hmmer3-text')
+    #hmm_result_OTHER=SearchIO.read(f'{pwd}/server/{pdbfilename[0:-4]}_{model_id}_{chain_id}_OTHER.hmmer.txt',format='hmmer3-text')
 
     eval=dict()
     eval['AGC']=100;eval['CAMK']=100;eval['CK1']=100;eval['CMGC']=100;eval['NEK']=100;eval['RGC']=100;eval['STE']=100;eval['TKL']=100;eval['TYR']=100;
-    eval['HASP']=100;eval['WNK']=100;eval['BUB']=100;eval['ULK']=100
+    eval['HASP']=100;eval['WNK']=100;eval['BUB']=100;eval['ULK']=100;eval['OTHER']=100
     for hits in hmm_result_AGC:
         for hsp in hits:
             eval['AGC']=hsp.evalue
@@ -67,6 +68,9 @@ def identify_group(pwd,pdbfilename,index,conf_df):
     for hits in hmm_result_ULK:
         for hsp in hits:
             eval['ULK']=hsp.evalue
+#    for hits in hmm_result_OTHER:
+#        for hsp in hits:
+#            eval['OTHER']=hsp.evalue
 
     minEval=100;
     for groups in ('AGC','CAMK','CK1','CMGC','NEK','RGC','STE','TKL','TYR','HASP','WNK','BUB','ULK'):
