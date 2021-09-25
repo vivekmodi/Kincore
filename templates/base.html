@@ -34,9 +34,10 @@
               <div class="navbar-nav">
                 <a class="nav-item nav-link" style="color:#F2F5F4;" href="{{ url_for('browse') }}">Browse</a>
                 <a class="nav-item nav-link" style="color:#F2F5F4;" href="{{ url_for('formSearch') }}">Search</a>
-                <a class="nav-item nav-link" style="color:#F2F5F4;" href="{{ url_for('webserver') }}">Upload</a>
+                <a class="nav-item nav-link" style="color:#F2F5F4;" href="{{ url_for('webserver') }}">Submit</a>
                 <a class="nav-item nav-link" style="color:#F2F5F4;" href="{{ url_for('alignment') }}">Alignment</a>
                 <a class="nav-item nav-link" style="color:#F2F5F4;" href="{{ url_for('phylogeny') }}">Phylogeny</a>
+                <a class="nav-item nav-link" style="color:#F2F5F4;" href="{{ url_for('download') }}">Download</a>
               </div>
             </div>
           </nav>
@@ -58,7 +59,7 @@
         <div class="col-lg-1 col-md-2 col-sm-2 col-xs-4">
           <ul class="nav nav-fill nav-pills nav-stacked flex-column">
             <li class="nav-item" style="padding:4px;padding-top:10px;"><a class="nav-link"  href="{{ url_for('about') }}" target="_blank">About</a></li>
-            <li class="nav-item" style="padding:4px;"><a class="nav-link"  href="{{ url_for('download') }}" target="_blank">Download</a></li>
+
             <!-- <li class="nav-item" style="padding:4px;padding-top:0px;"><a class="nav-link"  href="{{ url_for('help') }}">Help</a></li> -->
             <li class="nav-item" style="padding:4px;"><a class="nav-link"  href="{{ url_for('contact') }}">Contact</a></li>
             <li class="nav-item" style="padding:4px;"><a class="nav-link"  href="{{ url_for('dunbrackLab') }}" target="_blank">DunbrackLab</a></li>
