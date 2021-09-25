@@ -18,7 +18,7 @@ def create_json_dirs(pwd,pdb):
     return dir_name
 
 def create_json(pwd,filename):
-    df=pd.read_csv(filename,sep='\t',header='infer')
+    df=pd.read_csv(f'{pwd}/filename',sep='\t',header='infer')
     pdb_list=list();pdb_skip=list();group=dict();gene=dict();release_date=dict()
     year=str(datetime.now())[0:4];month=str(datetime.now())[5:7];day=str(datetime.now())[10:13].strip()
     today=f'{day}/{month}/{year}'
@@ -82,5 +82,5 @@ def create_json(pwd,filename):
 
 if __name__=='__main__':
     filename=sys.argv[1]
-    pwd=os.getcwd()
+    pwd='/home/vivek/Applications/Flask/Kincore'     #Location in workhorse
     create_json(pwd,filename)
