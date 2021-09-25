@@ -26,7 +26,7 @@ def transfer_to_pdbe(pwd):
 
     for dirname in filter(os.path.isdir, os.listdir(os.getcwd())):     #iterate over local directories
         os.chdir(f'{pwd}/JSON/{dirname}')
-        ftp.cwd(f'/home/addit/vivek/check-ftp/{dirname}')              #change directory in the remote machine
+        ftp.cwd(f'/upload/{dirname}')              #change directory in the remote machine
 
         for filename in os.listdir():           #iterate over files in individual directories like 'ga','fu'
             myfile=open(f'{filename}', 'rb')    #open the file to upload
