@@ -24,11 +24,11 @@ def create_json(pwd,filename):
     today=f'{day}/{month}/{year}'
     for i in df.index:
         pdb=df.at[i,'PDBid'][0:4]
-        
+
         if str(df.at[i,'Author_Aspnum']).lower() == 'nan':   #Do not include the structures where Phe is not resolved; Pandas read null as nan
             pdb_skip.append(pdb)
             continue
-        
+
         pdb_list.append(pdb)
         release_date[pdb]=today #Annotation release date
         group[pdb]=df.at[i,'Group']
@@ -38,12 +38,12 @@ def create_json(pwd,filename):
     for pdb in pdb_list:
         if pdb in pdb_skip:
             continue
-        
+
         pdbe=dict()
         pdbe["data_resource"]="Kincore"
         pdbe["resource_version"]="1.0.0"
-        pdbe["resource_entry_url"]=f"http://dunbrack3.fccc.edu/kincore/PDB/{pdb}"
-        pdbe["model_coordinates_url"]=f"http://dunbrack3.fccc.edu/kincore/static/downloads/coordinateFiles/{group[pdb]}_{gene[pdb]}_{pdb}_uniNum.zip"
+        pdbe["resource_entry_url"]=f"http://dunbrack.fccc.edu/kincore/PDB/{pdb}"
+        pdbe["model_coordinates_url"]=f"http://dunbrack.fccc.edu/kincore/static/downloads/coordinateFiles/{group[pdb]}_{gene[pdb]}_{pdb}_uniNum.zip"
         pdbe["release_date"]=f"{release_date[pdb]}"
         pdbe["pdb_id"]=f"{pdb}".lower()
         pdbe["chains"]=list()
@@ -65,7 +65,7 @@ def create_json(pwd,filename):
                 dfgnum=str(df.at[i,'Author_Aspnum'])      #Asp num is used
                 if '.' in dfgnum:
                     dfgnum=dfgnum[0:-2]      #Remove the trailing decimal if present
-                
+
                 aatype=(df.at[i,"Author_Aspres"]).upper()
 
                 residues=[{"pdb_res_label": dfgnum,"aa_type": aatype,"site_data": [{"site_id_ref": site_id,"confidence_classification": "curated"}]}]
