@@ -12,9 +12,9 @@ from ftplib import FTP
 
 def transfer_to_pdbe(pwd):
     print('Transferring JSON files to pdbe...')
-    ftp = FTP('10.132.8.198')
-    ftp.login(user='vivek', passwd='vivek2')
-    ftp.cwd('/home/addit/vivek/check-ftp/')     #remote directory
+    ftp = FTP('ftp-private.ebi.ac.uk')
+    ftp.login(user='kincore', passwd='F7UuKpaS')
+    ftp.cwd('/upload/')     #remote directory
 
 
     os.chdir(f'{pwd}/JSON/')
