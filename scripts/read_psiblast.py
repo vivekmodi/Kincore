@@ -24,7 +24,7 @@ def read_psiblast(pwd,df,psiblast_result, excluded_output):
 
         for hsp in hits.hsps:
 
-                  
+
             if hsp.evalue<5.0 and hsp.aln_span>125:
 
                 if hits.accession in hit_accession_list:    #to make sure that the sequences which are split into two hsps are not repeated in the output
@@ -45,7 +45,7 @@ def read_psiblast(pwd,df,psiblast_result, excluded_output):
                         continue                           #Remove the case which do not have uniprot assigned, D3DSX2 is not the correct uniprot but comes up in some PDB annotation
 
 
-                    if hsp.hit_id[0:4] in ('6T28','6T29','3LZBE','3LZBF','3LZBG','3LZBH','5CNOX','6PYHA','6PYHD','6TLJS','6Z1T','6Z1Q','6Z83','6Z84','6YUL','6YUM'):     # Description of these structures is in the kinasepml notes file
+                    if hsp.hit_id[0:4] in ('6T28','6T29','3LZBE','3LZBF','3LZBG','3LZBH','5CNOX','6PYHA','6PYHD','6TLJS','6Z1T','6Z1Q','6Z83','6Z84','6YUL','6YUM','6JK8'):     # Description of these structures is in the kinasepml notes file
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
                         fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
                         continue
