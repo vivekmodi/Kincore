@@ -14,28 +14,28 @@ def parse_sifts(kinasesifts,df):
     print(f'Parsing Sifts xml files...')
     for i in df.index:
         pdbs=df.at[i,'PDBid']
-       
+
         filename=(kinasesifts+"/"+pdbs[0:4].lower()+".xml.gz")
         filecsv=(kinasesifts+"/"+pdbs[0:4].lower()+".csv.gz")
-        
+
         prev_uninum_insertion=-9999
         prev_uninum_linker=-9999
         insertion_code='A'
         if not os.path.isfile(filename):
             print("Error: Function parse_sifts: file does not exist:"+filename+"\n")
             return
-        
-        if os.path.isfile(filecsv):
-            continue
-        
+
+        #if os.path.isfile(filecsv):
+        #    continue
+
         handle=gzip.open(filename,"rt")
         tree=ET.parse(handle)
         root=tree.getroot()
-    
+
         fhandle=open((kinasesifts+"/"+pdbs[0:4].lower()+".csv"),"w")
         fhandle.write("PDBe_resnum,PDBe_resname,PDB_resnum,PDBres_name,PDB_Chain,Uniprot_resnum,Uniprot_resname,Uniprot_accession,Annotation,SecStr"+"\n")
         base='{http://www.ebi.ac.uk/pdbe/docs/sifts/eFamily.xsd}'
-    
+
         for entity in root:
             if entity.tag==(str(base)+'entity'):
                 prev_uninum_insertion=-9999          #at the beginning of new chain set prev_uninum to default again
@@ -51,11 +51,11 @@ def parse_sifts(kinasesifts,df):
                                         if residue.get('dbSource')=='PDBe':
                                             pdbe_resnum=residue.get('dbResNum');pdbe_resname=residue.get('dbResName')
                                             for crossRefDb in residue:
-    
+
                                                 if crossRefDb.get('dbSource')=="PDB":
                                                     pdb_resnum=crossRefDb.get('dbResNum');pdb_resname=crossRefDb.get('dbResName');pdb_chain=crossRefDb.get('dbChainId')
-    
-    
+
+
                                                 if crossRefDb.get('dbSource')=="UniProt":
                                                     uni_resnum=crossRefDb.get('dbResNum');uni_resname=crossRefDb.get('dbResName');uni_acc=crossRefDb.get('dbAccessionId')
                                             for residueDetail in residue:
@@ -63,18 +63,18 @@ def parse_sifts(kinasesifts,df):
                                                     pdbe_property.append(residueDetail.text)
                                                 if residueDetail.get('property')=='nameSecondaryStructure':
                                                     pdbe_secstr=residueDetail.text
-    
+
                                     if 'Insertion' in pdbe_property and prev_uninum_insertion!=-9999:        #check for insertion and make sure it is not in the beginning of the chain by -9999
                                         fhandle.write(str(pdbe_resnum)+","+str(pdbe_resname)+","+str(pdb_resnum)+","+str(pdb_resname)+","+str(pdb_chain)+","+\
                                                       str(prev_uninum_insertion)+insertion_code+","+str(uni_resname)+","+str(uni_acc)+","+str(' '.join(pdbe_property))+","+str(pdbe_secstr)+"\n")
-                                        insertion_code=chr(ord(insertion_code)+1)    
-                                    
+                                        insertion_code=chr(ord(insertion_code)+1)
+
                                     elif 'Linker' in pdbe_property and prev_uninum_linker!=-9999:        #check for insertion and make sure it is not in the beginning of the chain by -9999
                                         fhandle.write(str(pdbe_resnum)+","+str(pdbe_resname)+","+str(pdb_resnum)+","+str(pdb_resname)+","+str(pdb_chain)+","+\
                                                       str(prev_uninum_linker)+insertion_code+","+str(uni_resname)+","+str(uni_acc)+","+str(' '.join(pdbe_property))+","+str(pdbe_secstr)+"\n")
-                                        insertion_code=chr(ord(insertion_code)+1) 
-                                    
-                                    
+                                        insertion_code=chr(ord(insertion_code)+1)
+
+
                                     else:
                                         fhandle.write(str(pdbe_resnum)+","+str(pdbe_resname)+","+str(pdb_resnum)+","+str(pdb_resname)+","+str(pdb_chain)+","+\
                                                       str(uni_resnum)+","+str(uni_resname)+","+str(uni_acc)+","+str(' '.join(pdbe_property))+","+str(pdbe_secstr)+"\n")
