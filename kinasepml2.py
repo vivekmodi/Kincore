@@ -60,14 +60,14 @@ aadict={'GLY':'G','ALA':'A','VAL':'V','ILE':'I','LEU':'L','MET':'M','PHE':'F','T
 def Main(pwd):
     today=str(datetime.now())[0:10].strip()
     df=pd.DataFrame()
-    create_dirs(pwd)          #No need to run this because directories already exist
-    #download_pdbaa(pwd+'/pdbaa_psiblast_dir')
+    #create_dirs(pwd)          #No need to run this because directories already exist
+    download_pdbaa(pwd+'/pdbaa_psiblast_dir')
     create_blastdb('pdbaa',f'{pwd}/pdbaa_psiblast_dir')
-    #run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
+    run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
 
     df=read_psiblast(pwd,df,f'{pwd}/pdbaa_psiblast_dir/AURKA.pdbaa.xml', f'{pwd}/pdbaa_psiblast_dir/psiblast_excluded.log')   #sequences from pdbaa also contain cloning tags
 
-    #create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
+    create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
     df=gene_dict(pwd,df)        # Also prints New_uniprots.txt
     df=uniprotseq(pwd,df)
 
@@ -76,32 +76,74 @@ def Main(pwd):
     download_cifs(f'{pwd}/kinasecifs',df)
     get_release_date(f'{pwd}/kinasecifs',df)
     download_sifts(f'{pwd}/kinasesifts',df)
-    split_chains(pwd,df)
-    parse_sifts(f'{pwd}/kinasesifts',df)
-    df=renumber_by_uniprot(pwd,df)      #Also returns deposition date
-    renumber_by_alignment(pwd,df)
-    df=identify_author_dfg(pwd,df)
+    try:
+        split_chains(pwd,df)
+    except:
+        print('Crashed at split_chains function')
+    try:
+        parse_sifts(f'{pwd}/kinasesifts',df)
+    except:
+        print('Crashed at parse_sifts function')
+    try:
+        df=renumber_by_uniprot(pwd,df)      #Also returns deposition date
+    except:
+        print('Crashed at renumber_by_uniprot function')
+    try:
+        renumber_by_alignment(pwd,df)
+    except:
+        print('Crashed at renumber_by_alignment function')
+    try:
+        df=identify_author_dfg(pwd,df)
+    except:
+        print('Crashed at identify_author_dfg function')
     download_phases(pwd,df)
-    run_phoenix(pwd,df)
-    run_edia(pwd,df)
-    df=read_edia(pwd,df)
-    compute_dihedrals(pwd,df)
-    df=read_dihedrals(pwd,df)
-    df=chain_break(pwd,df)
+    try:
+        run_phoenix(pwd,df)
+        run_edia(pwd,df)
+        df=read_edia(pwd,df)
+    except:
+        print('Crashed at run_phoenix, run_edia or read_edia')
+    try:
+        compute_dihedrals(pwd,df)
+        df=read_dihedrals(pwd,df)
+    except:
+        print('Crashed at compute_dihedrals or read_dihedrals function')
+    try:
+        df=chain_break(pwd,df)
+    except:
+        print('Crashed at chain_break function')
     #df=gene_synonym(pwd,df)        #modify to include non-human genes in the list
     df=identify_mutation(pwd,df,aadict)
-    df=extract_ligands(pwd,df)
-    format_seq_html(pwd,df,aadict)
-    df=get_seq_from_cif(pwd,df)      #Do not need it right now; Always use after generating uniprot numbered files - this uses incorrect chain id, maybe try .pdb files
+    try:
+        df=extract_ligands(pwd,df)
+    except:
+        print('Crashed at extract_ligands function')
+    try:
+        format_seq_html(pwd,df,aadict)
+    except:
+        print('Crashed at format_seq_html function')
+    try:
+        df=get_seq_from_cif(pwd,df)      #Do not need it right now; Always use after generating uniprot numbered files - this uses incorrect chain id, maybe try .pdb files
+    except:
+        print('Crashed at get_seq_from_cif function')
 
-
-    df=compute_all_distances(pwd,df)
-    df=chelix_disposition(pwd,df)
-    df=spatial_labels(pwd,df)
-    df=dihedral_labels(df,0.45)
+    try:
+        df=compute_all_distances(pwd,df)
+        df=chelix_disposition(pwd,df)
+    except:
+        print('Crashed at compute_all_distances or chelix_disposition function')
+    try:
+        df=spatial_labels(pwd,df)
+        df=dihedral_labels(df,0.45)
+    except:
+        print('Crashed at spatial_labels or dihedral_labels function')
+        
     df=chain_color(df)
-
-    df=classify_ligands(pwd,df)
+    try:
+        df=classify_ligands(pwd,df)
+    except:
+        print('Crashed at classify_ligands function')
+        
     geneListHelp(pwd,df)
     copy_ngl_files(pwd,df)
     create_datefile(pwd)
@@ -113,14 +155,31 @@ def Main(pwd):
     df_datesorted=df.sort_values(['Date'],ascending=False).copy()
     df_datesorted[['Date','Specie','UniprotID','Gene','PDBid']].to_excel(f'Kinases_df_date_sorted.xlsx',index=False)
 
-    update_database(df)
-    subListPymolSession(pwd,df)   #This function also copies coordinate files
+    try:
+        update_database(df)
+    except:
+        print('Crashed at update_database function')
+    try:
+        subListPymolSession(pwd,df)   #This function also copies coordinate files
+    except:
+        print('Crashed at subListPymolSession function')
 
-    create_json(pwd,f'Kinases_df-{today}.csv')
-    validate(pwd,f'Kinases_df-{today}.csv')
-
-    transfer_to_dunbrack3(pwd)
-    #transfer_to_pdbe(pwd)
+    try:
+        create_json(pwd,f'Kinases_df-{today}.csv')
+    except:
+        print('Crashed at create_json function')
+    try:
+        validate(pwd,f'Kinases_df-{today}.csv')
+    except:
+        print('Crashed at validate function')
+    try:
+        transfer_to_dunbrack3(pwd)
+    except:
+        print('Crashed at transfer_to_dunbrack3 function')
+    try:
+        transfer_to_pdbe(pwd)
+    except:
+        print('Crashed at transfer_to_pdbe function')
 
 
 if __name__ == '__main__':
