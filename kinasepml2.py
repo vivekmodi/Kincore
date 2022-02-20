@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import os, sys
+import os, sys, subprocess
 sys.path.append(os.getcwd()+'/scripts')
 sys.path.append(os.getcwd()+'/funpdbe-validator')
 
@@ -51,30 +51,41 @@ from transfer_to_dunbrack3 import transfer_to_dunbrack3
 from transfer_to_pdbe import transfer_to_pdbe
 from create_fasta_with_labels import create_fasta_with_labels
 
-aadict={'GLY':'G','ALA':'A','VAL':'V','ILE':'I','LEU':'L','MET':'M','PHE':'F','TYR':'Y',\
+AADICT={'GLY':'G','ALA':'A','VAL':'V','ILE':'I','LEU':'L','MET':'M','PHE':'F','TYR':'Y',\
         'TRP':'W','SER':'S','THR':'T','ASN':'N','GLN':'Q','ARG':'R','HIS':'H','LYS':'K',\
         'ASP':'D','GLU':'E','CYS':'C','PRO':'P','SEC':'U','TPO':'T','CME':'C','CSS':'C',\
         'MSE':'M','OCY':'C','PTR':'Y','SEP':'S','CAF':'C','LGY':'K','CAS':'C','CSO':'C','CSX':'C',\
         'MK8':'E','NEP':'H','NMM':'R','CSD':'C','CYO':'Y','OCS':'C','OCY':'C','SCS':'C','ALY':'A',\
         'KCX':'K','MHO':'M','T8L':'T','CY0':'C','UNK':'X','YTH':'T'}
+
+def identify_working_direct():
+    process=subprocess.Popen('uname -a',stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+    stdout,stderr=process.communicate()
+    if 'vivek-XPS' in str(stdout):
+        pwd='/home/vivekmodi/Applications/Flask/Kinases'  #location in laptop
+    else:
+        pwd='/home/vivek/Applications/Flask/Kincore'     #location in workhorse;required to start cronjob
+    return pwd
+
 def Main(pwd):
     today=str(datetime.now())[0:10].strip()
     df=pd.DataFrame()
     #create_dirs(pwd)          #No need to run this because directories already exist
-    download_pdbaa(pwd+'/pdbaa_psiblast_dir')
-    create_blastdb('pdbaa',f'{pwd}/pdbaa_psiblast_dir')
-    run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
+    #download_pdbaa(pwd+'/pdbaa_psiblast_dir')
+    #create_blastdb('pdbaa',f'{pwd}/pdbaa_psiblast_dir')
+    #run_psiblast(f'{pwd}/pdbaa_psiblast_dir','pdbaa','AurkaPsiblastIter6PSSM.asn','AURKA.pdbaa.xml')
 
     df=read_psiblast(pwd,df,f'{pwd}/pdbaa_psiblast_dir/AURKA.pdbaa.xml', f'{pwd}/pdbaa_psiblast_dir/psiblast_excluded.log')   #sequences from pdbaa also contain cloning tags
-
-    create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
+    download_cifs(f'{pwd}/kinasecifs',df)
+    get_release_date(f'{pwd}/kinasecifs',df)
+    #create_motifs_file(pwd)    # This function also prints a file Not_found_in-alignment.txt, which has the Uniprots in with conserved residues are missing.
     df=gene_dict(pwd,df)        # Also prints New_uniprots.txt
     df=uniprotseq(pwd,df)
 
     df=identify_pseudokinases(df)
 
-    download_cifs(f'{pwd}/kinasecifs',df)
-    get_release_date(f'{pwd}/kinasecifs',df)
+    
+    
     download_sifts(f'{pwd}/kinasesifts',df)
     try:
         split_chains(pwd,df)
@@ -113,13 +124,13 @@ def Main(pwd):
     except:
         print('Crashed at chain_break function')
     #df=gene_synonym(pwd,df)        #modify to include non-human genes in the list
-    df=identify_mutation(pwd,df,aadict)
+    df=identify_mutation(pwd,df,AADICT)
     try:
         df=extract_ligands(pwd,df)
     except:
         print('Crashed at extract_ligands function')
     try:
-        format_seq_html(pwd,df,aadict)
+        format_seq_html(pwd,df,AADICT)
     except:
         print('Crashed at format_seq_html function')
     try:
@@ -172,19 +183,18 @@ def Main(pwd):
         validate(pwd,f'Kinases_df-{today}.csv')
     except:
         print('Crashed at validate function')
-    try:
-        transfer_to_dunbrack3(pwd)
-    except:
-        print('Crashed at transfer_to_dunbrack3 function')
-    try:
-        transfer_to_pdbe(pwd)
-    except:
-        print('Crashed at transfer_to_pdbe function')
+    #try:
+    #    transfer_to_dunbrack3(pwd)
+    #except:
+    #    print('Crashed at transfer_to_dunbrack3 function')
+    #try:
+    #    transfer_to_pdbe(pwd)
+    #except:
+    #    print('Crashed at transfer_to_pdbe function')
 
 
 if __name__ == '__main__':
-    #pwd=os.getcwd()
-    pwd='/home/vivek/Applications/Flask/Kincore'     #location in workhorse;required to start cronjob
-    #pwd='/home/vivekmodi/Applications/Flask/Kinases'  #location in laptop
+    pwd=identify_working_direct()
+    
     print("Present working directory: "+pwd)
     Main(pwd)

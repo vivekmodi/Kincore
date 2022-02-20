@@ -28,7 +28,8 @@ def create_json(pwd,filename):
         if str(df.at[i,'Author_Aspnum']).lower() == 'nan':   #Do not include the structures where Phe is not resolved; Pandas read null as nan
             pdb_skip.append(pdb)
             continue
-
+        #if pdb.upper()!='2W4O':
+        #    continue
         pdb_list.append(pdb)
         release_date[pdb]=today #Annotation release date
         group[pdb]=df.at[i,'Group']
@@ -53,12 +54,13 @@ def create_json(pwd,filename):
         pdbe["sites"]=list()
 
         chain_label=dict()
-        site_id=0
+        site_id_spatial=1
+        site_id_dihedral=2
+    
 
         for i in df.index:
 
             if pdb in df.at[i,"PDBid"]:
-                site_id=site_id+1
                 chain_label=df.at[i,'PDBid'][4:]
                 spatial=df.at[i,'Spatial']
                 dihedral=df.at[i,'Dihedral']
@@ -68,19 +70,33 @@ def create_json(pwd,filename):
 
                 aatype=(df.at[i,"Author_Aspres"]).upper()
 
-                residues=[{"pdb_res_label": dfgnum,"aa_type": aatype,"site_data": [{"site_id_ref": site_id,"confidence_classification": "curated"}]}]
-                sites={"site_id": site_id, "label": spatial, "additional_site_annotations": {"dihedral_label": dihedral}}
-
+                residues=[{"pdb_res_label": dfgnum,"aa_type": aatype,"site_data": [{"site_id_ref": site_id_spatial,"confidence_classification": "curated"},{"site_id_ref": site_id_dihedral,"confidence_classification": "curated"}]}]
+                sites_spatial_dict={"site_id":site_id_spatial, "label":f"Spatial {spatial}"}
+                site_id_spatial+=2
+                sites_dihedral_dict={"site_id":site_id_dihedral,"label":f"Dihedral {dihedral}"}
+                site_id_dihedral+=2
+                pdbe["sites"].append(sites_spatial_dict)
+                pdbe["sites"].append(sites_dihedral_dict)
                 pdbe["chains"].append({"chain_label": chain_label,"residues": residues})
-                pdbe["sites"].append(sites)
 
         dir_name=create_json_dirs(pwd,pdb)
         fhandle_json=open(f'JSON/{dir_name}/'+pdb.lower()+'.json','w')
         json.dump(pdbe,fhandle_json,indent=2)
         fhandle_json.close()
 
+def identify_working_direct():
+    process=subprocess.Popen('uname -a',stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+    stdout,stderr=process.communicate()
+    if 'vivek-XPS' in str(stdout):
+        pwd='/home/vivekmodi/Applications/Flask/Kinases'  #location in laptop
+    else:
+        pwd='/home/vivek/Applications/Flask/Kincore'     #location in workhorse;required to start cronjob
+    return pwd
 
 if __name__=='__main__':
     filename=sys.argv[1]
-    pwd='/home/vivek/Applications/Flask/Kincore'     #Location in workhorse
+    pwd=identify_working_direct()
+    
+    #pwd='/home/vivek/Applications/Flask/Kincore'     #Location in workhorse
+    #pwd='/home/vivekmodi/Applications/Flask/Kinases'  #Location on laptop
     create_json(pwd,filename)
