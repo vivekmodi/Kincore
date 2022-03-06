@@ -7,6 +7,7 @@ Created on Thu Jan  9 16:55:45 2020
 """
 from Bio import SearchIO
 from datetime import datetime
+import pandas as pd
 
 def read_psiblast(pwd,df,psiblast_result, excluded_output):
     print("Reading psiblast output...")
@@ -16,8 +17,14 @@ def read_psiblast(pwd,df,psiblast_result, excluded_output):
 
     index=0
     hit_accession_list=list()
-    specie_list=['HUMAN','MOUSE','RATTUS','SCROFA','BOVIN','XENLA','DROME','MACACA','SHEEP','DANIO','RABIT','CHICK']
+    #specie_list=['HUMAN','MOUSE','RATTUS','_PIG','BOVIN','XENLA','DROME','MACMU','SHEEP','DANRE','RABIT','CHICK']  #Matches uniprot id
 
+    specie_name=['Homo sapiens','Mus musculus','Rattus norvegicus','Sus scrofa','Bos taurus','Xenopus laevis','Drosophila melanogaster',\
+                 'Macaca mulatta','Ovis aries','Danio rerio','Oryctolagus cuniculus','Gallus gallus']
+    
+    df_known_uniprots=pd.read_csv(f'{pwd}/All-organisms-alignment-residue-corresspondence.tab',sep=' ',header='infer')
+    known_uniprots_list=df_known_uniprots['Uniprot'].unique()   #Get the list of all the uniprots which are in alignment
+    
     for hits in fhandle_psiblast:        #hits object does not have any evalue, only hsps have evalues
         #if index>10:
         #    continue
@@ -36,7 +43,7 @@ def read_psiblast(pwd,df,psiblast_result, excluded_output):
                     continue
                 hit_accession_list.append(hits.accession)
 
-                if any(specie in hsp.hit_description.upper() for specie in specie_list):     #any in an inbuilt function
+                if any(uniprot_id in hsp.hit_description.upper() for uniprot_id in known_uniprots_list):     #any in an inbuilt function, only the hits which have a uniprot id assigned and included in the alignment file
 
                     if hsp.hit_description.find('|')!=-1:       #Skip fusion proteins; returns position of substring, -1 means not found
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))     #modified to remove the random string in the beginning
@@ -127,7 +134,7 @@ def read_psiblast(pwd,df,psiblast_result, excluded_output):
 
                     index=index+1
 
-                else:
+                elif any(specie in hsp.hit_description for specie in specie_name):  #Species in the list of model organisms but no uniprot assigned or uniprot not in alignment
                     fhandle_newuniprots.write(f"{hsp.hit_id} {hsp.hit_description}\n")
 
 

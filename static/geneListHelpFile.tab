@@ -1,2 +1,350 @@
 List of Organism, HGNC gene, uniprot id and protein names with a known structure and included in the database
+Bos taurus	BTK	Q3ZC95_BOVIN	Tyrosine-protein kinase
+Bos taurus	GRK1	GRK1_BOVIN	Rhodopsin kinase GRK1
+Bos taurus	GRK2	ARBK1_BOVIN	Beta-adrenergic receptor kinase 1
+Bos taurus	GRK5	GRK5_BOVIN	G protein-coupled receptor kinase 5
+Bos taurus	PRKACA	KAPCA_BOVIN	cAMP-dependent protein kinase catalytic subunit alpha
+Bos taurus	ROCK2	ROCK2_BOVIN	Rho-associated protein kinase 2
+Danio rerio	PLK1	Q4KMI8_DANRE	Serine/threonine-protein kinase PLK
+Drosophila melanogaster	BUBR1	A1Z6I7_DROME	Bub1-related kinase
+Drosophila melanogaster	CAMK2	KCC2A_DROME	Calcium/calmodulin-dependent protein kinase type II alpha chain
+Drosophila melanogaster	GISH	Q86NK8_DROME	Gilgamesh, isoform I
+Drosophila melanogaster	JNK	JNK_DROME	Stress-activated protein kinase JNK
+Gallus gallus	PTK2	FAK1_CHICK	Focal adhesion kinase 1
+Gallus gallus	SRC	SRC_CHICK	Proto-oncogene tyrosine-protein kinase Src
+Homo sapiens	AAK1	AAK1_HUMAN	AP2-associated protein kinase 1
+Homo sapiens	ABL1	ABL1_HUMAN	Tyrosine-protein kinase ABL1
+Homo sapiens	ABL2	ABL2_HUMAN	Tyrosine-protein kinase ABL2
+Homo sapiens	ACVR1	ACVR1_HUMAN	Activin receptor type-1
+Homo sapiens	ACVR2A	AVR2A_HUMAN	Activin receptor type-2A
+Homo sapiens	ACVR2B	AVR2B_HUMAN	Activin receptor type-2B
+Homo sapiens	ACVRL1	ACVL1_HUMAN	Serine/threonine-protein kinase receptor R3
+Homo sapiens	AKT1	AKT1_HUMAN	RAC-alpha serine/threonine-protein kinase
+Homo sapiens	AKT2	AKT2_HUMAN	RAC-beta serine/threonine-protein kinase
+Homo sapiens	ALK	ALK_HUMAN	ALK tyrosine kinase receptor
 Homo sapiens	AURKA	AURKA_HUMAN	Aurora kinase A
+Homo sapiens	AURKB	AURKB_HUMAN	Aurora kinase B
+Homo sapiens	AURKC	AURKC_HUMAN	Aurora kinase C
+Homo sapiens	AXL	UFO_HUMAN	Tyrosine-protein kinase receptor UFO
+Homo sapiens	BMP2K	BMP2K_HUMAN	BMP-2-inducible protein kinase
+Homo sapiens	BMPR1B	BMR1B_HUMAN	Bone morphogenetic protein receptor type-1B
+Homo sapiens	BMPR2	BMPR2_HUMAN	Bone morphogenetic protein receptor type-2
+Homo sapiens	BMX	BMX_HUMAN	Cytoplasmic tyrosine-protein kinase BMX
+Homo sapiens	BRAF	BRAF_HUMAN	Serine/threonine-protein kinase B-raf
+Homo sapiens	BTK	BTK_HUMAN	Tyrosine-protein kinase BTK
+Homo sapiens	BUB1	BUB1_HUMAN	Mitotic checkpoint serine/threonine-protein kinase BUB1
+Homo sapiens	BUB1B	BUB1B_HUMAN	Mitotic checkpoint serine/threonine-protein kinase BUB1 beta
+Homo sapiens	CAMK1	KCC1A_HUMAN	Calcium/calmodulin-dependent protein kinase type 1
+Homo sapiens	CAMK1D	KCC1D_HUMAN	Calcium/calmodulin-dependent protein kinase type 1D
+Homo sapiens	CAMK1G	KCC1G_HUMAN	Calcium/calmodulin-dependent protein kinase type 1G
+Homo sapiens	CAMK2A	KCC2A_HUMAN	Calcium/calmodulin-dependent protein kinase type II subunit alpha
+Homo sapiens	CAMK2B	KCC2B_HUMAN	Calcium/calmodulin-dependent protein kinase type II subunit beta
+Homo sapiens	CAMK2D	KCC2D_HUMAN	Calcium/calmodulin-dependent protein kinase type II subunit delta
+Homo sapiens	CAMK2G	KCC2G_HUMAN	Calcium/calmodulin-dependent protein kinase type II subunit gamma
+Homo sapiens	CAMK4	KCC4_HUMAN	Calcium/calmodulin-dependent protein kinase type IV
+Homo sapiens	CAMKK1	KKCC1_HUMAN	Calcium/calmodulin-dependent protein kinase kinase 1
+Homo sapiens	CAMKK2	KKCC2_HUMAN	Calcium/calmodulin-dependent protein kinase kinase 2
+Homo sapiens	CASK	CSKP_HUMAN	Peripheral plasma membrane protein CASK
+Homo sapiens	CDC42BPB	MRCKB_HUMAN	Serine/threonine-protein kinase MRCK beta
+Homo sapiens	CDC7	CDC7_HUMAN	Cell division cycle 7-related protein kinase
+Homo sapiens	CDK1	CDK1_HUMAN	Cyclin-dependent kinase 1
+Homo sapiens	CDK12	CDK12_HUMAN	Cyclin-dependent kinase 12
+Homo sapiens	CDK13	CDK13_HUMAN	Cyclin-dependent kinase 13
+Homo sapiens	CDK16	CDK16_HUMAN	Cyclin-dependent kinase 16
+Homo sapiens	CDK2	CDK2_HUMAN	Cyclin-dependent kinase 2
+Homo sapiens	CDK4	CDK4_HUMAN	Cyclin-dependent kinase 4
+Homo sapiens	CDK5	CDK5_HUMAN	Cyclin-dependent-like kinase 5
+Homo sapiens	CDK6	CDK6_HUMAN	Cyclin-dependent kinase 6
+Homo sapiens	CDK7	CDK7_HUMAN	Cyclin-dependent kinase 7
+Homo sapiens	CDK8	CDK8_HUMAN	Cyclin-dependent kinase 8
+Homo sapiens	CDK9	CDK9_HUMAN	Cyclin-dependent kinase 9
+Homo sapiens	CDKL1	CDKL1_HUMAN	Cyclin-dependent kinase-like 1
+Homo sapiens	CDKL2	CDKL2_HUMAN	Cyclin-dependent kinase-like 2
+Homo sapiens	CDKL3	CDKL3_HUMAN	Cyclin-dependent kinase-like 3
+Homo sapiens	CDKL5	CDKL5_HUMAN	Cyclin-dependent kinase-like 5
+Homo sapiens	CHEK1	CHK1_HUMAN	Serine/threonine-protein kinase Chk1
+Homo sapiens	CHEK2	CHK2_HUMAN	Serine/threonine-protein kinase Chk2
+Homo sapiens	CHUK	IKKA_HUMAN	Inhibitor of nuclear factor kappa-B kinase subunit alpha
+Homo sapiens	CLK1	CLK1_HUMAN	Dual specificity protein kinase CLK1
+Homo sapiens	CLK2	CLK2_HUMAN	Dual specificity protein kinase CLK2
+Homo sapiens	CLK3	CLK3_HUMAN	Dual specificity protein kinase CLK3
+Homo sapiens	CLK4	CLK4_HUMAN	Dual specificity protein kinase CLK4
+Homo sapiens	CSF1R	CSF1R_HUMAN	Macrophage colony-stimulating factor 1 receptor
+Homo sapiens	CSK	CSK_HUMAN	Tyrosine-protein kinase CSK
+Homo sapiens	CSNK1A1	KC1A_HUMAN	Casein kinase I isoform alpha
+Homo sapiens	CSNK1D	KC1D_HUMAN	Casein kinase I isoform delta
+Homo sapiens	CSNK1E	KC1E_HUMAN	Casein kinase I isoform epsilon
+Homo sapiens	CSNK1G1	KC1G1_HUMAN	Casein kinase I isoform gamma-1
+Homo sapiens	CSNK1G2	KC1G2_HUMAN	Casein kinase I isoform gamma-2
+Homo sapiens	CSNK1G3	KC1G3_HUMAN	Casein kinase I isoform gamma-3
+Homo sapiens	CSNK2A1	CSK21_HUMAN	Casein kinase II subunit alpha
+Homo sapiens	CSNK2A2	CSK22_HUMAN	Casein kinase II subunit alpha'
+Homo sapiens	DAPK1	DAPK1_HUMAN	Death-associated protein kinase 1
+Homo sapiens	DAPK2	DAPK2_HUMAN	Death-associated protein kinase 2
+Homo sapiens	DAPK3	DAPK3_HUMAN	Death-associated protein kinase 3
+Homo sapiens	DCLK1	DCLK1_HUMAN	Serine/threonine-protein kinase DCLK1
+Homo sapiens	DDR1	DDR1_HUMAN	Epithelial discoidin domain-containing receptor 1
+Homo sapiens	DDR2	DDR2_HUMAN	Discoidin domain-containing receptor 2
+Homo sapiens	DMPK	DMPK_HUMAN	Myotonin-protein kinase
+Homo sapiens	DYRK1A	DYR1A_HUMAN	Dual specificity tyrosine-phosphorylation-regulated kinase 1A
+Homo sapiens	DYRK2	DYRK2_HUMAN	Dual specificity tyrosine-phosphorylation-regulated kinase 2
+Homo sapiens	DYRK3	DYRK3_HUMAN	Dual specificity tyrosine-phosphorylation-regulated kinase 3
+Homo sapiens	EGFR	EGFR_HUMAN	Epidermal growth factor receptor
+Homo sapiens	EIF2AK2	E2AK2_HUMAN	Interferon-induced, double-stranded RNA-activated protein kinase
+Homo sapiens	EIF2AK3	E2AK3_HUMAN	Eukaryotic translation initiation factor 2-alpha kinase 3
+Homo sapiens	EIF2AK4	E2AK4_HUMAN	eIF-2-alpha kinase GCN2
+Homo sapiens	EPHA2	EPHA2_HUMAN	Ephrin type-A receptor 2
+Homo sapiens	EPHA3	EPHA3_HUMAN	Ephrin type-A receptor 3
+Homo sapiens	EPHA5	EPHA5_HUMAN	Ephrin type-A receptor 5
+Homo sapiens	EPHA7	EPHA7_HUMAN	Ephrin type-A receptor 7
+Homo sapiens	EPHA8	EPHA8_HUMAN	Ephrin type-A receptor 8
+Homo sapiens	EPHB1	EPHB1_HUMAN	Ephrin type-B receptor 1
+Homo sapiens	EPHB2	EPHB2_HUMAN	Ephrin type-B receptor 2
+Homo sapiens	EPHB3	EPHB3_HUMAN	Ephrin type-B receptor 3
+Homo sapiens	EPHB4	EPHB4_HUMAN	Ephrin type-B receptor 4
+Homo sapiens	ERBB2	ERBB2_HUMAN	Receptor tyrosine-protein kinase erbB-2
+Homo sapiens	ERBB3	ERBB3_HUMAN	Receptor tyrosine-protein kinase erbB-3
+Homo sapiens	ERBB4	ERBB4_HUMAN	Receptor tyrosine-protein kinase erbB-4
+Homo sapiens	ERN1	ERN1_HUMAN	Serine/threonine-protein kinase/endoribonuclease IRE1
+Homo sapiens	FES	FES_HUMAN	Tyrosine-protein kinase Fes/Fps
+Homo sapiens	FGFR1	FGFR1_HUMAN	Fibroblast growth factor receptor 1
+Homo sapiens	FGFR2	FGFR2_HUMAN	Fibroblast growth factor receptor 2
+Homo sapiens	FGFR3	FGFR3_HUMAN	Fibroblast growth factor receptor 3
+Homo sapiens	FGFR4	FGFR4_HUMAN	Fibroblast growth factor receptor 4
+Homo sapiens	FLT1	VGFR1_HUMAN	Vascular endothelial growth factor receptor 1
+Homo sapiens	FLT3	FLT3_HUMAN	Receptor-type tyrosine-protein kinase FLT3
+Homo sapiens	FYN	FYN_HUMAN	Tyrosine-protein kinase Fyn
+Homo sapiens	GAK	GAK_HUMAN	Cyclin-G-associated kinase
+Homo sapiens	GRK2	ARBK1_HUMAN	Beta-adrenergic receptor kinase 1
+Homo sapiens	GRK4	GRK4_HUMAN	G protein-coupled receptor kinase 4
+Homo sapiens	GRK5	GRK5_HUMAN	G protein-coupled receptor kinase 5
+Homo sapiens	GRK6	GRK6_HUMAN	G protein-coupled receptor kinase 6
+Homo sapiens	GSK3B	GSK3B_HUMAN	Glycogen synthase kinase-3 beta
+Homo sapiens	HASPIN	HASP_HUMAN	Serine/threonine-protein kinase haspin
+Homo sapiens	HCK	HCK_HUMAN	Tyrosine-protein kinase HCK
+Homo sapiens	HIPK2	HIPK2_HUMAN	Homeodomain-interacting protein kinase 2
+Homo sapiens	HIPK3	HIPK3_HUMAN	Homeodomain-interacting protein kinase 3
+Homo sapiens	IGF1R	IGF1R_HUMAN	Insulin-like growth factor 1 receptor
+Homo sapiens	IKBKB	IKKB_HUMAN	Inhibitor of nuclear factor kappa-B kinase subunit beta
+Homo sapiens	ILK	ILK_HUMAN	Integrin-linked protein kinase
+Homo sapiens	INSR	INSR_HUMAN	Insulin receptor
+Homo sapiens	IRAK1	IRAK1_HUMAN	Interleukin-1 receptor-associated kinase 1
+Homo sapiens	IRAK3	IRAK3_HUMAN	Interleukin-1 receptor-associated kinase 3
+Homo sapiens	IRAK4	IRAK4_HUMAN	Interleukin-1 receptor-associated kinase 4
+Homo sapiens	ITK	ITK_HUMAN	Tyrosine-protein kinase ITK/TSK
+Homo sapiens	JAK1	JAK1_HUMAN	Tyrosine-protein kinase JAK1
+Homo sapiens	JAK2	JAK2_HUMAN	Tyrosine-protein kinase JAK2
+Homo sapiens	JAK3	JAK3_HUMAN	Tyrosine-protein kinase JAK3
+Homo sapiens	KDR	VGFR2_HUMAN	Vascular endothelial growth factor receptor 2
+Homo sapiens	KIT	KIT_HUMAN	Mast/stem cell growth factor receptor Kit
+Homo sapiens	KSR1	KSR1_HUMAN	Kinase suppressor of Ras 1
+Homo sapiens	KSR2	KSR2_HUMAN	Kinase suppressor of Ras 2
+Homo sapiens	LCK	LCK_HUMAN	Tyrosine-protein kinase Lck
+Homo sapiens	LIMK1	LIMK1_HUMAN	LIM domain kinase 1
+Homo sapiens	LIMK2	LIMK2_HUMAN	LIM domain kinase 2
+Homo sapiens	LMTK3	LMTK3_HUMAN	Serine/threonine-protein kinase LMTK3
+Homo sapiens	LRRK2	LRRK2_HUMAN	Leucine-rich repeat serine/threonine-protein kinase 2
+Homo sapiens	LYN	LYN_HUMAN	Tyrosine-protein kinase Lyn
+Homo sapiens	MAP2K1	MP2K1_HUMAN	Dual specificity mitogen-activated protein kinase kinase 1
+Homo sapiens	MAP2K2	MP2K2_HUMAN	Dual specificity mitogen-activated protein kinase kinase 2
+Homo sapiens	MAP2K4	MP2K4_HUMAN	Dual specificity mitogen-activated protein kinase kinase 4
+Homo sapiens	MAP2K6	MP2K6_HUMAN	Dual specificity mitogen-activated protein kinase kinase 6
+Homo sapiens	MAP2K7	MP2K7_HUMAN	Dual specificity mitogen-activated protein kinase kinase 7
+Homo sapiens	MAP3K12	M3K12_HUMAN	Mitogen-activated protein kinase kinase kinase 12
+Homo sapiens	MAP3K14	M3K14_HUMAN	Mitogen-activated protein kinase kinase kinase 14
+Homo sapiens	MAP3K20	M3K20_HUMAN	Mitogen-activated protein kinase kinase kinase 20
+Homo sapiens	MAP3K21	M3K21_HUMAN	Mitogen-activated protein kinase kinase kinase 21
+Homo sapiens	MAP3K5	M3K5_HUMAN	Mitogen-activated protein kinase kinase kinase 5
+Homo sapiens	MAP3K7	M3K7_HUMAN	Mitogen-activated protein kinase kinase kinase 7
+Homo sapiens	MAP3K8	M3K8_HUMAN	Mitogen-activated protein kinase kinase kinase 8
+Homo sapiens	MAP3K9	M3K9_HUMAN	Mitogen-activated protein kinase kinase kinase 9
+Homo sapiens	MAP4K1	M4K1_HUMAN	Mitogen-activated protein kinase kinase kinase kinase 1
+Homo sapiens	MAP4K3	M4K3_HUMAN	Mitogen-activated protein kinase kinase kinase kinase 3
+Homo sapiens	MAP4K4	M4K4_HUMAN	Mitogen-activated protein kinase kinase kinase kinase 4
+Homo sapiens	MAPK1	MK01_HUMAN	Mitogen-activated protein kinase 1
+Homo sapiens	MAPK10	MK10_HUMAN	Mitogen-activated protein kinase 10
+Homo sapiens	MAPK11	MK11_HUMAN	Mitogen-activated protein kinase 11
+Homo sapiens	MAPK12	MK12_HUMAN	Mitogen-activated protein kinase 12
+Homo sapiens	MAPK13	MK13_HUMAN	Mitogen-activated protein kinase 13
+Homo sapiens	MAPK14	MK14_HUMAN	Mitogen-activated protein kinase 14
+Homo sapiens	MAPK3	MK03_HUMAN	Mitogen-activated protein kinase 3
+Homo sapiens	MAPK6	MK06_HUMAN	Mitogen-activated protein kinase 6
+Homo sapiens	MAPK7	MK07_HUMAN	Mitogen-activated protein kinase 7
+Homo sapiens	MAPK8	MK08_HUMAN	Mitogen-activated protein kinase 8
+Homo sapiens	MAPK9	MK09_HUMAN	Mitogen-activated protein kinase 9
+Homo sapiens	MAPKAPK2	MAPK2_HUMAN	MAP kinase-activated protein kinase 2
+Homo sapiens	MAPKAPK3	MAPK3_HUMAN	MAP kinase-activated protein kinase 3
+Homo sapiens	MARK1	MARK1_HUMAN	Serine/threonine-protein kinase MARK1
+Homo sapiens	MARK2	MARK2_HUMAN	Serine/threonine-protein kinase MARK2
+Homo sapiens	MARK3	MARK3_HUMAN	MAP/microtubule affinity-regulating kinase 3
+Homo sapiens	MARK4	MARK4_HUMAN	MAP/microtubule affinity-regulating kinase 4
+Homo sapiens	MASTL	GWL_HUMAN	Serine/threonine-protein kinase greatwall
+Homo sapiens	MELK	MELK_HUMAN	Maternal embryonic leucine zipper kinase
+Homo sapiens	MERTK	MERTK_HUMAN	Tyrosine-protein kinase Mer
+Homo sapiens	MET	MET_HUMAN	Hepatocyte growth factor receptor
+Homo sapiens	MKNK1	MKNK1_HUMAN	MAP kinase-interacting serine/threonine-protein kinase 1
+Homo sapiens	MKNK2	MKNK2_HUMAN	MAP kinase-interacting serine/threonine-protein kinase 2
+Homo sapiens	MLKL	MLKL_HUMAN	Mixed lineage kinase domain-like protein
+Homo sapiens	MST1R	RON_HUMAN	Macrophage-stimulating protein receptor
+Homo sapiens	MYLK4	MYLK4_HUMAN	Myosin light chain kinase family member 4
+Homo sapiens	NEK1	NEK1_HUMAN	Serine/threonine-protein kinase Nek1
+Homo sapiens	NEK2	NEK2_HUMAN	Serine/threonine-protein kinase Nek2
+Homo sapiens	NEK7	NEK7_HUMAN	Serine/threonine-protein kinase Nek7
+Homo sapiens	NTRK1	NTRK1_HUMAN	Tyrosine-protein kinase receptor
+Homo sapiens	NTRK2	NTRK2_HUMAN	BDNF/NT-3 growth factors receptor
+Homo sapiens	NTRK3	NTRK3_HUMAN	NT-3 growth factor receptor
+Homo sapiens	OXSR1	OXSR1_HUMAN	Serine/threonine-protein kinase OSR1
+Homo sapiens	PAK1	PAK1_HUMAN	Serine/threonine-protein kinase PAK 1
+Homo sapiens	PAK3	PAK3_HUMAN	Serine/threonine-protein kinase PAK 3
+Homo sapiens	PAK4	PAK4_HUMAN	Serine/threonine-protein kinase PAK 4
+Homo sapiens	PAK5	PAK5_HUMAN	Serine/threonine-protein kinase PAK 5
+Homo sapiens	PAK6	PAK6_HUMAN	Serine/threonine-protein kinase PAK 6
+Homo sapiens	PASK	PASK_HUMAN	PAS domain-containing serine/threonine-protein kinase
+Homo sapiens	PBK	TOPK_HUMAN	Lymphokine-activated killer T-cell-originated protein kinase
+Homo sapiens	PDGFRA	PGFRA_HUMAN	Platelet-derived growth factor receptor alpha
+Homo sapiens	PDPK1	PDPK1_HUMAN	3-phosphoinositide-dependent protein kinase 1
+Homo sapiens	PEAK1	PEAK1_HUMAN	Inactive tyrosine-protein kinase PEAK1
+Homo sapiens	PHKG2	PHKG2_HUMAN	Phosphorylase b kinase gamma catalytic chain, liver/testis isoform
+Homo sapiens	PIK3R4	PI3R4_HUMAN	Phosphoinositide 3-kinase regulatory subunit 4
+Homo sapiens	PIM1	PIM1_HUMAN	Serine/threonine-protein kinase pim-1
+Homo sapiens	PIM2	PIM2_HUMAN	Serine/threonine-protein kinase pim-2
+Homo sapiens	PKMYT1	PMYT1_HUMAN	Membrane-associated tyrosine- and threonine-specific cdc2-inhibitory kinase
+Homo sapiens	PKN1	PKN1_HUMAN	Serine/threonine-protein kinase N1
+Homo sapiens	PKN2	PKN2_HUMAN	Serine/threonine-protein kinase N2
+Homo sapiens	PLK1	PLK1_HUMAN	Serine/threonine-protein kinase PLK1
+Homo sapiens	PLK2	PLK2_HUMAN	Serine/threonine-protein kinase PLK2
+Homo sapiens	PLK3	PLK3_HUMAN	Serine/threonine-protein kinase PLK3
+Homo sapiens	PLK4	PLK4_HUMAN	Serine/threonine-protein kinase PLK4
+Homo sapiens	PRAG1	PRAG1_HUMAN	Inactive tyrosine-protein kinase PRAG1
+Homo sapiens	PRKAA1	AAPK1_HUMAN	5'-AMP-activated protein kinase catalytic subunit alpha-1
+Homo sapiens	PRKAA2	AAPK2_HUMAN	5'-AMP-activated protein kinase catalytic subunit alpha-2
+Homo sapiens	PRKACA	KAPCA_HUMAN	cAMP-dependent protein kinase catalytic subunit alpha
+Homo sapiens	PRKCA	KPCA_HUMAN	Protein kinase C alpha type
+Homo sapiens	PRKCB	KPCB_HUMAN	Protein kinase C beta type
+Homo sapiens	PRKCH	KPCL_HUMAN	Protein kinase C eta type
+Homo sapiens	PRKCI	KPCI_HUMAN	Protein kinase C iota type
+Homo sapiens	PRKCQ	KPCT_HUMAN	Protein kinase C theta type
+Homo sapiens	PRKG1	KGP1_HUMAN	cGMP-dependent protein kinase 1
+Homo sapiens	PRPF4B	PRP4B_HUMAN	Serine/threonine-protein kinase PRP4 homolog
+Homo sapiens	PTK2	FAK1_HUMAN	Focal adhesion kinase 1
+Homo sapiens	PTK2B	FAK2_HUMAN	Protein-tyrosine kinase 2-beta
+Homo sapiens	PTK6	PTK6_HUMAN	Protein-tyrosine kinase 6
+Homo sapiens	PTK7	PTK7_HUMAN	Inactive tyrosine-protein kinase 7
+Homo sapiens	RAF1	RAF1_HUMAN	RAF proto-oncogene serine/threonine-protein kinase
+Homo sapiens	RET	RET_HUMAN	Proto-oncogene tyrosine-protein kinase receptor Ret
+Homo sapiens	RIPK1	RIPK1_HUMAN	Receptor-interacting serine/threonine-protein kinase 1
+Homo sapiens	RIPK2	RIPK2_HUMAN	Receptor-interacting serine/threonine-protein kinase 2
+Homo sapiens	RIPK3	RIPK3_HUMAN	Receptor-interacting serine/threonine-protein kinase 3
+Homo sapiens	RNASEL	RN5A_HUMAN	2-5A-dependent ribonuclease
+Homo sapiens	ROCK1	ROCK1_HUMAN	Rho-associated protein kinase 1
+Homo sapiens	ROCK2	ROCK2_HUMAN	Rho-associated protein kinase 2
+Homo sapiens	ROR1	ROR1_HUMAN	Inactive tyrosine-protein kinase transmembrane receptor ROR1
+Homo sapiens	ROR2	ROR2_HUMAN	Tyrosine-protein kinase transmembrane receptor ROR2
+Homo sapiens	ROS1	ROS1_HUMAN	Proto-oncogene tyrosine-protein kinase ROS
+Homo sapiens	RPS6KA1	KS6A1_HUMAN	Ribosomal protein S6 kinase alpha-1
+Homo sapiens	RPS6KA3	KS6A3_HUMAN	Ribosomal protein S6 kinase alpha-3
+Homo sapiens	RPS6KA5	KS6A5_HUMAN	Ribosomal protein S6 kinase alpha-5
+Homo sapiens	RPS6KA6	KS6A6_HUMAN	Ribosomal protein S6 kinase alpha-6
+Homo sapiens	RPS6KB1	KS6B1_HUMAN	Ribosomal protein S6 kinase beta-1
+Homo sapiens	RYK	RYK_HUMAN	Tyrosine-protein kinase RYK
+Homo sapiens	SGK1	SGK1_HUMAN	Serine/threonine-protein kinase Sgk1
+Homo sapiens	SLK	SLK_HUMAN	STE20-like serine/threonine-protein kinase
+Homo sapiens	SNRK	SNRK_HUMAN	SNF-related serine/threonine-protein kinase
+Homo sapiens	SRC	SRC_HUMAN	Proto-oncogene tyrosine-protein kinase Src
+Homo sapiens	SRPK1	SRPK1_HUMAN	SRSF protein kinase 1
+Homo sapiens	SRPK2	SRPK2_HUMAN	SRSF protein kinase 2
+Homo sapiens	STK10	STK10_HUMAN	Serine/threonine-protein kinase 10
+Homo sapiens	STK11	STK11_HUMAN	Serine/threonine-protein kinase STK11
+Homo sapiens	STK16	STK16_HUMAN	Serine/threonine-protein kinase 16
+Homo sapiens	STK17B	ST17B_HUMAN	Serine/threonine-protein kinase 17B
+Homo sapiens	STK24	STK24_HUMAN	Serine/threonine-protein kinase 24
+Homo sapiens	STK25	STK25_HUMAN	Serine/threonine-protein kinase 25
+Homo sapiens	STK26	STK26_HUMAN	Serine/threonine-protein kinase 26
+Homo sapiens	STK3	STK3_HUMAN	Serine/threonine-protein kinase 3
+Homo sapiens	STK32A	ST32A_HUMAN	Serine/threonine-protein kinase 32A
+Homo sapiens	STK38	STK38_HUMAN	Serine/threonine-protein kinase 38
+Homo sapiens	STK4	STK4_HUMAN	Serine/threonine-protein kinase 4
+Homo sapiens	STK40	STK40_HUMAN	Serine/threonine-protein kinase 40
+Homo sapiens	STRADA	STRAA_HUMAN	STE20-related kinase adapter protein alpha
+Homo sapiens	SYK	KSYK_HUMAN	Tyrosine-protein kinase SYK
+Homo sapiens	TAOK3	TAOK3_HUMAN	Serine/threonine-protein kinase TAO3
+Homo sapiens	TBK1	TBK1_HUMAN	Serine/threonine-protein kinase TBK1
+Homo sapiens	TEK	TIE2_HUMAN	Angiopoietin-1 receptor
+Homo sapiens	TGFBR1	TGFR1_HUMAN	TGF-beta receptor type-1
+Homo sapiens	TGFBR2	TGFR2_HUMAN	TGF-beta receptor type-2
+Homo sapiens	TLK2	TLK2_HUMAN	Serine/threonine-protein kinase tousled-like 2
+Homo sapiens	TNIK	TNIK_HUMAN	TRAF2 and NCK-interacting protein kinase
+Homo sapiens	TNK2	ACK1_HUMAN	Activated CDC42 kinase 1
+Homo sapiens	TNNI3K	TNI3K_HUMAN	Serine/threonine-protein kinase TNNI3K
+Homo sapiens	TP53RK	PRPK_HUMAN	EKC/KEOPS complex subunit TP53RK
+Homo sapiens	TRIB1	TRIB1_HUMAN	Tribbles homolog 1
+Homo sapiens	TTBK1	TTBK1_HUMAN	Tau-tubulin kinase 1
+Homo sapiens	TTBK2	TTBK2_HUMAN	Tau-tubulin kinase 2
+Homo sapiens	TTK	TTK_HUMAN	Dual specificity protein kinase TTK
+Homo sapiens	TTN	TITIN_HUMAN	Titin
+Homo sapiens	TYK2	TYK2_HUMAN	Non-receptor tyrosine-protein kinase TYK2
+Homo sapiens	ULK1	ULK1_HUMAN	Serine/threonine-protein kinase ULK1
+Homo sapiens	ULK2	ULK2_HUMAN	Serine/threonine-protein kinase ULK2
+Homo sapiens	ULK3	ULK3_HUMAN	Serine/threonine-protein kinase ULK3
+Homo sapiens	ULK4	ULK4_HUMAN	Serine/threonine-protein kinase ULK4
+Homo sapiens	VRK1	VRK1_HUMAN	Serine/threonine-protein kinase VRK1
+Homo sapiens	VRK2	VRK2_HUMAN	Serine/threonine-protein kinase VRK2
+Homo sapiens	VRK3	VRK3_HUMAN	Inactive serine/threonine-protein kinase VRK3
+Homo sapiens	WEE1	WEE1_HUMAN	Wee1-like protein kinase
+Homo sapiens	WEE2	WEE2_HUMAN	Wee1-like protein kinase 2
+Homo sapiens	WNK1	WNK1_HUMAN	Serine/threonine-protein kinase WNK1
+Homo sapiens	WNK3	WNK3_HUMAN	Serine/threonine-protein kinase WNK3
+Homo sapiens	ZAP70	ZAP70_HUMAN	Tyrosine-protein kinase ZAP-70
+Mus musculus	ABL1	ABL1_MOUSE	Tyrosine-protein kinase ABL1
+Mus musculus	ABL2	ABL2_MOUSE	Tyrosine-protein kinase ABL2
+Mus musculus	AURKA	AURKA_MOUSE	Aurora kinase A
+Mus musculus	BRSK2	BRSK2_MOUSE	Serine/threonine-protein kinase BRSK2
+Mus musculus	BTK	BTK_MOUSE	Tyrosine-protein kinase BTK
+Mus musculus	CAMK2D	KCC2D_MOUSE	Calcium/calmodulin-dependent protein kinase type II subunit delta
+Mus musculus	CSNK1D	KC1D_MOUSE	Casein kinase I isoform delta
+Mus musculus	DAPK2	DAPK2_MOUSE	Death-associated protein kinase 2
+Mus musculus	EIF2AK3	E2AK3_MOUSE	Eukaryotic translation initiation factor 2-alpha kinase 3
+Mus musculus	EPHA4	EPHA4_MOUSE	Ephrin type-A receptor 4
+Mus musculus	EPHB2	EPHB2_MOUSE	Ephrin type-B receptor 2
+Mus musculus	ERN1	ERN1_MOUSE	Serine/threonine-protein kinase/endoribonuclease IRE1
+Mus musculus	GSK3B	GSK3B_MOUSE	Glycogen synthase kinase-3 beta
+Mus musculus	JAK2	JAK2_MOUSE	Tyrosine-protein kinase JAK2
+Mus musculus	LYN	LYN_MOUSE	Tyrosine-protein kinase Lyn
+Mus musculus	M3K14	M3K14_MOUSE	Mitogen-activated protein kinase kinase kinase 14
+Mus musculus	MAPK14	MK14_MOUSE	Mitogen-activated protein kinase 14
+Mus musculus	MELK	MELK_MOUSE	Maternal embryonic leucine zipper kinase
+Mus musculus	MLKL	MLKL_MOUSE	Mixed lineage kinase domain-like protein
+Mus musculus	PRKACA	KAPCA_MOUSE	cAMP-dependent protein kinase catalytic subunit alpha
+Mus musculus	PRKCI	KPCI_MOUSE	Protein kinase C iota type
+Mus musculus	RIPK3	RIPK3_MOUSE	Receptor-interacting serine/threonine-protein kinase 3
+Mus musculus	RIPK4	RIPK4_MOUSE	Receptor-interacting serine/threonine-protein kinase 4
+Mus musculus	RPS6KA3	KS6A3_MOUSE	Ribosomal protein S6 kinase alpha-3
+Mus musculus	SRC	SRC_MOUSE	Neuronal proto-oncogene tyrosine-protein kinase Src
+Mus musculus	STK39	STK39_MOUSE	STE20/SPS1-related proline-alanine-rich protein kinase
+Mus musculus	TBK1	TBK1_MOUSE	Serine/threonine-protein kinase TBK1
+Mus musculus	TYK2	TYK2_MOUSE	Non-receptor tyrosine-protein kinase TYK2
+Mus musculus	TYRO3	TYRO3_MOUSE	Tyrosine-protein kinase receptor TYRO3
+Mus musculus	XXX	IGF1R_MOUSE	Insulin-like growth factor 1 receptor
+Mus musculus	XXX	AAK1_MOUSE	AP2-associated protein kinase 1
+Oryctolagus cuniculus	MAP2K1	MP2K1_RABIT	Dual specificity mitogen-activated protein kinase kinase 1
+Oryctolagus cuniculus	PHKG1	PHKG1_RABIT	Phosphorylase b kinase gamma catalytic chain, skeletal muscle/heart isoform
+Rattus norvegicus	CAMK1	KCC1A_RAT	Calcium/calmodulin-dependent protein kinase type 1
+Rattus norvegicus	CAMK2A	KCC2A_RAT	Calcium/calmodulin-dependent protein kinase type II subunit alpha
+Rattus norvegicus	CASK	CSKP_RAT	Peripheral plasma membrane protein CASK
+Rattus norvegicus	CDC42BPA	MRCKA_RAT	Serine/threonine-protein kinase MRCK alpha
+Rattus norvegicus	CSK	CSK_RAT	Tyrosine-protein kinase CSK
+Rattus norvegicus	CSK21	CSK21_RAT	Casein kinase II subunit alpha
+Rattus norvegicus	CSNK1D	KC1D_RAT	Casein kinase I isoform delta
+Rattus norvegicus	MAPK1	MK01_RAT	Mitogen-activated protein kinase 1
+Rattus norvegicus	MARK2	MARK2_RAT	Serine/threonine-protein kinase MARK2
+Rattus norvegicus	MUSK	MUSK_RAT	Muscle, skeletal receptor tyrosine protein kinase
+Rattus norvegicus	PRAG1	PRAG1_RAT	Inactive tyrosine-protein kinase PRAG1
+Rattus norvegicus	PRKAA1	AAPK1_RAT	5'-AMP-activated protein kinase catalytic subunit alpha-1
+Rattus norvegicus	PRKACA	KAPCA_RAT	cAMP-dependent protein kinase catalytic subunit alpha
+Rattus norvegicus	PRKCB	KPCB_RAT	Protein kinase C beta type
+Rattus norvegicus	TAOK2	TAOK2_RAT	Serine/threonine-protein kinase TAO2
+Rattus norvegicus	WNK1	WNK1_RAT	Serine/threonine-protein kinase WNK1
+Sus scrofa	PRKACA	KAPCA_PIG	cAMP-dependent protein kinase catalytic subunit alpha
+Sus scrofa	RNASEL	A5H025_PIG	Ribonuclease L
+Xenopus laevis	AURKBA	AUKBA_XENLA	Aurora kinase B-A
+Xenopus laevis	IKBKB	Q6INT1_XENLA	I-kappa-B kinase
