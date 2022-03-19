@@ -21,10 +21,10 @@ def read_psiblast(pwd,df,psiblast_result, excluded_output):
 
     specie_name=['Homo sapiens','Mus musculus','Rattus norvegicus','Sus scrofa','Bos taurus','Xenopus laevis','Drosophila melanogaster',\
                  'Macaca mulatta','Ovis aries','Danio rerio','Oryctolagus cuniculus','Gallus gallus']
-    
+
     df_known_uniprots=pd.read_csv(f'{pwd}/All-organisms-alignment-residue-corresspondence.tab',sep=' ',header='infer')
     known_uniprots_list=df_known_uniprots['Uniprot'].unique()   #Get the list of all the uniprots which are in alignment
-    
+
     for hits in fhandle_psiblast:        #hits object does not have any evalue, only hsps have evalues
         #if index>10:
         #    continue
@@ -34,7 +34,7 @@ def read_psiblast(pwd,df,psiblast_result, excluded_output):
 
             if hsp.evalue<5.0 and hsp.aln_span>125:
 
-                if hsp.hit_id[0:4] in ('6T28','6T29','3LZBE','3LZBF','3LZBG','3LZBH','5CNOX','6PYHA','6PYHD','6TLJS','6Z1T','6Z1Q','6Z83','6Z84','6YUL','6YUM','6JK8'):     # Description of these structures is in the kinasepml notes file
+                if hsp.hit_id[0:4] in ('7MN5','7MN6','7MN8','6T28','6T29','3LZBE','3LZBF','3LZBG','3LZBH','5CNOX','6PYHA','6PYHD','6TLJS','6Z1T','6Z1Q','6Z83','6Z84','6YUL','6YUM','6JK8'):     # Description of these structures is in the kinasepml notes file
                     description=(" ".join(hsp.hit_description.split(' ')[1:]))
                     fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
                     continue
@@ -59,11 +59,11 @@ def read_psiblast(pwd,df,psiblast_result, excluded_output):
 
 
 
-                    if hsp.hit_description.split()[6]=='yes':    #Skip CA-only chains
+                    if 'CAonly' in hsp.hit_description:    #Skip CA-only chains
                         description=(" ".join(hsp.hit_description.split(' ')[1:]))
                         fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
                         continue
-#                    if hsp.hit_description.split()[2]=='EM':     #Skip EM structures
+#                   if hsp.hit_description.split()[2]=='EM':     #Skip EM structures
 #                        description=(" ".join(hsp.hit_description.split(' ')[1:]))
 #                        fhandle_excluded.write(hsp.hit_id[0:]+','+description+'\n')
 #                        continue
