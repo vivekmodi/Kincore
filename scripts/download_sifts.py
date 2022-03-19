@@ -16,7 +16,7 @@ def download_sifts(downld_dir, df):
         pdbs=df.at[i,'PDBid']
         filename=pdbs[0:4]
 
-        if not os.path.isfile(downld_dir+"/"+str(filename).lower()+".xml.gz"):
-            print("Downloading Sifts "+filename+"...")
-            cmd=("wget ftp://ftp.ebi.ac.uk/pub/databases/msd/sifts/xml/"+str(filename).lower()+".xml.gz -P "+downld_dir)
-            subprocess.call(cmd,shell=True)
+        #if not os.path.isfile(downld_dir+"/"+str(filename).lower()+".xml.gz"):
+        print("Downloading Sifts "+filename+"...")
+        cmd=("wget ftp://ftp.ebi.ac.uk/pub/databases/msd/sifts/xml/"+str(filename).lower()+".xml.gz -O "+downld_dir+"/"+str(filename).lower()+".xml.gz")
+        subprocess.call(cmd,shell=True)
